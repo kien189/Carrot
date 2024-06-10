@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Fe\HomeController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,16 +36,21 @@ Route::post('/forgotPassword', [HomeController::class, 'postForgotPassword']);
 Route::get('/resetPassword', [HomeController::class, 'resetPassword'])->name('resetPassword');
 Route::post('/resetPassword', [HomeController::class, 'postResetPassword']);
 // Admin
-Route::prefix('admin')->group(function () {
+Route::group(['prefix'=>'admin','middleware'=>'admin'], function(){
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::resources([
         'profile' => ProfileController::class,
-        'category' => ProfileController::class,
-        'subCategory' => ProfileController::class,
-        'product' => ProfileController::class,
-        'productVariant' => ProfileController::class,
-        'blog' => ProfileController::class,
+        'category' => CategoryController::class,
+        'subCategory' => SubCategoryController::class,
+        'product' => ProductController::class,
+        // 'productVariant' => ProductVariantController::class,
+        // 'blog' => BlogController::class,
         'shop' => ProfileController::class,
     ]);;
+});
+Route::prefix('admin')->group(function () {
+    Route::get('/login',[AdminController::class,'login'])->name('admin.login');
+    Route::post('/login',[AdminController::class,'postLogin','postLogin']);
+    Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
 });

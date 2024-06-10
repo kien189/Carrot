@@ -136,27 +136,53 @@
                         </div>
                         <div class="cr-right-tool cr-user-drop">
                             <div class="cr-hover-drop">
-                                <div class="cr-hover-tool">
-                                    <img class="user" src="{{ asset('assets_ad') }}/img/user/1.jpg"
-                                        alt="user">
-                                </div>
-                                <div class="cr-hover-drop-panel right">
-                                    <div class="details">
-                                        <h6>Wiley Waites</h6>
-                                        <p>wiley@example.com</p>
+                                @if (auth('users')->check())
+                                    <div class="cr-hover-tool">
+                                        <img class="user" src="{{ asset('assets_ad') }}/img/user/1.jpg"
+                                            alt="user">
                                     </div>
-                                    <ul class="border-top">
-                                        <li><a href="team-profile.html">Profile</a></li>
-                                        <li><a href="faq.html">Help</a></li>
-                                        <li><a href="chatapp.html">Messages</a></li>
-                                        <li><a href="project-overview.html">Projects</a></li>
-                                        <li><a href="team-update.html">Settings</a></li>
-                                    </ul>
-                                    <ul class="border-top">
-                                        <li><a href="signin.html"><i class="ri-logout-circle-r-line"></i>Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div class="cr-hover-drop-panel right">
+                                        <div class="details">
+                                            <h6>{{ auth('users')->user()->name }}</h6>
+                                            <p>{{ auth('users')->user()->email }}</p>
+                                        </div>
+                                        <ul class="border-top">
+                                            <li><a href="team-profile.html">Profile</a></li>
+                                            <li><a href="faq.html">Help</a></li>
+                                            <li><a href="chatapp.html">Messages</a></li>
+                                            <li><a href="project-overview.html">Projects</a></li>
+                                            <li><a href="team-update.html">Settings</a></li>
+                                        </ul>
+                                        <ul class="border-top">
+                                            <li><a href="{{ route('admin.logout') }}"><i
+                                                        class="ri-logout-circle-r-line"></i>Logout</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @else
+                                    <div class="cr-hover-tool">
+                                        <img class="user" src="{{ asset('assets_ad') }}/img/user/1.jpg"
+                                            alt="user">
+                                    </div>
+                                    <div class="cr-hover-drop-panel right">
+                                        <div class="details">
+                                            <h6>Wiley Waites</h6>
+                                            <p>wiley@example.com</p>
+                                        </div>
+                                        <ul class="border-top">
+                                            <li><a href="team-profile.html">Profile</a></li>
+                                            <li><a href="faq.html">Help</a></li>
+                                            <li><a href="chatapp.html">Messages</a></li>
+                                            <li><a href="project-overview.html">Projects</a></li>
+                                            <li><a href="team-update.html">Settings</a></li>
+                                        </ul>
+                                        <ul class="border-top">
+                                            <li><a href="signin.html"><i
+                                                        class="ri-logout-circle-r-line"></i>Logout</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -176,12 +202,11 @@
                 <div class="cr-sb-content">
                     <ul class="cr-sb-list">
                         <li class="cr-sb-item sb-drop-item">
-                            <a href="javascript:void(0)" class="cr-drop-toggle">
-                                <i class="ri-dashboard-3-line"></i><span class="condense">Dashboard<i
-                                        class="drop-arrow ri-arrow-down-s-line"></i></span></a>
+                            <a href="{{ route('admin.index') }}" class="cr-drop-toggle">
+                                <i class="ri-dashboard-3-line"></i><span class="condense">Dashboard</span></a>
                             <ul class="cr-sb-drop condense">
-                                <li><a href="" class="cr-page-link drop"><i
-                                            class="ri-checkbox-blank-circle-line"></i>ecommerce</a></li>
+                                {{-- <li><a href="" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>ecommerce</a></li> --}}
                                 {{-- <li><a href="product-list.html" class="cr-page-link drop"><i
                                             class="ri-checkbox-blank-circle-line"></i>Product list</a></li>
                                 <li><a href="add-product.html" class="cr-page-link drop"><i
@@ -237,8 +262,10 @@
                                 <i class="fa-solid fa-list"></i><span class="condense">Danh mục<i
                                         class="drop-arrow ri-arrow-down-s-line"></i></span></a>
                             <ul class="cr-sb-drop condense">
-                                <li><a href="" class="cr-page-link drop"><i class="ri-checkbox-blank-circle-line"></i>Danh mục cha</a></li>
-                                <li><a href="" class="cr-page-link drop"><i class="ri-checkbox-blank-circle-line"></i>Danh mục con</a></li>
+                                <li><a href="{{ route('category.index') }}" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Danh mục cha</a></li>
+                                <li><a href="" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Danh mục con</a></li>
                             </ul>
                         </li>
                         <li class="cr-sb-item sb-drop-item">
@@ -246,8 +273,10 @@
                                 <i class="fa-brands fa-product-hunt"></i><span class="condense">Sản phẩm<i
                                         class="drop-arrow ri-arrow-down-s-line"></i></span></a>
                             <ul class="cr-sb-drop condense">
-                                <li><a href="" class="cr-page-link drop"><i class="ri-checkbox-blank-circle-line"></i>Sản phẩm</a></li>
-                                <li><a href="" class="cr-page-link drop"><i class="ri-checkbox-blank-circle-line"></i>Biến thể</a></li>
+                                <li><a href="" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Sản phẩm</a></li>
+                                <li><a href="" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Biến thể</a></li>
                             </ul>
                         </li>
                         <li class="cr-sb-item">
@@ -297,8 +326,8 @@
                         </li>
                         <li class="cr-sb-item">
                             <a href="{{ route('profile.index') }}" class="cr-page-link">
-                                <i class="fa-solid fa-gear"></i><span class="condense"><span
-                                        class="hover-title">Cài đặt </span></span></a>
+                                <i class="fa-solid fa-gear"></i><span class="condense"><span class="hover-title">Cài
+                                        đặt </span></span></a>
                         </li>
                     </ul>
                 </div>
