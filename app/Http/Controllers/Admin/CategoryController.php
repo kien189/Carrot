@@ -38,6 +38,7 @@ class CategoryController extends Controller
         }
     }
 
+
     /**
      * Display the specified resource.
      */
@@ -45,6 +46,7 @@ class CategoryController extends Controller
     {
         //
     }
+    
 
     /**
      * Show the form for editing the specified resource.
