@@ -12,9 +12,10 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Category $category)
     {
-       return view('Admin.Categories.index');
+        $category = Category::where('parent_id' , '=' ,$category->parent_id)->get();
+       return view('Admin.Categories.index',compact('category'));
     }
 
     /**
@@ -46,22 +47,30 @@ class CategoryController extends Controller
     {
         //
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        //
+        $editCate = Category::find($category->id);
+        $cate = Category::where('parent_id' , '=' ,$category->parent_id)->paginate(10);
+        return view('Admin.Categories.edit',compact('editCate','cate'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        try {
+            $category->update($request->all());
+            return Redirect::route('category.index')->with('success','Cập nhật khóa cha thành công');
+        } catch (\Throwable $th) {
+            return Redirect::back()->with('error','Cập nhật khóa cha thất bại');
+        }
+
     }
 
     /**
@@ -69,6 +78,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $deleCate = Category::find($id)->delete();
+            return Redirect::route('category.index')->with('succses','Xóa danh mục cha thành công');
+        } catch (\Throwable $th) {
+            return Redirect::bach()->with('error','Xóa danh mục cha thất bại');
+        }
+
     }
 }

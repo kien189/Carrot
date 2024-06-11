@@ -23,48 +23,67 @@
                                     <div class="cr-cat-form">
                                         <h3>Thêm mới danh mục </h3>
 
-                                        <form aciton="{{ route('category.store') }}" method="POST">
+                                        <form action="{{ route('category.update', $editCate) }}" method="POST">
+                                            @method('PUT')
                                             @csrf
+                                            <input type="hidden" value="{{ $editCate->id }}">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>Tên danh mục</label>
                                                 <div class="col-12">
-                                                    <input id="text" name="name"
-                                                        class="form-control here slug-title" type="text"
+                                                    <input name="name" class="form-control here slug-title"
+                                                        type="text" id="CateName" value="{{ $editCate->name }}"
                                                         onkeyup="ChangeToSlug()">
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Slug</label>
+                                                <label>Đường dẫn</label>
                                                 <div class="col-12">
                                                     <input id="slug" name="slug" class="form-control here set-slug"
-                                                        type="text">
+                                                        type="text" id="slug" value="{{ $editCate->slug }}">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label>Sort Description</label>
+                                                <label>Mô tả ngắn</label>
                                                 <div class="col-12">
-                                                    <textarea id="sortdescription" name="sortdescription" cols="40" rows="2" class="form-control"></textarea>
+                                                    <textarea id="sortdescription" name="sortdescription" cols="40" rows="2" class="form-control">{{ $editCate->sortdescription }}</textarea>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label>Full Description</label>
+                                                <label>Mô tả</label>
                                                 <div class="col-12">
-                                                    <textarea id="fulldescription" name="description" cols="40" rows="4" class="form-control"></textarea>
+                                                    <textarea id="fulldescription" name="description" cols="40" rows="4" class="form-control">{{ $editCate->description }}</textarea>
                                                 </div>
                                             </div>
 
                                             {{-- <div class="form-group row">
-                                                <label>Product Tags <span>( Type and
-                                                        make comma to separate tags )</span></label>
                                                 <div class="col-12">
-                                                    <input type="text" class="form-control" id="group_tag"
-                                                        name="group_tag" value="" placeholder=""
-                                                        data-role="tagsinput">
+                                                    <div class="form-group">
+                                                        <label for="">Danh mục cha</label>
+                                                        <select class="form-control" name="parent_id" id="">
+                                                            <option value="">--Chọn danh mục cha--</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div> --}}
+                                            </div>
+                                            {{-- <label class="custom-control custom-checkbox me-4 p-2">
+                                                <div class="d-flex align-item-center">
+                                                    <input type="radio" name="status" id="" value="0"
+                                                        class="custom-control-input me-2"
+                                                        {{ $editCata->status == 0 ? 'checked' : '' }}>
+                                                    <span class="custom-control-indicator">Hiện</span>
+                                                </div>
+                                            </label>
+                                            <label class="custom-control custom-checkbox p-2">
+                                                <div class="d-flex align-item-center">
+                                                    <input type="radio" name="status" id="" value="1"
+                                                        class="custom-control-input me-2"
+                                                        {{ $editCata->status == 1 ? 'checked' : '' }}>
+                                                    <span class="custom-control-indicator">Ẩn</span>
+                                                </div>
+                                            </label> --}}
 
                                             <div class="row">
                                                 <div class="col-12 d-flex">
@@ -73,6 +92,7 @@
                                             </div>
 
                                         </form>
+
 
                                     </div>
                                 </div>
@@ -97,20 +117,17 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($category as $value)
+                                        @foreach ($cate as $value)
                                             <tr>
                                                 <td>{{ $value->name }}</td>
                                                 <td>
                                                     <span class="cr-sub-cat-list">
-                                                        <span class="cr-sub-cat-count"
-                                                            title="Total Sub Categories">{{ $value->children->count() }}</span>
-                                                        @foreach ($value->children as $item)
-                                                            <span class="cr-sub-cat-tag">{{ $item->name }}</span>
-                                                            {{-- <span class="cr-sub-cat-tag">Shirt</span>
-                                                            <span class="cr-sub-cat-tag">Dress</span>
-                                                            <span class="cr-sub-cat-tag">Jeans</span>
-                                                            <span class="cr-sub-cat-tag">Top</span> --}}
-                                                        @endforeach
+                                                        <span class="cr-sub-cat-count" title="Total Sub Categories">5</span>
+                                                        <span class="cr-sub-cat-tag">T-shirt</span>
+                                                        <span class="cr-sub-cat-tag">Shirt</span>
+                                                        <span class="cr-sub-cat-tag">Dress</span>
+                                                        <span class="cr-sub-cat-tag">Jeans</span>
+                                                        <span class="cr-sub-cat-tag">Top</span>
                                                     </span>
                                                 </td>
                                                 <td>28</td>
@@ -130,8 +147,8 @@
                                                                 href="{{ route('category.edit', $value->id) }}">Edit</a>
                                                             <form action="{{ route('category.destroy', $value->id) }}"
                                                                 method="post">
-                                                                @csrf
                                                                 @method('DELETE')
+                                                                @csrf
                                                                 <button class="dropdown-item" type="submit">Delete</button>
                                                             </form>
                                                         </div>
@@ -155,7 +172,7 @@
             var title, slug;
 
             //Lấy text từ thẻ input title
-            title = document.getElementById("text").value;
+            title = document.getElementById("CateName").value;
 
             //Đổi chữ hoa thành chữ thường
             slug = title.toLowerCase();

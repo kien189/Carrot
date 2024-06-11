@@ -1,6 +1,5 @@
 @extends('Admin.master')
 @section('main_admin')
-    <base href="/">
     <div class="cr-notify-bar-overlay"></div>
     <div class="cr-notify-bar">
         <div class="cr-bar-title">
@@ -297,219 +296,223 @@
             <!-- Page title & breadcrumb -->
             <div class="cr-page-title cr-page-title-2">
                 <div class="cr-breadcrumb">
-                    <h5>Add Product</h5>
+                    <h5>Danh mục con</h5>
                     <ul>
-                        <li><a href="index.html">Carrot</a></li>
-                        <li>Add Product</li>
+                        <li><a href="{{ route('admin.index') }}">Carrot</a></li>
+                        <li>Danh mục con</li>
                     </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="cr-card card-default">
-                        <div class="cr-card-content">
-                            <div class="row cr-product-uploads">
-                                <div class="col-lg-4 mb-991">
-                                    <div class="cr-vendor-img-upload">
-                                        <div class="cr-vendor-main-img">
-                                            <div class="avatar-upload">
-                                                <div class="avatar-edit">
-                                                    <input type='file' id="product_main" class="cr-image-upload" multiple
-                                                        accept=".png, .jpg, .jpeg">
-                                                    <label><i class="ri-pencil-line"></i></label>
-                                                </div>
-                                                <div class="avatar-preview cr-preview">
-                                                    <div class="imagePreview cr-div-preview">
-                                                        <img class="cr-image-preview" src="assets/img/product/preview.jpg"
-                                                            alt="edit">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="thumb-upload-set colo-md-12">
-                                                <div class="thumb-upload">
-                                                    <div class="thumb-edit">
-                                                        <input type='file' id="thumbUpload01" class="cr-image-upload" multiple
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="thumb-preview cr-preview">
-                                                        <div class="image-thumb-preview">
-                                                            <img class="image-thumb-preview cr-image-preview"
-                                                                src="assets/img/product/preview-2.jpg" alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-upload">
-                                                    <div class="thumb-edit">
-                                                        <input type='file' id="thumbUpload02" class="cr-image-upload"
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="thumb-preview cr-preview">
-                                                        <div class="image-thumb-preview">
-                                                            <img class="image-thumb-preview cr-image-preview"
-                                                                src="assets/img/product/preview-2.jpg" alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-upload">
-                                                    <div class="thumb-edit">
-                                                        <input type='file' id="thumbUpload03" class="cr-image-upload"
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="thumb-preview cr-preview">
-                                                        <div class="image-thumb-preview">
-                                                            <img class="image-thumb-preview cr-image-preview"
-                                                                src="assets/img/product/preview-2.jpg" alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-upload">
-                                                    <div class="thumb-edit">
-                                                        <input type='file' id="thumbUpload04" class="cr-image-upload"
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="thumb-preview cr-preview">
-                                                        <div class="image-thumb-preview">
-                                                            <img class="image-thumb-preview cr-image-preview"
-                                                                src="assets/img/product/preview-2.jpg" alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-upload">
-                                                    <div class="thumb-edit">
-                                                        <input type='file' id="thumbUpload05" class="cr-image-upload"
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="thumb-preview cr-preview">
-                                                        <div class="image-thumb-preview">
-                                                            <img class="image-thumb-preview cr-image-preview"
-                                                                src="assets/img/product/preview-2.jpg" alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-upload">
-                                                    <div class="thumb-edit">
-                                                        <input type='file' id="thumbUpload06" class="cr-image-upload"
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="thumb-preview cr-preview">
-                                                        <div class="image-thumb-preview">
-                                                            <img class="image-thumb-preview cr-image-preview"
-                                                                src="assets/img/product/preview-2.jpg" alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="cr-vendor-upload-detail">
-                                        <form class="row g-3">
-                                            <div class="col-md-6">
-                                                <label for="inputEmail4" class="form-label">Product name</label>
-                                                <input type="text" class="form-control slug-title" id="inputEmail4">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Select Categories</label>
-                                                <select class="form-control form-select">
-                                                    <optgroup label="Fashion">
-                                                        <option value="t-shirt">T-shirt</option>
-                                                        <option value="dress">Dress</option>
-                                                    </optgroup>
-                                                    <optgroup label="Furniture">
-                                                        <option value="table">Table</option>
-                                                        <option value="sofa">Sofa</option>
-                                                    </optgroup>
-                                                    <optgroup label="Electronic">
-                                                        <option value="phone">I Phone</option>
-                                                        <option value="laptop">Laptop</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="slug" class="col-12 col-form-label">Slug</label>
+            <div class="row cr-category">
+                <div class="col-xl-4 col-lg-12">
+                    <div class="team-sticky-bar">
+                        <div class="col-md-12">
+                            <div class="cr-cat-list cr-card card-default mb-24px">
+                                <div class="cr-card-content">
+                                    <div class="cr-cat-form">
+                                        <h3>Thêm danh mục con</h3>
+                                        <form action="{{ route('subCategory.update',$editSubCate->id) }}" method="POST">
+                                            @method('PUT')
+                                            @csrf
+                                            <input type="hidden" value="{{ $editSubCate->id }}">
+                                            <div class="form-group">
+                                                <label>Tên danh mục </label>
                                                 <div class="col-12">
-                                                    <input id="slug" name="slug"
+                                                    <input id="CateName" name="name"
+                                                        class="form-control here slug-title" type="text" value="{{ $editSubCate->name }}"
+                                                        onkeyup="ChangeToSlug()">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Đường dẫn</label>
+                                                <div class="col-12">
+                                                    <input id="slug" name="slug" value="{{ $editSubCate->slug }}"
                                                         class="form-control here set-slug" type="text">
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <label class="form-label">Sort Description</label>
-                                                <textarea class="form-control" rows="2"></textarea>
+
+                                            <div class="form-group row">
+                                                <label>Mô tả ngắn</label>
+                                                <div class="col-12">
+                                                    <textarea id="sortdescription" name="sortdescription" cols="40" rows="2" class="form-control">{{ $editSubCate->sortdescription }}</textarea>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 mb-25">
-                                                <label class="form-label color-label">Colors</label>
-                                                <input type="color" class="form-control form-control-color"
-                                                    id="exampleColorInput1" value="#ff6191" title="Choose your color">
-                                                <input type="color" class="form-control form-control-color"
-                                                    id="exampleColorInput2" value="#33317d" title="Choose your color">
-                                                <input type="color" class="form-control form-control-color"
-                                                    id="exampleColorInput3" value="#56d4b7" title="Choose your color">
-                                                <input type="color" class="form-control form-control-color"
-                                                    id="exampleColorInput4" value="#009688" title="Choose your color">
+
+                                            <div class="form-group row">
+                                                <label>Mô tả</label>
+                                                <div class="col-12">
+                                                    <textarea id="fulldescription" name="description" cols="40" rows="4" class="form-control">{{ $editSubCate->description }}</textarea>
+                                                </div>
                                             </div>
-                                            <div class="col-md-8 mb-25">
-                                                <label class="form-label">Size</label>
-                                                <div class="form-checkbox-box">
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" name="size1" value="size">
-                                                        <label>S</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" name="size1" value="size">
-                                                        <label>M</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" name="size1" value="size">
-                                                        <label>L</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" name="size1" value="size">
-                                                        <label>XL</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input type="checkbox" name="size1" value="size">
-                                                        <label>XXL</label>
+
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="">Danh mục cha</label>
+                                                        <select class="form-control" name="parent_id" id="parent_id">
+                                                            <option value="">--Chọn danh mục cha--</option>
+                                                            @foreach ($Cates as $value)
+                                                                <option value="{{ $value->id }}"{{ $editSubCate->parent_id == $value->id ? 'selected' : '' }}>{{ $value->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Price <span>( In USD
-                                                        )</span></label>
-                                                <input type="number" class="form-control" id="price1">
+                                            {{-- <label class="custom-control custom-checkbox me-4 p-2 ">
+                                                <div class="d-flex align-item-center">
+                                                    <input type="radio" id="status" name="status" value="0"
+                                                        class="custom-control-input me-2">
+                                                    <span class="custom-control-indicator">Hiện </span>
+                                                </div>
+                                            </label>
+                                            <label class="custom-control custom-checkbox p-2">
+                                                <div class="d-flex align-item-center">
+                                                    <input type="radio" name="status" id="status" value="1"
+                                                        class="custom-control-input me-2">
+                                                    <span class="custom-control-indicator">Ẩn</span>
+                                                </div>
+
+                                            </label> --}}
+                                            <div class="row">
+                                                <div class="col-12 d-flex">
+                                                    <button type="submit" id="btnAddSubCategories"
+                                                        class="cr-btn-primary">Submit</button>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Quantity</label>
-                                                <input type="number" class="form-control" id="quantity1">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="form-label">Ful Detail</label>
-                                                <textarea class="form-control" rows="4"></textarea>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="form-label">Product Tags <span>( Type and
-                                                        make comma to separate tags )</span></label>
-                                                <input type="text" class="form-control" id="group_tag"
-                                                    name="group_tag" value="" placeholder=""
-                                                    data-role="tagsinput">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <button type="submit" class="btn cr-btn-primary">Submit</button>
-                                            </div>
+
                                         </form>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-8 col-lg-12">
+                    <div class="cr-cat-list cr-card card-default">
+                        <div class="cr-card-content ">
+                            <div class="table-responsive tbl-800">
+                                <table id="cat_data_table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Main Categories</th>
+                                            <th>Product</th>
+                                            <th>Status</th>
+                                            <th>Trending</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($subCate as $value)
+                                            <tr>
+                                                <td>{{ $value->name }}</td>
+                                                <td>
+                                                    <span class="cr-sub-cat-list">
+                                                        @if ($value->parent)
+                                                            <span class="cr-sub-cat-tag">{{ $value->parent->name }}</span>
+                                                        @else
+                                                            <span class="cr-sub-cat-tag">No Parent</span>
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>28</td>
+                                                <td class="active">ACTIVE</td>
+                                                <td><span class="badge badge-success">Top</span></td>
+                                                <td>
+                                                    <div>
+                                                        <button type="button"
+                                                            class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false" data-display="static">
+                                                            <span class=""><i class="fa-solid fa-gear"></i></span>
+                                                        </button>
+
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('subCategory.edit', $value->id) }}">Edit</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('subCategory.destroy', $value->id) }}">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{-- <div id="pagination" class="d-flex justify-content-between">
+
+                                <div class="">
+                                    <!-- Hiển thị thông tin số lượng mục -->
+                                    <p class="sm ">Hiển thị {{ $subCate->firstItem() }} đến {{ $subCate->lastItem() }}
+                                        của {{ $subCate->total() }}
+                                        mục</p>
+                                </div>
+                                <nav aria-label="Page navigation" class="float-end">
+                                    <ul class="pagination">
+                                        <li class="page-item {{ $subCate->currentPage() == 1 ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $subCate->previousPageUrl() }}" tabindex="-1"
+                                                aria-disabled="true">Previous</a>
+                                        </li>
+                                        @for ($i = 1; $i <= $subCate->lastPage(); $i++)
+                                            <li class="page-item {{ $subCate->currentPage() == $i ? 'active' : '' }}">
+                                                <a class="page-link"
+                                                    href="{{ $subCate->url($i) }}">{{ $i }}</a>
+                                            </li>
+                                        @endfor
+                                        <li
+                                            class="page-item {{ $subCate->currentPage() == $subCate->lastPage() ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $subCate->nextPageUrl() }}">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div> --}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        function ChangeToSlug() {
+            var title, slug;
+
+            //Lấy text từ thẻ input title
+            title = document.getElementById("CateName").value;
+
+            //Đổi chữ hoa thành chữ thường
+            slug = title.toLowerCase();
+
+            //Đổi ký tự có dấu thành không dấu
+            slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
+            slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
+            slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
+            slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
+            slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
+            slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
+            slug = slug.replace(/đ/gi, 'd');
+            //Xóa các ký tự đặt biệt
+            slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '-');
+            //Đổi khoảng trắng thành ký tự gạch ngang
+            slug = slug.replace(/ /gi, "-");
+            //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+            //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+            slug = slug.replace(/\-\-\-\-\-/gi, '-');
+            slug = slug.replace(/\-\-\-\-/gi, '-');
+            slug = slug.replace(/\-\-\-/gi, '-');
+            slug = slug.replace(/\-\-/gi, '-');
+            //Xóa các ký tự gạch ngang ở đầu và cuối
+            slug = '@' + slug + '@';
+            slug = slug.replace(/\@\-|\-\@|\@/gi, '');
+            //In slug ra textbox có id “slug”
+            document.getElementById('slug').value = slug;
+        }
+    </script>
 @endsection
