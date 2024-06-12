@@ -16,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('Admin.Products.add');
+        $products = Product::orderBy('id', 'asc')->get();
+        return view('Admin.Products.index', compact('products'));
     }
 
     /**
@@ -33,13 +34,13 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $fileName = $req->image->getClientOriginalName();
-        $req->image->storeAs('public/images', $fileName);
-        $req->merge(['images' => $fileName]);
+        $fileName = $req->photo->getClientOriginalName();
+        $req->photo->storeAs('public/images', $fileName);
+        $req->merge(['image' => $fileName]);
         try {
             $products = Product::create($req->all());
-            if ($products && $req->hasFile("photo")) {
-                foreach ($req->photo as $key => $value) {
+            if ($products && $req->hasFile("photos")) {
+                foreach ($req->photos as $key => $value) {
                     $fileNames = $value->getClientOriginalName();
                     $value->storeAs("public/images", $fileNames);
                     ProductImages::create([
@@ -53,7 +54,7 @@ class ProductController extends Controller
                 $variants = [
                     "size" => $variantData['size'],
                     "price" => $variantData['price'],
-                    "sale_price" => $variantData['sale_price']  ,
+                    "sale_price" => $variantData['sale_price'],
                     "quantity" => $variantData['quantity']
                 ];
                 $products->variants()->create($variants);
@@ -77,9 +78,13 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(String $id)
     {
-        //
+        $cate = Category::all();
+        $product = Product::find($id);
+        $image = ProductImages::where('product_id', $id)->get();
+        // dd($image);
+        return view("Admin.Products.edit", compact('cate', 'product','image'));
     }
 
     /**

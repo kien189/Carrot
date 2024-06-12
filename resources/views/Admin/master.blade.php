@@ -273,9 +273,9 @@
                                 <i class="fa-brands fa-product-hunt"></i><span class="condense">Sản phẩm<i
                                         class="drop-arrow ri-arrow-down-s-line"></i></span></a>
                             <ul class="cr-sb-drop condense">
-                                <li><a href="" class="cr-page-link drop"><i
+                                <li><a href="{{ route('product.index') }}" class="cr-page-link drop"><i
                                             class="ri-checkbox-blank-circle-line"></i>Sản phẩm</a></li>
-                                <li><a href="" class="cr-page-link drop"><i
+                                <li><a href="{{ route('variants.index') }}" class="cr-page-link drop"><i
                                             class="ri-checkbox-blank-circle-line"></i>Biến thể</a></li>
                             </ul>
                         </li>

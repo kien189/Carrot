@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Fe\HomeController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\VariantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +37,7 @@ Route::post('/forgotPassword', [HomeController::class, 'postForgotPassword']);
 Route::get('/resetPassword', [HomeController::class, 'resetPassword'])->name('resetPassword');
 Route::post('/resetPassword', [HomeController::class, 'postResetPassword']);
 // Admin
-Route::group(['prefix'=>'admin','middleware'=>'admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::resources([
@@ -48,9 +49,11 @@ Route::group(['prefix'=>'admin','middleware'=>'admin'], function(){
         // 'blog' => BlogController::class,
         'shop' => ProfileController::class,
     ]);;
+    Route::get('/variant', [VariantController::class, 'index'])->name('variants.index');
+    Route::get('/show/{id}', [VariantController::class, 'show'])->name('variants.show');
 });
 Route::prefix('admin')->group(function () {
-    Route::get('/login',[AdminController::class,'login'])->name('admin.login');
-    Route::post('/login',[AdminController::class,'postLogin','postLogin']);
-    Route::get('/logout',[AdminController::class,'logout'])->name('admin.logout');
+    Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::post('/login', [AdminController::class, 'postLogin', 'postLogin']);
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });

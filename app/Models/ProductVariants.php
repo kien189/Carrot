@@ -12,6 +12,6 @@ class ProductVariants extends Model
     protected $fillable =['price','sale_price','quantity','size','product_id'];
 
     public function product(){
-        return $this->belongsTo(Product::class,'product_id');
+        return $this->belongsTo(Product::class,'product_id','id');
     }
 }
