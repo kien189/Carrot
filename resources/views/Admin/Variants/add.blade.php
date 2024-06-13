@@ -308,119 +308,13 @@
                 <div class="col-md-12">
                     <div class="cr-card card-default">
                         <div class="cr-card-content">
-                            <form action="{{ route('product.update',$product) }}" method="POST" enctype="multipart/form-data">
-                                @method('PUT')
+                            <form action="{{ route('variants.add',$variants) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row cr-product-uploads">
-                                    <div class="col-lg-4 mb-991">
-                                        <div class="cr-vendor-img-upload">
-                                            <div class="cr-vendor-main-img">
 
-                                                <div class="avatar-upload">
-                                                    <div class="avatar-edit">
-                                                        <input type='file' id="product_main" class="cr-image-upload"
-                                                            multiple accept=".png, .jpg, .jpeg" name="photo">
-                                                        <label><i class="ri-pencil-line"></i></label>
-                                                    </div>
-                                                    <div class="avatar-preview cr-preview">
-                                                        <div class="imagePreview cr-div-preview">
-                                                            <img class="cr-image-preview"
-                                                                src="{{ asset('storage/images/' . $product->image) }}"
-                                                                alt="edit">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-upload-set colo-md-12">
-                                                    {{-- <div class="thumb-upload">
-                                                        <div class="thumb-edit">
-                                                            <input type='file' id="thumbUpload01"
-                                                                class="cr-image-upload" multiple name="photos[]"
-                                                                accept=".png, .jpg, .jpeg">
-                                                            <label><i class="ri-pencil-line"></i></label>
-                                                        </div>
-                                                        <div class="thumb-preview cr-preview">
-                                                            <div class="image-thumb-preview">
-                                                                <img class="image-thumb-preview cr-image-preview"
-                                                                    src="{{ asset('assets_ad') }}/img/product/preview-2.jpg"
-                                                                    alt="edit">
-                                                            </div>
-                                                        </div>
-                                                    </div> --}}
-                                                    @foreach ($image as $item)
-                                                        <div class="thumb-upload">
-                                                            <div class="thumb-edit">
-                                                                <input type="hidden" name="images_ids[]" value="{{ $item->id }}">
-                                                                <input type='file' id="thumbUpload{{ $item->id }}"
-                                                                    class="cr-image-upload" accept=".png, .jpg, .jpeg"
-                                                                    name="photos[{{ $item->id }}]" multiple>
-                                                                <label for="thumbUpload{{ $item->id }}"><i class="ri-pencil-line"></i></label>
-                                                            </div>
-                                                            <div class="thumb-preview cr-preview">
-                                                                <div class="image-thumb-preview">
-                                                                    <img class="image-thumb-preview cr-image-preview"
-                                                                        src="{{ asset('storage/images/' . $item->image) }}"
-                                                                        alt="edit">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-lg-8">
-                                        <div class="cr-vendor-upload-detail ">
-                                            <div class="row g-3">
-                                                <div class="col-md-6">
-                                                    <label for="inputEmail4" class="form-label">Product name</label>
-                                                    <input type="text" class="form-control slug-title" name="name"
-                                                        onkeyup="ChangeToSlug()" value="{{ $product->name }}"
-                                                        id="NamePro">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Select Categories</label>
-                                                    <select class="form-control form-select " name="category_id">
-                                                        @foreach ($cate as $value)
-                                                            <optgroup label="{{ $value->name }}">
-                                                                @foreach ($value->children as $item)
-                                                                    <option
-                                                                        value="{{ $item->id }}"{{ $product->category_id == $item->id ? 'selected' : '' }}>
-                                                                        {{ $item->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </optgroup>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="slug" class="col-12 col-form-label">Slug</label>
-                                                <div class="col-12">
-                                                    <input id="slug" name="slug" value="{{ $product->slug }}"
-                                                        class="form-control here set-slug" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="form-label">Sort Description</label>
-                                                <textarea class="form-control"  name="sortdescription" rows="4">{{ $product->sortdescription }}</textarea>
-                                            </div>
-
-                                            {{-- <div class="col-md-4 mb-25">
-                                                    <label class="form-label color-label">Colors</label>
-                                                    <input type="color" class="form-control form-control-color"
-                                                        id="exampleColorInput1" value="#ff6191"
-                                                        title="Choose your color">
-                                                    <input type="color" class="form-control form-control-color"
-                                                        id="exampleColorInput2" value="#33317d"
-                                                        title="Choose your color">
-                                                    <input type="color" class="form-control form-control-color"
-                                                        id="exampleColorInput3" value="#56d4b7"
-                                                        title="Choose your color">
-                                                    <input type="color" class="form-control form-control-color"
-                                                        id="exampleColorInput4" value="#009688"
-                                                        title="Choose your color">
-                                                </div> --}}
-                                            {{-- <div id="variants" class=" row g-3">
+                                            <input type="text" name="id" value="{{ $variants->id }}">
+                                            <div id="variants" class=" row g-3">
                                                 <div class="col-md-12 mb-25">
                                                     <label class="form-label">Size</label>
                                                     <div class="form-checkbox-box">
@@ -465,20 +359,18 @@
                                                         name="variants[0][sale_price]" id="sale_price1">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label">Quantity</label>
-                                                    <input type="number" class="form-control" id="quantity1"
-                                                        name="variants[0][quantity]" id="price1">
+                                                    <label class="form-label">Sale Price <span>( In VND
+                                                            )</span></label>
+                                                    <input type="number" class="form-control"
+                                                        name="variants[0][quantity]" id="quantity">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 pt-4">
                                                 <button type="button" class="btn cr-btn-primary"
                                                     onclick="addVariant()">Add
                                                     Variant</button>
-                                            </div> --}}
-                                            <div class="col-md-12">
-                                                <label class="form-label">Ful Detail</label>
-                                                <textarea class="form-control" id="editor1" name="description" rows="4">{{ $product->description }}</textarea>
                                             </div>
+
                                             {{-- <div class="col-md-12">
                                                 <label class="form-label">Product Tags <span>( Type and
                                                         make comma to separate tags )</span></label>
@@ -508,7 +400,7 @@
         function addVariant() {
             const variantsDiv = document.getElementById('variants');
             const variantDiv = document.createElement('div');
-            variantDiv.innerHTML = `
+            variantDiv.innerHTML = `        <p]>Biến thể: ${variantIndex}</p>
                                           <div id="variants" class=" row g-3">
                                             <div class="col-md-12 mb-25">
                                                 <label class="form-label">Size</label>
@@ -593,18 +485,5 @@
             //In slug ra textbox có id “slug”
             document.getElementById('slug').value = slug;
         }
-    </script>
-    {{-- {{-- <script src="https://cdn.ckeditor.com/ckeditor5/[version.number]/[distribution]/ckeditor.js"></script> --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .then(editor => {
-                console.log(editor);
-            })
-            .catch(error => {
-                console.error(error);
-            });
     </script>
 @endsection

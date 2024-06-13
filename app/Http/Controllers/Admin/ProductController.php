@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -84,15 +85,41 @@ class ProductController extends Controller
         $product = Product::find($id);
         $image = ProductImages::where('product_id', $id)->get();
         // dd($image);
-        return view("Admin.Products.edit", compact('cate', 'product','image'));
+        return view("Admin.Products.edit", compact('cate', 'product', 'image'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $req, Product $product)
     {
-        //
+        // dd($req->all());
+        $product->update($req->all());
+
+        if ($req->hasFile('photo')) {
+            if ($product->image) {
+                Storage::delete('public/images/' . $product->image);
+            }
+
+            $fileName = $req->photo->getClientOriginalName();
+            $req->photo->storeAs('public/images', $fileName);
+            $product->image = $fileName;
+            $product->save();
+        }
+
+        if ($req->hasFile('photos')) {
+            foreach ($req->photos as  $imageId => $photo) {
+                $imageId = ProductImages::find($imageId);
+                if ($imageId->id) {
+                    Storage::delete('public/images/' . $imageId->image);
+                }
+                $fileNames = $photo->getClientOriginalName();
+                $photo->storeAs('public/images', $fileNames);
+                $imageId->update([
+                    "image" => $fileNames
+                ]);
+            }
+        }
     }
 
     /**
@@ -101,5 +128,18 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function destroyImage(Request $req, ProductImages $images)
+    {
+        $image = $images->image;
+        $image->delete();
+        if ($req->hasFile('photos')) {
+            foreach ($req->photos as $photo) {
+                $fileName = $photo->getClientOriginalName();
+                $photo->storeAs('public/images', $fileName);
+            }
+            Storage::delete('public/images/' . $image);
+        }
     }
 }

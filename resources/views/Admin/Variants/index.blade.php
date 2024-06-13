@@ -33,7 +33,7 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($products as $value)
+                                        @foreach ($variants as $value)
                                             <tr>
                                                 <td>{{ $loop->index + 1}}</td>
                                                 <td><img class="tbl-thumb"
@@ -58,8 +58,8 @@
                                                             <span class=""><i class="ri-settings-3-line"></i></span>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="">Edit</a>
-                                                            <a class="dropdown-item" href="#">Delete</a>
+                                                            <a class="dropdown-item" href="{{ route('variants.add',$value->id) }}">Add</a>
+                                                            {{-- <a class="dropdown-item" href="#">Delete</a> --}}
                                                             <a class="dropdown-item"
                                                                 href="{{ route('variants.show', $value->id) }}">View</a>
                                                         </div>

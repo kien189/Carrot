@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Fe\HomeController;
 use App\Http\Controllers\Admin\SubCategoryController;
@@ -45,12 +46,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         'category' => CategoryController::class,
         'subCategory' => SubCategoryController::class,
         'product' => ProductController::class,
-        // 'productVariant' => ProductVariantController::class,
+        'variants' => ProductVariantController::class,
         // 'blog' => BlogController::class,
         'shop' => ProfileController::class,
     ]);;
-    Route::get('/variant', [VariantController::class, 'index'])->name('variants.index');
-    Route::get('/show/{id}', [VariantController::class, 'show'])->name('variants.show');
+    Route::get('/creat/{product}', [ProductVariantController::class, 'add'])->name('variants.add');
+    Route::post('/creat/{product}', [ProductVariantController::class, 'postAdd']);
+    // Route::get('/variant/show/{id}', [VariantController::class, 'show'])->name('variants.show');
+    // Route::get('edit/{$id}',[VariantController::class,'edit'])->name('variants.edit');
 });
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminController::class, 'login'])->name('admin.login');

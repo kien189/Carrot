@@ -36,9 +36,9 @@
 <body>
     <main class="wrapper sb-default ecom">
         <!-- Loader -->
-        {{-- <div id="cr-overlay">
+        <div id="cr-overlay">
             <div class="loader"></div>
-        </div> --}}
+        </div>
 
         <!-- Header -->
         <header class="cr-header">

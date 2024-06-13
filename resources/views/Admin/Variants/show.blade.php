@@ -39,7 +39,7 @@
                                                 <td class="tbl-thumb">{{ $loop->index + 1 }}
                                                 </td>
                                                 <td>{{ number_format($value->price) }}đ</td>
-                                                <td>{{ number_format($value->sale_price) }}</td>
+                                                <td>{{ number_format($value->sale_price) }}đ </td>
                                                 <td>{{ $value->size }}</td>
                                                 <td>{{ $value->quantity }}</td>
                                                 @if ($value->quantity > 5)
@@ -57,10 +57,14 @@
                                                             <span class=""><i class="ri-settings-3-line"></i></span>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="">Edit</a>
-                                                            <a class="dropdown-item" href="#">Delete</a>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('variants.show', $value->id) }}">View</a>
+                                                                href="{{ route('variants.add', $value->id) }}">Edit</a>
+                                                            <form action="{{ route('variants.destroy', $value->id) }}"
+                                                                method="post">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button class="dropdown-item" type="submit">Delete</button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </td>
