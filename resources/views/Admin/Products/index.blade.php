@@ -19,7 +19,8 @@
                     <div class="cr-card card-default product-list">
                         <div class="cr-card-content ">
                             <div class="table-responsive">
-                                <table id="product_list" class="table" style="width:100%">
+                                <a class="btn btn-light " href="{{ route('product.create') }}">+ Add new product</a>
+                                <table id="product_list" class="table pt-4" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Product</th>
@@ -38,7 +39,7 @@
                                             <td><img class="tbl-thumb" src="{{ asset('storage/images/'.$value->image) }}" alt="Product Image" >
                                             </td>
                                             <td>{{ $value->name }}</td>
-                                            <td class="text-center">{{ number_format($value->variants()->first()->price) }}đ</td>
+                                            <td class="text-center">0</td>
                                             <td>5421</td>
                                             <td><span class="active">active</span></td>
                                             <td>{{ $value->created_at->format('d-m-Y') }}</td>
@@ -51,8 +52,9 @@
                                                         <span class=""><i class="ri-settings-3-line"></i></span>
                                                     </button>
                                                     <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="{{ route('product.create') }}" >Add</a>
                                                         <a class="dropdown-item" href="{{ route('product.edit',$value->id) }}">Edit</a>
-                                                        <a class="dropdown-item" href="#">Delete</a>
+                                                        <a class="dropdown-item" >Delete</a>
                                                     </div>
                                                 </div>
                                             </td>

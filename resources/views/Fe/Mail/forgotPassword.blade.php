@@ -4,9 +4,7 @@
         voluptates maxime ut asperiores accusamus dolorum voluptate ea pariatur natus molestiae alias dolor ducimus?
         Accusamus.</p>
     <p>
-        <a href="{{ route('resetPassword', $token) }}"
-            style="display: inline-block;padding: 7px 25px; color: #fff;background: darkblue">Nhấn vào đây để lấy lại mật
-            khẩu mới !</a>
+        <a href="{{ route('resetPassword', ['token' => $token]) }}">Nhấn vào đây để reset mật khẩu</a>
     </p>
 
 </div>

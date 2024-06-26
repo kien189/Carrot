@@ -1,7 +1,7 @@
 @extends('Fe.layout.master')
 @section('main_fe')
-     <!-- Breadcrumb -->
-     <section class="section-breadcrumb">
+    <!-- Breadcrumb -->
+    <section class="section-breadcrumb">
         <div class="cr-breadcrumb-image">
             <div class="container">
                 <div class="row">
@@ -35,46 +35,33 @@
             <div class="row">
                 <div class="col-lg-3 col-12 md-30" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
                     <div class="cr-shop-sideview">
-                        <div class="cr-serch-box">
-                            <form class="cr-search d-flex">
-                                <input class="search-input form-control" type="text" placeholder="Search here...">
-                                <a href="" class="btn btn-success ">
-                                    <i class="ri-search-line "></i>
-                                </a>
-                            </form>
-                        </div>
-                        <hr>
+
                         <div class="cr-shop-categories">
                             <h4 class="cr-shop-sub-title">Category</h4>
                             <div class="cr-checkbox">
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="drinks">
-                                    <label for="drinks">Juice & Drinks</label>
-                                    <span>[20]</span>
-                                </div>
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="drinks1">
-                                    <label for="drinks1">Dairy & Milk</label>
-                                    <span>[54]</span>
-                                </div>
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="drinks2">
-                                    <label for="drinks2">Snack & Spice</label>
-                                    <span>[64]</span>
-                                </div>
+                                @foreach ($categories as $item)
+                                    <div class="checkbox-group" data-id="{{ $item->id }}">
+                                        <input type="checkbox" id="category_{{ $item->id }}" class="category"
+                                            name="categories[]" value="{{ $item->id }}">
+                                        <label for="category_{{ $item->id }}">{{ $item->name }}</label>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="cr-shop-price">
                             <h4 class="cr-shop-sub-title">Price</h4>
                             <div class="price-range-slider">
-                                <div id="slider-range" class="range-bar"></div>
+                                <div id="slider-ranges" class="range-bar"></div>
                                 <p class="range-value">
                                     <label>Price :</label>
-                                    <input type="text" id="amount" placeholder="'" readonly>
+                                    <input type="text" id="amounts" placeholder="'" readonly>
                                 </p>
-                                <button type="button" class="cr-button">Filter</button>
+                                <input type="hidden" name="min_price" id="min_price">
+                                <input type="hidden" name="max_price" id="max_price">
+                                <button type="submit" id="filter" class="cr-button">Filter</button>
                             </div>
                         </div>
+
                         <div class="cr-shop-color">
                             <h4 class="cr-shop-sub-title">Colors</h4>
                             <div class="cr-checkbox">
@@ -143,572 +130,73 @@
                                     <span>We found 29 items for you!</span>
                                 </div>
                                 <div class="cr-select">
-                                    <label>Sort By :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Featured</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                        <option value="4">Four</option>
-                                        <option value="5">Five</option>
+                                    <label for="sortBy">Sort By :</label>
+                                    <select class="form-select" id="sortBy" aria-label="Default select example">
+                                        <option value="default" selected>Featured</option>
+                                        <option value="name_asc">Name: A-Z</option>
+                                        <option value="name_desc">Name: Z-A</option>
+                                        <option value="price_asc">Price: Low to High</option>
+                                        <option value="price_desc">Price: High to Low</option>
+                                        <option value="best_selling">Best Selling</option>
                                     </select>
+                                </div>
+
+                                <div id="item-container">
+                                    <!-- Dữ liệu sản phẩm sẽ được hiển thị tại đây -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row col-100 mb-minus-24">
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/1.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Vegetables</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
+                    <div id="filtered-products" class="row col-100 mb-minus-24">
+                        @foreach ($shop as $value)
+                            <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
+                                <div class="cr-product-card">
+                                    <div class="cr-product-image">
+                                        <div class="cr-image-inner zoom-image-hover">
+                                            <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
+                                        <div class="cr-side-view">
+                                            <a href="javascript:void(0)" class="wishlist">
+                                                <i class="ri-heart-line"></i>
+                                            </a>
+                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
+                                                role="button">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                        </div>
+                                        <a class="cr-shopping-bag" href="javascript:void(0)">
+                                            <i class="ri-shopping-bag-line"></i>
+                                        </a>
                                     </div>
-                                    <a href="product-left-sidebar.html" class="title">Fresh organic villa farm lomon
-                                        500gm pack</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
+                                    <div class="cr-product-details">
+                                        <div class="cr-brand">
+                                            <a href="shop-left-sidebar.html">{{ $value->category->name }}</a>
+                                            <div class="cr-star">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <p>(5.0)</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                            class="title">{{ $value->name }}</a>
+                                        <p class="text">{{ $value->sortdescription }}.</p>
+                                        <ul class="list">
+                                            <li><label>Brand :</label>ESTA BETTERU CO</li>
+                                            <li><label>Diet Type :</label>Vegetarian</li>
+                                            <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
+                                        </ul>
+                                        <p class="cr-price"><span
+                                                class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                            <span
+                                                class="old-price">{{ number_format($value->variants->first()->price) }}đ</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/9.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut pack
-                                        200gm</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$145</span> <span
-                                            class="old-price">$150</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/2.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Fruits</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Fresh organic apple 1kg simla
-                                        marming</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/3.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Fruits</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(3.2)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Organic fresh venila farm
-                                        watermelon 5kg</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$50.30</span> <span
-                                            class="old-price">$72.60</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/10.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet crunchy nut mix 250gm
-                                        pack</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/17.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Bakery</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Delicious white baked fresh bread
-                                        and toast</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$20</span> <span
-                                            class="old-price">$22.10</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/13.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Bakery</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Delicious white baked fresh bread
-                                        and toast</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$20</span> <span
-                                            class="old-price">$22.10</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/11.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Bakery</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Delicious white baked fresh bread
-                                        and toast</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$20</span> <span
-                                            class="old-price">$22.10</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/12.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Bakery</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Delicious white baked fresh bread
-                                        and toast</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$20</span> <span
-                                            class="old-price">$22.10</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/1.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Vegetables</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Fresh organic villa farm lomon
-                                        500gm pack</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/9.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut pack
-                                        200gm</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$145</span> <span
-                                            class="old-price">$150</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-6 cr-product-box mb-24">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/2.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Fruits</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Fresh organic apple 1kg simla
-                                        marming</a>
-                                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                        eiusmod tempor incididunt
-                                        ut labore lacus vel facilisis.</p>
-                                    <ul class="list">
-                                        <li><label>Brand :</label>ESTA BETTERU CO</li>
-                                        <li><label>Diet Type :</label>Vegetarian</li>
-                                        <li><label>Speciality :</label>Gluten Free, Sugar Free</li>
-                                    </ul>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <nav aria-label="..." class="cr-pagination">
                         <ul class="pagination">
@@ -729,4 +217,112 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var categories = document.querySelectorAll('.category');
+            var minPrice = document.querySelector('#min_price');
+            var maxPrice = document.querySelector('#max_price');
+            var btnFilter = document.querySelector('#filter');
+            categories.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+
+                    var categoryId = checkbox.closest('.checkbox-group').getAttribute('data-id');
+                    // console.log('categoryId:', categoryId);
+
+                    var selectedCategories = [];
+
+                    document.querySelectorAll('.category:checked').forEach(function(checked) {
+                        selectedCategories.push(checked.value);
+                    });
+
+                    // console.log('selectedCategories:', selectedCategories);
+
+                    axios.post('{{ route('filterByCategory', ['id' => ':categoryId']) }}'.replace(
+                            ':categoryId', categoryId), {
+                            categories: selectedCategories
+                        })
+                        .then(response => {
+                            // console.log(response.data);
+                            updateProductDisplay(response.data.products, response.data
+                                .image_path);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+            });
+            btnFilter.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                var minVal = minPrice.value.trim();
+                var maxVal = maxPrice.value.trim();
+
+                axios.get('{{ route('filter') }}', {
+                        params: {
+                            min_price: minVal,
+                            max_price: maxVal
+                        }
+                    })
+                    .then(function(response) {
+                        updateProductDisplay(response.data.products, response.data.image_path);
+                    })
+                    .catch(function(error) {
+                        console.error('Error: ', error);
+                    });
+            });
+
+
+        });
+    </script>
+    <script>
+         const selectElement = document.getElementById('sortBy');
+            // console.log(selectElement);
+            selectElement.addEventListener('change', function() {
+                const sort = this.value;
+                // console.log(sort);
+                axios.get('{{ route('filter_name') }}', {
+                        params: {
+                            sort: sort
+                        }
+                    })
+                    .then(function(response) {
+                        // console.log(response.data);
+                        updateProductDisplay(response.data.products, response.data.image_path);
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+            });
+    </script>
+    <script>
+        $(function() {
+            $("#slider-ranges").slider({
+                range: true,
+                min: 0,
+                max: 1000000, // Giới hạn tối đa là 5 triệu VNĐ
+                values: [0, 1000000], // Slider ban đầu từ 0 đến 5 triệu VNĐ
+                slide: function(event, ui) {
+                    // Format và hiển thị giá trị
+                    $("#amounts").val(formatCurrency(ui.values[0]) + " - " + formatCurrency(ui.values[
+                        1]));
+                    $("#min_price").val(ui.values[0]);
+                    $("#max_price").val(ui.values[1]);
+                }
+            });
+            // Hiển thị giá trị ban đầu của slider
+            $("#amounts").val(formatCurrency($("#slider-ranges").slider("values", 0)) +
+                " - " + formatCurrency($("#slider-ranges").slider("values", 1)));
+
+            function formatCurrency(amount) {
+                // Hàm định dạng số tiền sang đơn vị VNĐ
+                return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(amount);
+            }
+        });
+    </script>
 @endsection

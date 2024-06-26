@@ -308,7 +308,8 @@
                 <div class="col-md-12">
                     <div class="cr-card card-default">
                         <div class="cr-card-content">
-                            <form action="{{ route('product.update',$product) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('product.update', $product) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
                                 <div class="row cr-product-uploads">
@@ -349,11 +350,13 @@
                                                     @foreach ($image as $item)
                                                         <div class="thumb-upload">
                                                             <div class="thumb-edit">
-                                                                <input type="hidden" name="images_ids[]" value="{{ $item->id }}">
+                                                                <input type="hidden" name="images_ids[]"
+                                                                    value="{{ $item->id }}">
                                                                 <input type='file' id="thumbUpload{{ $item->id }}"
                                                                     class="cr-image-upload" accept=".png, .jpg, .jpeg"
                                                                     name="photos[{{ $item->id }}]" multiple>
-                                                                <label for="thumbUpload{{ $item->id }}"><i class="ri-pencil-line"></i></label>
+                                                                <label for="thumbUpload{{ $item->id }}"><i
+                                                                        class="ri-pencil-line"></i></label>
                                                             </div>
                                                             <div class="thumb-preview cr-preview">
                                                                 <div class="image-thumb-preview">
@@ -383,8 +386,7 @@
                                                         @foreach ($cate as $value)
                                                             <optgroup label="{{ $value->name }}">
                                                                 @foreach ($value->children as $item)
-                                                                    <option
-                                                                        value="{{ $item->id }}"{{ $product->category_id == $item->id ? 'selected' : '' }}>
+                                                                    <option value="{{ $item->id }}">
                                                                         {{ $item->name }}
                                                                     </option>
                                                                 @endforeach
@@ -402,7 +404,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="form-label">Sort Description</label>
-                                                <textarea class="form-control"  name="sortdescription" rows="4">{{ $product->sortdescription }}</textarea>
+                                                <textarea class="form-control" name="sortdescription" rows="4">{{ $product->sortdescription }}</textarea>
                                             </div>
 
                                             {{-- <div class="col-md-4 mb-25">
@@ -595,16 +597,5 @@
         }
     </script>
     {{-- {{-- <script src="https://cdn.ckeditor.com/ckeditor5/[version.number]/[distribution]/ckeditor.js"></script> --}}
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .then(editor => {
-                console.log(editor);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
 @endsection

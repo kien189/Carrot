@@ -42,154 +42,76 @@
                                     <table>
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Product</th>
                                                 <th>price</th>
+                                                <th>size</th>
                                                 <th class="text-center">Quantity</th>
                                                 <th>Total</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="cr-cart-name">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/img/product/1.jpg" alt="product-1"
-                                                            class="cr-cart-img">
-                                                        Organic Lemon
-                                                    </a>
-                                                </td>
-                                                <td class="cr-cart-price">
-                                                    <span class="amount">$56.00</span>
-                                                </td>
-                                                <td class="cr-cart-qty">
-                                                    <div class="cart-qty-plus-minus">
-                                                        <button type="button" class="plus">+</button>
-                                                        <input type="text" placeholder="." value="1" minlength="1"
-                                                            maxlength="20" class="quantity">
-                                                        <button type="button" class="minus">-</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cr-cart-subtotal">$56.00</td>
-                                                <td class="cr-cart-remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cr-cart-name">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/img/product/2.jpg" alt="product-1"
-                                                            class="cr-cart-img">
-                                                        Apple Juice
-                                                    </a>
-                                                </td>
-                                                <td class="cr-cart-price">
-                                                    <span class="amount">$75.00</span>
-                                                </td>
-                                                <td class="cr-cart-qty">
-                                                    <div class="cart-qty-plus-minus">
-                                                        <button type="button" class="plus">+</button>
-                                                        <input type="text" placeholder="." value="1" minlength="1"
-                                                            maxlength="20" class="quantity">
-                                                        <button type="button" class="minus">-</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cr-cart-subtotal">$75.00</td>
-                                                <td class="cr-cart-remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cr-cart-name">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/img/product/3.jpg" alt="product-1"
-                                                            class="cr-cart-img">
-                                                        Watermelon 5kg Pack
-                                                    </a>
-                                                </td>
-                                                <td class="cr-cart-price">
-                                                    <span class="amount">$48.00</span>
-                                                </td>
-                                                <td class="cr-cart-qty">
-                                                    <div class="cart-qty-plus-minus">
-                                                        <button type="button" class="plus">+</button>
-                                                        <input type="text" placeholder="." value="1" minlength="1"
-                                                            maxlength="20" class="quantity">
-                                                        <button type="button" class="minus">-</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cr-cart-subtotal">$48.00</td>
-                                                <td class="cr-cart-remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cr-cart-name">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/img/product/4.jpg" alt="product-1"
-                                                            class="cr-cart-img">
-                                                        Pomegranate 5 kg pack
-                                                    </a>
-                                                </td>
-                                                <td class="cr-cart-price">
-                                                    <span class="amount">$90.00</span>
-                                                </td>
-                                                <td class="cr-cart-qty">
-                                                    <div class="cart-qty-plus-minus">
-                                                        <button type="button" class="plus">+</button>
-                                                        <input type="text" placeholder="." value="1"
-                                                            minlength="1" maxlength="20" class="quantity">
-                                                        <button type="button" class="minus">-</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cr-cart-subtotal">$90.00</td>
-                                                <td class="cr-cart-remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cr-cart-name">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="assets/img/product/5.jpg" alt="product-1"
-                                                            class="cr-cart-img">
-                                                        Organic Peach Fruits
-                                                    </a>
-                                                </td>
-                                                <td class="cr-cart-price">
-                                                    <span class="amount">$50.00</span>
-                                                </td>
-                                                <td class="cr-cart-qty">
-                                                    <div class="cart-qty-plus-minus">
-                                                        <button type="button" class="plus">+</button>
-                                                        <input type="text" placeholder="." value="1"
-                                                            minlength="1" maxlength="20" class="quantity">
-                                                        <button type="button" class="minus">-</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cr-cart-subtotal">$50.00</td>
-                                                <td class="cr-cart-remove">
-                                                    <a href="javascript:void(0)">
-                                                        <i class="ri-delete-bin-line"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            @foreach ($carts as $value)
+                                                <tr class="cr_cart" data-cart-id="{{ $value->id }}">
+                                                    <td><input type="checkbox"></input></td>
+                                                    <td class="cr-cart-name">
+                                                        <a href="javascript:void(0)">
+                                                            <img src="{{ asset('storage/images/' . $value->products->image) }}"
+                                                                alt="product-1" class="cr-cart-img">
+                                                            {{ $value->products->name }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="cr-cart-price">
+                                                        <span class="amount"
+                                                            id="price">{{ number_format($value->variants->sale_price, 0, ',', '.') }}đ</span>
+                                                    </td>
+                                                    <td>{{ $value->variants->size }}</td>
+                                                    <td class="cr-cart-qty">
+                                                        <div class="cart-qty-plus-minus">
+                                                            <button type="button" class="btnPlus plus">+</button>
+                                                            <input type="text" placeholder="." id="quantityDisplay"
+                                                                value="{{ $value->quantity }}" minlength="1" maxlength="20"
+                                                                class="quantity">
+                                                            <button type="button" class="btnMinus minus">-</button>
+                                                        </div>
+                                                    </td>
+                                                    <td class="cr-cart-">
+                                                        <span id="toTal">
+                                                            {{ number_format($value->variants->sale_price * $value->quantity, 0, ',', '.') }}đ</span>
+                                                    </td>
+                                                    <td class="cr-cart-remove">
+                                                        <a href="javascript:void(0)">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="cr-cart-update-bottom">
-                                            <a href="javascript:void(0)" class="cr-links">Continue Shopping</a>
-                                            <a href="cart.html" class="cr-button">
-                                                Check Out
-                                            </a>
+                                            <a href="javascript:void(0)" class="cr-links" id="continueShoppingLink">Coupon
+                                                code</a>
+                                            <a href="cart.html" class="cr-button">Check Out</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Div chứa thông tin mã giảm giá, giá, giá giảm và tổng tiền -->
+                                <div class="row" id="discountSection" style="display: none;">
+                                    <div class="col-lg-12">
+                                        <div class="discount-info">
+                                            <h4>Apply Discount Code</h4>
+                                            <input type="text" id="discountCode" placeholder="Enter discount code" class="mb-2">
+                                            <button type="button" id="applyDiscountButton" class="cr-button">Apply</button>
+                                            <p>Price: <span class="fw-bold text-danger subTotal">
+                                                {{ number_format($value->TotalPrice, 0, ',', '.') }}</span>
+                                            </p>
+                                            <p>Discounted Price: <span id="discountedPrice">-900</span>đ</p>
+                                            <p>Total Price: <span class=" subTotal">{{ number_format($value->TotalPrice, 0, ',', '.') }}</span>đ</p>
                                         </div>
                                     </div>
                                 </div>
@@ -419,4 +341,16 @@
             </div>
         </div>
     </section>
+@endsection
+@section('script')
+    <script>
+        document.getElementById('continueShoppingLink').addEventListener('click', function() {
+            var discountSection = document.getElementById('discountSection');
+            if (discountSection.style.display === 'none') {
+                discountSection.style.display = 'block';
+            } else {
+                discountSection.style.display = 'none';
+            }
+        });
+    </script>
 @endsection

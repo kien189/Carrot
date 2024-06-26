@@ -7,10 +7,10 @@
             <!-- Page title & breadcrumb -->
             <div class="cr-page-title cr-page-title-2">
                 <div class="cr-breadcrumb">
-                    <h5>Product List</h5>
+                    <h5>Danh sách biến thể </h5>
                     <ul>
-                        <li><a href="index.html">Carrot</a></li>
-                        <li>Product List</li>
+                        <li><a href="{{ route('admin.index') }}">Carrot</a></li>
+                        <li>Danh sách biến thể </li>
                     </ul>
                 </div>
             </div>

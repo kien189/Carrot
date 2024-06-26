@@ -61,7 +61,7 @@ class ProductController extends Controller
                 $products->variants()->create($variants);
             }
 
-            return Redirect::route('admin.index')->with('success', 'Thêm mới sản phẩm thành công');
+            return Redirect::route('product.index')->with('success', 'Thêm mới sản phẩm thành công');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             return Redirect::back()->with('error', 'Thêm mới sản phẩm thất bại !!');
@@ -79,9 +79,9 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(String $id)
+    public function edit(String $id, Category $category)
     {
-        $cate = Category::all();
+        $cate = Category::where('parent_id', '=', $category->parent_id)->get();
         $product = Product::find($id);
         $image = ProductImages::where('product_id', $id)->get();
         // dd($image);
@@ -113,13 +113,15 @@ class ProductController extends Controller
                 if ($imageId->id) {
                     Storage::delete('public/images/' . $imageId->image);
                 }
-                $fileNames = $photo->getClientOriginalName();
-                $photo->storeAs('public/images', $fileNames);
-                $imageId->update([
-                    "image" => $fileNames
-                ]);
+                    $fileNames = $photo->getClientOriginalName();
+                    $photo->storeAs('public/images', $fileNames);
+                    $imageId->update([
+                        "image" => $fileNames
+                    ]);
+
             }
         }
+        return redirect()->route('product.index')->with('sucess', 'Cập nhật sản phẩm thành công');
     }
 
     /**

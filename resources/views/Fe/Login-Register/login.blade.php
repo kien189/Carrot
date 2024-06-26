@@ -58,7 +58,7 @@
                             </div>
                             <div class="remember">
                                 <span class="form-group custom">
-                                    <input type="checkbox" id="html">
+                                    <input type="checkbox" name="remember" id="html">
                                     <label for="html">Ghi nhớ đăng nhập </label>
                                 </span>
                                 <a class="link" href="{{ route('forgotPassword') }}">Quên mật khẩu?</a>

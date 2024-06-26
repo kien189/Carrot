@@ -83,7 +83,8 @@ class SubCategoryController extends Controller
             $deleCate = Category::find($id)->delete();
             return Redirect::route('category.index')->with('succses', 'Xóa danh mục con thành công');
         } catch (\Throwable $th) {
-            return Redirect::bach()->with('error', 'Xóa danh mục con thất bại');
+            dd($th->getMessage());
+            return Redirect::back()->with('error', 'Xóa danh mục con thất bại');
         }
     }
 }

@@ -264,7 +264,7 @@
                             <ul class="cr-sb-drop condense">
                                 <li><a href="{{ route('category.index') }}" class="cr-page-link drop"><i
                                             class="ri-checkbox-blank-circle-line"></i>Danh mục cha</a></li>
-                                <li><a href="" class="cr-page-link drop"><i
+                                <li><a href="{{ route('subCategory.index') }}" class="cr-page-link drop"><i
                                             class="ri-checkbox-blank-circle-line"></i>Danh mục con</a></li>
                             </ul>
                         </li>
@@ -654,7 +654,18 @@
         <script src="{{ asset('assets_ad') }}/js/data/ecommerce-chart-data.js"></script>
         @yield('script')
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
+        <script>
+            ClassicEditor
+                .create(document.querySelector('#editor1'))
+                .then(editor => {
+                    console.log(editor);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
 </body>
 
 

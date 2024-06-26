@@ -297,10 +297,10 @@
             <!-- Page title & breadcrumb -->
             <div class="cr-page-title cr-page-title-2">
                 <div class="cr-breadcrumb">
-                    <h5>Add Product</h5>
+                    <h5>Thêm biến thể </h5>
                     <ul>
-                        <li><a href="index.html">Carrot</a></li>
-                        <li>Add Product</li>
+                        <li><a href="{{ route('admin.index') }}">Carrot</a></li>
+                        <li>Thêm mới biến thể </li>
                     </ul>
                 </div>
             </div>
@@ -313,35 +313,40 @@
                                 <div class="row cr-product-uploads">
 
                                     <div class="col-lg-8">
-                                            <input type="text" name="id" value="{{ $variants->id }}">
+                                            <input type="hidden" name="id" value="{{ $variants->id }}">
                                             <div id="variants" class=" row g-3">
                                                 <div class="col-md-12 mb-25">
                                                     <label class="form-label">Size</label>
-                                                    <div class="form-checkbox-box">
+                                                    <div class="form-checkbox-box" >
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio" name="variants[0][size]"
-                                                                value="S">
-                                                            <label>S</label>
+                                                                value="500g">
+                                                            <label>500g</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio" name="variants[0][size]"
-                                                                value="M">
-                                                            <label>M</label>
+                                                                value="1kg">
+                                                            <label>1kg</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio" name="variants[0][size]"
-                                                                value="L">
-                                                            <label>L</label>
+                                                                value="2kg">
+                                                            <label>2kg</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio" name="variants[0][size]"
-                                                                value="XL">
-                                                            <label>XL</label>
+                                                                value="3kg">
+                                                            <label>3kg</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio" name="variants[0][size]"
-                                                                value="XXL">
-                                                            <label>XXL</label>
+                                                                value="4kg">
+                                                            <label>4kg</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input type="radio" name="variants[0][size]"
+                                                                value="5kg">
+                                                            <label>5kg</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -406,23 +411,27 @@
                                                 <label class="form-label">Size</label>
                                                 <div class="form-checkbox-box">
                                                     <div class="form-check form-check-inline">
-                                                        <input type="radio" name="variants[${variantIndex}][size]" value="S">
+                                                        <input type="radio" name="variants[${variantIndex}][size]" value="500g">
                                                         <label>S</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input type="radio" name="variants[${variantIndex}][size]" value="M">
+                                                        <input type="radio" name="variants[${variantIndex}][size]" value="1kg">
                                                         <label>M</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input type="radio" name="variants[${variantIndex}][size]" value="L">
+                                                        <input type="radio" name="variants[${variantIndex}][size]" value="2kg">
                                                         <label>L</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input type="radio" name="variants[${variantIndex}][size]" value="XL">
+                                                        <input type="radio" name="variants[${variantIndex}][size]" value="3kg">
                                                         <label>XL</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input type="radio" name="variants[${variantIndex}][size]" value="XXL">
+                                                        <input type="radio" name="variants[${variantIndex}][size]" value="4kg">
+                                                        <label>XXL</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio" name="variants[${variantIndex}][size]" value="5kg">
                                                         <label>XXL</label>
                                                     </div>
                                                 </div>

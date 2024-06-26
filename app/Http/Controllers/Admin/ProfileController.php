@@ -13,7 +13,6 @@ class ProfileController extends Controller
     public function index()
     {
         $users=auth('users')->user();
-        dd($users);
         return view('Admin.Profile.profile');
     }
 

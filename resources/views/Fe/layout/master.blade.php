@@ -48,8 +48,9 @@
                             <img src="{{ asset('assets') }}/img/logo/logo.png" alt="logo" class="logo">
                             <img src="{{ asset('assets') }}/img/logo/dark-logo.png" alt="logo" class="dark-logo">
                         </a>
-                        <form class="cr-search">
-                            <input class="search-input" type="text" placeholder="Search For items...">
+                        <form class="cr-search" action="{{ route('getSearch') }}" method="get">
+
+                            <input class="search-input" name="search" type="text" placeholder="Search For items...">
                             {{-- <select class="form-select" aria-label="Default select example">
                                 <option selected>All Categories</option>
                                 <option value="1">Mens</option>
@@ -64,10 +65,10 @@
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
                                     @if (auth('customers')->check())
-                                    <a class="nav-link dropdown-toggle cr-right-bar-item" href="javascript:void(0)">
-                                        <i class="ri-user-3-line"></i>
-                                        <span>{{ auth('customers')->user()->name }}</span>
-                                    </a>
+                                        <a class="nav-link dropdown-toggle cr-right-bar-item" href="javascript:void(0)">
+                                            <i class="ri-user-3-line"></i>
+                                            <span>{{ auth('customers')->user()->name }}</span>
+                                        </a>
 
                                         <ul class="dropdown-menu">
                                             <li>
@@ -81,10 +82,10 @@
                                             </li>
                                         </ul>
                                     @else
-                                    <a class="nav-link dropdown-toggle cr-right-bar-item" href="javascript:void(0)">
-                                        <i class="ri-user-3-line"></i>
-                                        <span>Account</span>
-                                    </a>
+                                        <a class="nav-link dropdown-toggle cr-right-bar-item" href="javascript:void(0)">
+                                            <i class="ri-user-3-line"></i>
+                                            <span>Account</span>
+                                        </a>
                                         <ul class="dropdown-menu">
                                             {{-- <li>
                                                 <a class="dropdown-item" href="register.html">Register</a>
@@ -105,7 +106,18 @@
                             </a>
                             <a href="javascript:void(0)" class="cr-right-bar-item Shopping-toggle">
                                 <i class="ri-shopping-cart-line"></i>
-                                <span>Cart</span>
+                                <span class="me-3">Cart</span>
+                                @if ($carts->count() > 0)
+                                    <span
+                                        class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger text-white">
+                                        {{ $carts->count() }}
+                                    </span>
+                                @else
+                                    <span hidden
+                                        class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger text-white">
+                                        {{ $carts->count() }}
+                                    </span>
+                                @endif
                             </a>
                         </div>
                     </div>
@@ -334,10 +346,10 @@
                                     </a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                                        Category
+                                    <a class="nav-link " href="{{ route('shop') }}">
+                                        Shop
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    {{-- <ul class="dropdown-menu">
                                         <li>
                                             <a class="dropdown-item" href="shop-left-sidebar.html">Shop Left
                                                 sidebar</a>
@@ -351,13 +363,13 @@
                                             <a class="dropdown-item" href="shop-full-width.html">Full
                                                 Width</a>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                                        Products
+                                    <a class="nav-link " href="{{ route('cart') }}">
+                                        Carts
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    {{-- <ul class="dropdown-menu">
                                         <li>
                                             <a class="dropdown-item" href="product-left-sidebar.html">product
                                                 Left
@@ -374,7 +386,7 @@
                                                 Width
                                             </a>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="javascript:void(0)">
@@ -489,22 +501,22 @@
                         <a href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="dropdown drop-list">
-                        <span class="menu-toggle"></span>
-                        <a href="javascript:void(0)" class="dropdown-list">Category</a>
-                        <ul class="sub-menu">
+                        {{-- <span class="menu-toggle"></span> --}}
+                        <a href="{{ route('shop') }}" class="dropdown-list">Shop</a>
+                        {{-- <ul class="sub-menu">
                             <li><a href="shop-left-sidebar.html">Shop Left sidebar</a></li>
                             <li><a href="shop-right-sidebar.html">Shop Right sidebar</a></li>
                             <li><a href="shop-full-width.html">Full Width</a></li>
-                        </ul>
+                        </ul> --}}
                     </li>
                     <li class="dropdown drop-list">
-                        <span class="menu-toggle"></span>
-                        <a href="javascript:void(0)" class="dropdown-list">product</a>
-                        <ul class="sub-menu">
+                        {{-- <span class="menu-toggle"></span> --}}
+                        <a href="{{ route('cart') }}" class="dropdown-list">Carts</a>
+                        {{-- <ul class="sub-menu">
                             <li><a href="product-left-sidebar.html">product Left sidebar</a></li>
                             <li><a href="product-right-sidebar.html">product Right sidebar</a></li>
                             <li><a href="product-full-width.html">Product Full Width </a></li>
-                        </ul>
+                        </ul> --}}
                     </li>
                     <li class="dropdown drop-list">
                         <span class="menu-toggle"></span>
@@ -547,6 +559,7 @@
             </div>
         </div>
     </div>
+
     @yield('main_fe')
     <footer class="footer padding-t-100 bg-off-white">
         <div class="container">
@@ -710,6 +723,7 @@
                 <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
                 <div class="modal-body">
+
                     <div class="row">
                         <div class="col-md-5 col-sm-12 col-xs-12">
                             <div class="zoom-image-hover modal-border-image">
@@ -719,7 +733,7 @@
                         </div>
                         <div class="col-md-7 col-sm-12 col-xs-12">
                             <div class="cr-size-and-weight-contain">
-                                <h2 class="heading">Peach Seeds Of Change Oraganic Quinoa, Brown fruit</h2>
+                                <h2 class="heading"></h2>
                                 <p>Lorem Ipsum is simply dummy text of the printing and
                                     typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
                                     since the 1900s,</p>
@@ -779,66 +793,55 @@
                     <button type="button" class="close-cart">×</button>
                 </div>
                 <ul class="crcart-pro-items">
-                    <li>
-                        <a href="product-left-sidebar.html" class="crside_pro_img"><img
-                                src="{{ asset('assets') }}/img/product/4.jpg" alt="product-1"></a>
-                        <div class="cr-pro-content">
-                            <a href="product-left-sidebar.html" class="cart_pro_title">Fresh Pomegranate</a>
-                            <span class="cart-price"><span>$56.00</span> x 1kg</span>
-                            <div class="cr-cart-qty">
-                                <div class="cart-qty-plus-minus">
-                                    <button type="button" class="plus">+</button>
-                                    <input type="text" placeholder="." value="1" minlength="1"
-                                        maxlength="20" class="quantity">
-                                    <button type="button" class="minus">-</button>
+                    @foreach ($carts as $value)
+                        <li data-cart-id="{{ $value->id }}">
+                            <a href="product-left-sidebar.html" class="crside_pro_img">
+                                <img src="{{ asset('storage/images/' . $value->products->image) }}" alt="product-1">
+                            </a>
+                            <div class="cr-pro-content">
+                                <a href="product-left-sidebar.html"
+                                    class="cart_pro_title">{{ $value->products->name }}</a>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <span class="cart-price ">
+                                            <span
+                                                id="price">{{ number_format($value->variants->sale_price, 0, ',', '.') }}đ</span>
+                                            x <span id="quantityDisplay">{{ $value->quantity }}</span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p class="fw-bold pt-2 text-danger ">
+                                            <span id="toTal">
+                                                {{ number_format($value->variants->sale_price * $value->quantity, 0, ',', '.') }}đ</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <a href="javascript:void(0)" class="remove">×</a>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="product-left-sidebar.html" class="crside_pro_img"><img
-                                src="{{ asset('assets') }}/img/product/2.jpg" alt="product-2"></a>
-                        <div class="cr-pro-content">
-                            <a href="product-left-sidebar.html" class="cart_pro_title">Green Apples</a>
-                            <span class="cart-price"><span>$75.00</span> x 1kg</span>
-                            <div class="cr-cart-qty">
-                                <div class="cart-qty-plus-minus">
-                                    <button type="button" class="plus">+</button>
-                                    <input type="text" placeholder="." value="1" minlength="1"
-                                        maxlength="20" class="quantity">
-                                    <button type="button" class="minus">-</button>
+                                <div class="cr-cart-qty">
+                                    <div class="cart-qty-plus-minus">
+                                        <button type="button" class="btnPlus plus">+</button>
+                                        <input type="text" value="{{ $value->quantity }}" id="quantityDisplay"
+                                            class="quantity">
+                                        <button type="button" class="btnMinus minus">-</button>
+                                    </div>
                                 </div>
+                                <a href="javascript:void(0)" class="remove">×</a>
                             </div>
-                            <a href="javascript:void(0)" class="remove">×</a>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="product-left-sidebar.html" class="crside_pro_img"><img
-                                src="{{ asset('assets') }}/img/product/3.jpg" alt="product-3"></a>
-                        <div class="cr-pro-content">
-                            <a href="product-left-sidebar.html" class="cart_pro_title">Watermelon - Small</a>
-                            <span class="cart-price"><span>$48.00</span> x 5kg</span>
-                            <div class="cr-cart-qty">
-                                <div class="cart-qty-plus-minus">
-                                    <button type="button" class="plus">+</button>
-                                    <input type="text" placeholder="." value="1" minlength="1"
-                                        maxlength="20" class="quantity">
-                                    <button type="button" class="minus">-</button>
-                                </div>
-                            </div>
-                            <a href="javascript:void(0)" class="remove">×</a>
-                        </div>
-                    </li>
+                        </li>
+                    @endforeach
                 </ul>
+
+
             </div>
             <div class="cr-cart-bottom">
                 <div class="cart-sub-total">
                     <table class="table cart-table">
+                        @if (auth('customers')->check())
                         <tbody>
                             <tr>
                                 <td class="text-left">Sub-Total :</td>
-                                <td class="text-right">$300.00</td>
+
+                                    <td class="text-right subTotal">
+                                        {{ number_format($value->TotalPrice, 0, ',', '.') }}đ
+                                    </td>
                             </tr>
                             <tr>
                                 <td class="text-left">VAT (20%) :</td>
@@ -849,6 +852,8 @@
                                 <td class="text-right primary-color">$360.00</td>
                             </tr>
                         </tbody>
+                        @endif
+
                     </table>
                 </div>
                 <div class="cart_btn">
@@ -950,9 +955,19 @@
     <script src="{{ asset('assets') }}/js/vendor/aos.min.js"></script>
     <script src="{{ asset('assets') }}/js/vendor/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets') }}/js/vendor/slick.min.js"></script>
-
+    @yield('script')
     <!-- Main Custom -->
     <script src="{{ asset('assets') }}/js/main.js"></script>
+    <script src="{{ asset('assets') }}/js/filter.js"></script>
+    <script src="{{ asset('assets') }}/js/cart.js"></script>
+    <script src="{{ asset('assets') }}/js/search.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        var updateCartRoute = '{{ route('updateCart') }}';
+    </script>
+     <script>
+        var filterByCategoryRoute = "{{ route('filterByCategory', ['id' => ':categoryId']) }}";
+    </script>
 </body>
 
 

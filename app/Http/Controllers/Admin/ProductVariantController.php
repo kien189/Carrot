@@ -21,8 +21,9 @@ class ProductVariantController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Product $product)
+    public function create(Product $variant)
     {
+
     }
 
     /**
@@ -106,6 +107,7 @@ class ProductVariantController extends Controller
             }
             return redirect()->route('variants.index');
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             return redirect()->back();
         }
     }
