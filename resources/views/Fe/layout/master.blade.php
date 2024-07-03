@@ -467,10 +467,10 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="javascript:void(0)">
+                                    <a class="nav-link " href="{{ route('blogs') }}">
                                         Blog
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    {{-- <ul class="dropdown-menu">
                                         <li>
                                             <a class="dropdown-item" href="blog-left-sidebar.html">Left
                                                 Sidebar</a>
@@ -498,7 +498,7 @@
                                                 Full
                                                 Width</a>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="javascript:void(0)">
@@ -576,16 +576,16 @@
                         </ul>
                     </li>
                     <li class="dropdown drop-list">
-                        <span class="menu-toggle"></span>
-                        <a href="javascript:void(0)" class="dropdown-list">Blog</a>
-                        <ul class="sub-menu">
+                        {{-- <span class="menu-toggle"></span> --}}
+                        <a href="{{ route('blogs') }}" class="dropdown-list">Blog</a>
+                        {{-- <ul class="sub-menu">
                             <li><a href="blog-left-sidebar.html">Left Sidebar</a></li>
                             <li><a href="blog-right-sidebar.html">Right Sidebar</a></li>
                             <li><a href="blog-full-width.html">Full Width</a></li>
                             <li><a href="blog-detail-left-sidebar.html">Detail Left Sidebar</a></li>
                             <li><a href="blog-detail-right-sidebar.html">Detail Right Sidebar</a></li>
                             <li><a href="blog-detail-full-width.html">Detail Full Width</a></li>
-                        </ul>
+                        </ul> --}}
                     </li>
                     <li class="dropdown drop-list">
                         <span class="menu-toggle"></span>

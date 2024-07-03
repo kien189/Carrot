@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Fe\HomeController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\VariantController;
@@ -99,7 +100,7 @@ Route::prefix('/')->group(function () {
     Route::get('/filter', [ShopController::class, 'filter'])->name('filter');
     Route::get('/filter_name', [ShopController::class, 'filter_name'])->name('filter_name');
     //Blog
-    Route::get('/blogs', [HomeController::class, 'blogs'])->name('blogs');
+    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
 });
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart');
