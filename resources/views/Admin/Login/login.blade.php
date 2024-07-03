@@ -18,13 +18,13 @@
                                                         class="logo"></a>
                                             </div>
                                             <div class="input-control">
-                                                <input type="text" placeholder="Nhập tên " name="login" required autofocus>
+                                                <input type="text" placeholder="Nhập tên " name="login"  autofocus>
                                                 @error('name')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                                 <span class="password-field-show">
                                                     <input type="password" placeholder="Nhập mật khẩu " name="password"
-                                                        class="password-field" value="" required>
+                                                        class="password-field" value="" >
                                                     @error('password')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
@@ -44,9 +44,9 @@
                                                     <p>or login with</p>
                                                 </div>
                                                 <div class="login-with-btns">
-                                                    <button type="button" class="google">
+                                                    <a href="{{ route('auth.google') }}" type="button" class="google">
                                                         <i class="ri-google-fill"></i>
-                                                    </button>
+                                                    </a>
                                                     <button type="button" class="facebook">
                                                         <i class="ri-facebook-fill"></i>
                                                     </button>

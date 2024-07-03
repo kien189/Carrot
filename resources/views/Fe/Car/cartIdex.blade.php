@@ -105,13 +105,19 @@
                                     <div class="col-lg-12">
                                         <div class="discount-info">
                                             <h4>Apply Discount Code</h4>
-                                            <input type="text" id="discountCode" placeholder="Enter discount code" class="mb-2">
+                                            <input type="text" id="discountCode" placeholder="Enter discount code"
+                                                class="mb-2">
                                             <button type="button" id="applyDiscountButton" class="cr-button">Apply</button>
-                                            <p>Price: <span class="fw-bold text-danger subTotal">
-                                                {{ number_format($value->TotalPrice, 0, ',', '.') }}</span>
-                                            </p>
-                                            <p>Discounted Price: <span id="discountedPrice">-900</span>đ</p>
-                                            <p>Total Price: <span class=" subTotal">{{ number_format($value->TotalPrice, 0, ',', '.') }}</span>đ</p>
+                                            @isset($value)
+                                                <p>Price: <span class="fw-bold text-danger subTotal">
+                                                        {{ number_format($value->TotalPrice, 0, ',', '.') }}</span>
+                                                </p>
+
+                                                <p>Discounted Price: <span id="discountedPrice">-900</span>đ</p>
+                                                <p>Total Price: <span
+                                                        class=" subTotal">{{ number_format($value->TotalPrice, 0, ',', '.') }}</span>đ
+                                                </p>
+                                            @endisset
                                         </div>
                                     </div>
                                 </div>

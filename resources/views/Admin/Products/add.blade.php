@@ -427,25 +427,26 @@
                                     <div class="col-lg-8">
                                         <div class="cr-vendor-upload-detail ">
                                             <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label for="inputEmail4" class="form-label">Product name</label>
-                                                <input type="text" class="form-control slug-title" name="name" onkeyup="ChangeToSlug()"
-                                                    id="NamePro">
+                                                <div class="col-md-6">
+                                                    <label for="inputEmail4" class="form-label">Product name</label>
+                                                    <input type="text" class="form-control slug-title" name="name"
+                                                        onkeyup="ChangeToSlug()" id="NamePro">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Select Categories</label>
+                                                    <select class="form-control form-select " name="category_id">
+                                                        @foreach ($cate as $value)
+                                                            <optgroup label="{{ $value->name }}">
+                                                                @foreach ($value->children as $item)
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </optgroup>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Select Categories</label>
-                                                <select class="form-control form-select " name="category_id">
-                                                    @foreach ($cate as $value)
-                                                        <optgroup label="{{ $value->name }}">
-                                                            @foreach ($value->children as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </optgroup>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
                                             <div class="col-md-12">
                                                 <label for="slug" class="col-12 col-form-label">Slug</label>
                                                 <div class="col-12">
@@ -476,7 +477,7 @@
                                             <div id="variants" class=" row g-3">
                                                 <div class="col-md-12 mb-25">
                                                     <label class="form-label">Size</label>
-                                                    <div class="form-checkbox-box" >
+                                                    <div class="form-checkbox-box">
                                                         <div class="form-check form-check-inline">
                                                             <input type="radio" name="variants[0][size]"
                                                                 value="250g">

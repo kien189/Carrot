@@ -13,20 +13,15 @@ class ForgotPassword extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public $customers;
+    public $customer;
     public $token;
-    public function __construct($customers, $token)
+
+    public function __construct($customer, $token)
     {
-        $this->customers = $customers;
+        $this->customer = $customer;
         $this->token = $token;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -34,21 +29,17 @@ class ForgotPassword extends Mailable implements ShouldQueue
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
             view: 'Fe.Mail.forgotPassword',
+            with: [
+                'customer' => $this->customer,
+                'token' => $this->token,
+            ],
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
         return [];

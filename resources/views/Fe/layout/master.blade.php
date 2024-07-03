@@ -26,9 +26,10 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/swiper-bundle.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/jquery.slick.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick-theme.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/css/style.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/css1.css">
 </head>
 
 <body class="body-bg-6">
@@ -313,7 +314,47 @@
                             <i class="ri-menu-3-line"></i>
                         </a>
                         <div class="cr-header-buttons">
-                            <ul class="navbar-nav">
+                            @if (auth('customers')->check())
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="javascript:void(0)">
+                                            <i class="ri-user-3-line"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" href="register.html">Profile</a>
+                                            </li>
+                                            {{-- <li>
+                                                <a class="dropdown-item" href="checkout.html">Checkout</a>
+                                            </li> --}}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            @else
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="javascript:void(0)">
+                                            <i class="ri-user-3-line"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                {{-- <a class="dropdown-item" href="register.html">Register</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="checkout.html">Checkout</a>
+                                            </li> --}}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('login') }}">Login</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            @endif
+                            {{-- backup --}}
+                            {{-- <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="javascript:void(0)">
                                         <i class="ri-user-3-line"></i>
@@ -330,7 +371,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
+                            </ul> --}}
                             <a href="wishlist.html" class="cr-right-bar-item">
                                 <i class="ri-heart-line"></i>
                             </a>
@@ -834,25 +875,25 @@
             <div class="cr-cart-bottom">
                 <div class="cart-sub-total">
                     <table class="table cart-table">
-                        @if (auth('customers')->check())
-                        <tbody>
-                            <tr>
-                                <td class="text-left">Sub-Total :</td>
+                        @isset($value)
+                            <tbody>
+                                <tr>
+                                    <td class="text-left">Sub-Total :</td>
 
                                     <td class="text-right subTotal">
                                         {{ number_format($value->TotalPrice, 0, ',', '.') }}đ
                                     </td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">VAT (20%) :</td>
-                                <td class="text-right">$60.00</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">Total :</td>
-                                <td class="text-right primary-color">$360.00</td>
-                            </tr>
-                        </tbody>
-                        @endif
+                                </tr>
+                                <tr>
+                                    <td class="text-left">VAT (20%) :</td>
+                                    <td class="text-right">$60.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Total :</td>
+                                    <td class="text-right primary-color">$360.00</td>
+                                </tr>
+                            </tbody>
+                        @endisset
 
                     </table>
                 </div>
@@ -965,7 +1006,7 @@
     <script>
         var updateCartRoute = '{{ route('updateCart') }}';
     </script>
-     <script>
+    <script>
         var filterByCategoryRoute = "{{ route('filterByCategory', ['id' => ':categoryId']) }}";
     </script>
 </body>

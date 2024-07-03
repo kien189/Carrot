@@ -13,10 +13,10 @@ class customer_reset_token extends Model
     protected $table = 'customer_reset_tokens';
     protected $fillable = ['email', 'token','expires_at','is_used'];
 
-    public function customers()
-    {
-        return $this->hasOne(Customers::class, 'email', 'email');
-    }
+    // public function customer()
+    // {
+    //     return $this->hasOne(Customers::class, 'email', 'email');
+    // }
 
     public function scopeCheckToken($query, $token){
         return $query->where('token', $token)

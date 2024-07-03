@@ -10,6 +10,7 @@ use App\Models\Customers;
 use App\Models\Product;
 use App\Models\ProductImages;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class HomeController extends Controller
 {
@@ -122,6 +124,8 @@ class HomeController extends Controller
         }
     }
 
+   
+
     public function logout()
     {
         auth('customers')->logout();
@@ -134,41 +138,154 @@ class HomeController extends Controller
         return view('Fe.Login-Register.forgotPassword');
     }
 
+    // public function postForgotPassword(Request $req)
+    // {
+    //     $now = Carbon::now('Asia/Ho_Chi_Minh');
+    //     $validate = $req->validate([
+    //         'email' => 'required|exists:customers'
+    //     ]);
+    //     // dd($now);
+    //     $token = Str::random(4);
+    //     $expiresAt = $now->addMinutes(5);
+    //     $tokenData = customer_reset_token::updateOrCreate(
+    //         ['email' => $req->email],
+    //         [
+    //             'token' => $token,
+    //             'expires_at' => $expiresAt,
+    //             'is_used' => false
+    //         ]
+    //     );
+    //     Mail::to($req->email)->queue(new ForgotPassword($tokenData->customers, $token));
+    //     return redirect()->back()->with('success', 'Chúng tôi đã gửi mail đến bạn. Vui lòng kiểm tra mail!');
+    // }
+    // public function resetPassword(Request $request, $token)
+    // {
+    //     $tokenData = customer_reset_token::where('token', $token)
+    //         ->where('is_used', false) // Chỉ lấy token chưa được sử dụng
+    //         ->first();
+    //     if (!$tokenData || $tokenData->expires_at < Carbon::now('Asia/Ho_Chi_Minh')) {
+    //         return redirect()->route('forgotPassword')->with('error', 'Token không hợp lệ hoặc đã hết hạn.');
+    //     }
+    //     return view("Fe.Login-Register.resetPassword", ['token' => $token]);
+    // }
+    // public function  postResetPassword(Request $req, $token)
+    // {
+    //     $req->validate([
+    //         'password' => "required|string|min:8|regex:/[a-z,A-Z,0-9]/|confirmed",
+    //         'confirmPassword' => "required|string|min:8|regex:/[a-z,A-Z,0-9]/|same:password"
+    //     ]);
+    //     // $tokenData = customer_reset_token::where('token', $token)
+    //     //     ->where('is_used', false) // Chỉ lấy token chưa được sử dụng
+    //     //     ->first();
+
+    //     // // Nếu token không tồn tại hoặc đã hết hạn
+    //     // if (!$tokenData || $tokenData->expires_at < Carbon::now('Asia/Ho_Chi_Minh')) {
+    //     //     return redirect()->route('forgotPassword')->with('error', 'Token không hợp lệ hoặc đã hết hạn.');
+    //     // }
+    //     // $customer = $tokenData->customer;
+    //     // // Lưu mật khẩu mới
+    //     // $customer->password = bcrypt($req->password);
+    //     // $customer->save();
+    // }
+
+
     public function postForgotPassword(Request $req)
     {
-        $now = Carbon::now('Asia/Ho_Chi_Minh');
-        $validate = $req->validate([
-            'email' => 'required|exists:customers'
+        $req->validate([
+            'email' => 'required|exists:customers,email'
         ]);
-        // dd($now);
-        $token = Str::random(20);
-        $expiresAt = $now->addMinutes(2);
+
         $tokenData = customer_reset_token::updateOrCreate(
             ['email' => $req->email],
             [
-                'token' => $token,
-                'expires_at' => $expiresAt,
+                'token' => rand(100000, 999999),
+                'expires_at' => now()->addMinutes(5),
                 'is_used' => false
             ]
         );
-        Mail::to($req->email)->queue(new ForgotPassword($tokenData->customers, $token));
-        return redirect()->back()->with('success', 'Chúng tôi đã gửi mail đến bạn. Vui lòng kiểm tra mail!');
+        $customer = Customers::where('email',$req->email)->first();
+        // dd($customer);
+        Mail::to($req->email)->queue(new ForgotPassword( $customer, $tokenData->token));
+
+        return redirect()->route('verifyOTP')->with('success', 'Chúng tôi đã gửi mail đến bạn. Vui lòng kiểm tra mail!');
     }
-    public function resetPassword(Request $request, $token)
+
+    public function showVerifyOTP()
     {
-        $tokenData = customer_reset_token::where('token', $token)
-            ->where('is_used', false) // Chỉ lấy token chưa được sử dụng
+        return view('Fe.Login-Register.otp');
+    }
+
+    public function postVerifyOTP(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string|size:6', // Yêu cầu mã OTP là một chuỗi có đúng 6 ký tự
+        ]);
+
+        $tokenData = customer_reset_token::where('token', $request->otp)
+            ->where('is_used', false)
+            ->where('expires_at', '>', now()) // Đảm bảo mã OTP chưa hết hạn
             ->first();
-        if (!$tokenData || $tokenData->expires_at < Carbon::now('Asia/Ho_Chi_Minh')) {
-            return redirect()->route('forgotPassword')->with('error', 'Token không hợp lệ hoặc đã hết hạn.');
+
+        // Kiểm tra token tồn tại và hợp lệ
+        if (!$tokenData) {
+            return redirect()->back()->with('error', 'Mã OTP không hợp lệ hoặc đã hết hạn.');
         }
-        $tokenData->is_used = true;
-        $tokenData->save();
-        return view("FE.Acount.resetPassword", ['token' => $token]);
+
+        // Đánh dấu OTP đã được sử dụng
+        $tokenData->update(['is_used' => true]);
+
+        return redirect()->route('resetPassword', ['token' => $tokenData->token]);
+    }
+
+    public function resetPassword($token)
+    {
+        $tokenData = customer_reset_token::where('token', $token)->first();
+
+        // Kiểm tra token tồn tại và hợp lệ
+        if (!$tokenData) {
+            return redirect()->route('forgotPassword')->with('error', 'Token không hợp lệ hoặc đã được sử dụng.');
+        }
+
+        return view("Fe.Login-Register.resetPassword", ['token' => $token]);
+    }
+
+    public function postResetPassword(Request $req, $token)
+    {
+        $req->validate([
+            'password' => "required|string|min:8|regex:/[a-z,A-Z,0-9]/",
+            'confirmPassword' => "required|string|min:8|regex:/[a-z,A-Z,0-9]/|same:password"
+        ]);
+
+        // Truy vấn bản ghi cụ thể từ bảng customer_reset_token
+        $tokenData = customer_reset_token::where('token', $token)->first();
+
+        if (!$tokenData) {
+            return redirect()->route('forgotPassword')->with('error', 'Token không hợp lệ hoặc đã được sử dụng.');
+        }
+
+        // Tìm người dùng từ bảng Customers dựa trên email trong tokenData
+        $customer = Customers::where('email', $tokenData->email)->first();
+
+        if (!$customer) {
+            return redirect()->route('forgotPassword')->with('error', 'Không tìm thấy người dùng với email tương ứng.');
+        }
+
+        // Cập nhật mật khẩu mới cho người dùng
+        $customer->password = bcrypt($req->password);
+        $customer->save();
+
+        // Xóa token sau khi sử dụng
+        // $tokenData->delete();
+
+        return redirect()->route('login')->with('success', 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập bằng mật khẩu mới.');
     }
 
 
-    public function blogs(){
+
+
+
+    public function blogs()
+    {
         return view('Fe.Blog.blog');
     }
 }
