@@ -62,7 +62,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
     Route::post('/register', [AdminController::class, 'postregister']);
 });
-
+Route::get('/products/{id}', [HomeController::class, 'modalProduct'])->name('modalProduct');
 
 // Group for public routes
 Route::prefix('/')->group(function () {
@@ -117,15 +117,18 @@ Route::prefix('/')->group(function () {
     // Product detail route
     Route::get('/{product}/{slug}', [HomeController::class, 'detail'])->name('detail');
 });
-
+Route::post('/addToCartJs/{product}', [CartController::class, 'addToCartJs'])->name('addToCartJs');
 // Group for admin routes
 Route::group(['prefix' => 'account', 'middleware' => 'admin'], function () {
     Route::resource('profile', AccountController::class);
 });
 
-Route::resource('profile', AccountController::class);
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('/updateCar', [CartController::class, 'updateCart'])->name('updateCart');
     Route::get('/addToCart/{product}', [CartController::class, 'addToCart'])->name('addToCart');
+    Route::post('/addToCartJs/{product}', [CartController::class, 'addToCartJs'])->name('addToCartJs');
+    Route::get('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');
+
 });
+Route::delete('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');

@@ -54,7 +54,7 @@
                                         <tbody>
                                             @foreach ($carts as $value)
                                                 <tr class="cr_cart" data-cart-id="{{ $value->id }}">
-                                                    <td><input type="checkbox"></input></td>
+                                                    <td><input type="checkbox"></td>
                                                     <td class="cr-cart-name">
                                                         <a href="javascript:void(0)">
                                                             <img src="{{ asset('storage/images/' . $value->products->image) }}"
@@ -77,17 +77,24 @@
                                                         </div>
                                                     </td>
                                                     <td class="cr-cart-">
-                                                        <span id="toTal">
-                                                            {{ number_format($value->variants->sale_price * $value->quantity, 0, ',', '.') }}đ</span>
+                                                        <span
+                                                            id="toTal">{{ number_format($value->variants->sale_price * $value->quantity, 0, ',', '.') }}đ</span>
                                                     </td>
                                                     <td class="cr-cart-remove">
-                                                        <a href="javascript:void(0)">
-                                                            <i class="ri-delete-bin-line"></i>
-                                                        </a>
+                                                        <form id="formDeleteCart_{{ $value->id }}" class="formDeleteCart"
+                                                            data-id="{{ $value->id }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btnDeleteCart"
+                                                                data-id="{{ $value->id }}">
+                                                                <i class="ri-delete-bin-line"></i>
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
+
                                     </table>
                                 </div>
                                 <div class="row">
@@ -218,6 +225,32 @@
             } else {
                 discountSection.style.display = 'none';
             }
+
+
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnDeleteCart = document.querySelectorAll('.btnDeleteCart');
+
+            btnDeleteCart.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault(); // Ngăn chặn hành động mặc định của form submit
+                    const cartId = button.getAttribute('data-id');
+
+                    axios.delete(`/deleteCart/${cartId}`)
+                        .then(res => {
+                            console.log(res.data);
+                            // Xử lý phản hồi thành công, ví dụ như cập nhật giao diện
+                            button.closest('tr').remove(); // Xóa hàng trong bảng
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi
+                        });
+                });
+            });
+        });
+    </script>
     </script>
 @endsection

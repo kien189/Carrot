@@ -74,7 +74,7 @@ class HomeController extends Controller
     public function detail($product, $slug)
     {
         $product = Product::where('slug', $slug)->first();
-        $getProduct = $product->where('id','!=',$product->id)->inRandomOrder()->get();
+        $getProduct = $product->where('id', '!=', $product->id)->inRandomOrder()->get();
         $comment = Comment::where('product_id', $product->id)->get();
         return view('Fe.Shop.detail', compact('product', 'comment', 'getProduct'));
     }
@@ -286,5 +286,17 @@ class HomeController extends Controller
     //     $getCategory = Category::where('name', $name)->with('products', 'children')->first();
     //    return view('Fe.layout.master',compact('getCategory'));
     // }
+
+
+
+    public function modalProduct($id)
+    {
+        $product = Product::with('category', 'variants', 'ratings')->findOrFail($id);
+        $averageRating = $product->averageRating();
+        $product->average_rating = $averageRating;
+        return response()->json($product);
+    }
+
+
 
 }

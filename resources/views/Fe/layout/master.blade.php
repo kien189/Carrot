@@ -76,7 +76,8 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('profile.index') }}">Profile</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" href="checkout.html">Checkout</a>
@@ -702,6 +703,8 @@
                     <h6>My Cart</h6>
                     <button type="button" class="close-cart">×</button>
                 </div>
+                <!-- resources/views/cart/index.blade.php -->
+
                 <ul class="crcart-pro-items">
                     @foreach ($carts as $value)
                         <li data-cart-id="{{ $value->id }}">
@@ -713,16 +716,17 @@
                                     class="cart_pro_title">{{ $value->products->name }}</a>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <span class="cart-price ">
+                                        <span class="cart-price">
                                             <span
                                                 id="price">{{ number_format($value->variants->sale_price, 0, ',', '.') }}đ</span>
                                             x <span id="quantityDisplay">{{ $value->quantity }}</span>
                                         </span>
                                     </div>
                                     <div>
-                                        <p class="fw-bold pt-2 text-danger ">
-                                            <span id="toTal">
-                                                {{ number_format($value->variants->sale_price * $value->quantity, 0, ',', '.') }}đ</span>
+                                        <p class="fw-bold pt-2 text-danger">
+                                            <span
+                                                id="toTal">{{ number_format($value->variants->sale_price * $value->quantity, 0, ',', '.') }}đ</span>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="cr-cart-qty">
@@ -733,11 +737,12 @@
                                         <button type="button" class="btnMinus minus">-</button>
                                     </div>
                                 </div>
-                                <a href="javascript:void(0)" class="remove">×</a>
+                                <a href="{{ route('deleteCart',$value->id) }}" class="remove btnDelete" data-cart-id="{{ $value->id }}">×</a>
                             </div>
                         </li>
                     @endforeach
                 </ul>
+
 
 
             </div>
@@ -882,7 +887,6 @@
     <script>
         var comment = "{{ route('comment', ['id' => ':product_id']) }}";
     </script>
-
 </body>
 
 

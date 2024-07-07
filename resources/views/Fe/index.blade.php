@@ -398,7 +398,7 @@
                                                 <i class="ri-heart-line"></i>
                                             </a>
                                             <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                role="button">
+                                                data_id= "{{ $value->id }}" role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -432,9 +432,9 @@
                                             class="title">{{ $value->name }}</a>
                                         <p class="cr-price">
                                             <span
-                                                class="new-price">{{ number_format($value->variants->first()->price) }}đ</span>
+                                                class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
                                             <span
-                                                class="old-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                                class="old-price">{{ number_format($value->variants->first()->price) }}đ</span>
                                         </p>
                                     </div>
                                 </div>
@@ -619,7 +619,7 @@
                                                 <i class="ri-heart-line"></i>
                                             </a>
                                             <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                role="button">
+                                                role="button" data_id= "{{ $value->id }}">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -799,10 +799,11 @@
                                             <span><code>{{ $value->user->name }}</code> | <a
                                                     href="blog-left-sidebar.html">{{ $value->category->name }}</a></span>
                                             <h5>{{ $value->title }}</h5>
-                                            <a class="read" href="{{ route('blogDetail',$value->slug) }}">Read More</a>
+                                            <a class="read" href="{{ route('blogDetail', $value->slug) }}">Read
+                                                More</a>
                                         </div>
                                         <div class="cr-blog-image">
-                                            <img src="{{ asset('storage/images/'.$value->image) }}" alt="blog-2">
+                                            <img src="{{ asset('storage/images/' . $value->image) }}" alt="blog-2">
                                             <div class="cr-blog-date">
                                                 <span>
                                                     {{ $value->created_at->format('d') }}
@@ -820,4 +821,350 @@
             </div>
         </div>
     </section>
+    <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                            <div class="zoom-image-hover modal-border-image">
+                                <img src="" alt="product-tab-2" class="product-image">
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="cr-size-and-weight-contain">
+                                <h2 class="heading"></h2>
+                                <p class="description"></p>
+                            </div>
+                            <div class="cr-size-and-weight">
+                                <div class="cr-review-star">
+                                    <div class="cr-star">
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                    </div>
+                                    <p id="review">( 75 Review )</p>
+                                </div>
+                                <div class="cr-product-price">
+                                    <span class="new-price"></span>
+                                    <span class="old-price"></span>
+                                </div>
+                                <div class="cr-size-weight">
+                                    <h5><span>Size</span>/<span>Weight</span> :</h5>
+                                    <div class="cr-kg">
+                                        <ul>
+                                            <li class="active-color"></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cr-add-card">
+                                    <div class="cr-qty-main">
+                                        <input type="text" placeholder="." value="1" minlength="1"
+                                            maxlength="20" class="quantity">
+                                        <button type="button" id="add_model" class="plus plussss">+</button>
+                                        <button type="button" id="sub_model" class="minus minusss">-</button>
+                                    </div>
+                                    <div class="cr-add-button">
+                                        <button type="button" class="cr-button cr-shopping-bag">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+{{-- @section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var productButtons = document.querySelectorAll('.model-oraganic-product');
+
+            productButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const proId = button.getAttribute('data_id');
+
+                    axios.get(`/products/${proId}`)
+                        .then(res => {
+                            const product = res.data;
+                            console.log(
+                                product
+                            ); // Debug: In ra dữ liệu product để xem liệu average_rating có tồn tại không
+                            var modal = document.querySelector('#quickview');
+                            modal.querySelector('.heading').textContent = product.name;
+                            modal.querySelector('.description').innerHTML = product
+                                .sortdescription;
+                            modal.querySelector('.product-image').src =
+                                '{{ asset('storage/images') }}/' + product.image;
+
+                            var variants = product.variants;
+                            var variantsIds = variants.map(variant => variant
+                                .id); // Lấy danh sách các ID của các biến thể
+                            var defaultVariant = variants[0]; // Mặc định chọn biến thể đầu tiên
+                            updatePrice(defaultVariant.price, defaultVariant
+                                .sale_price); // Cập nhật giá ban đầu
+
+                            // Hiển thị các size
+                            var sizeContainer = modal.querySelector(
+                                '.cr-size-weight .cr-kg ul');
+                            sizeContainer.innerHTML = '';
+                            variants.forEach(function(variant, index) {
+                                var li = document.createElement('li');
+                                li.textContent = variant.size;
+                                li.classList.add('variant-size');
+                                li.setAttribute('data-id', variant
+                                    .id); // Thiết lập data-id cho từng size tương ứng
+                                if (index === 0) {
+                                    li.classList.add(
+                                        'active-color'
+                                    ); // Đặt lớp active cho size đầu tiên
+                                }
+                                sizeContainer.appendChild(li);
+                            });
+
+                            // Xử lý sự kiện click cho từng size
+                            sizeContainer.addEventListener('click', function(event) {
+                                var target = event.target;
+                                if (target && target.classList.contains(
+                                        'variant-size')) {
+                                    var variantId = target.getAttribute('data-id');
+                                    var selectedVariant = variants.find(variant =>
+                                        variant.id === parseInt(variantId));
+                                    if (selectedVariant) {
+                                        updatePrice(selectedVariant.price,
+                                            selectedVariant.sale_price);
+                                        // Xử lý việc thay đổi lớp active khi click
+                                        var currentActive = sizeContainer.querySelector(
+                                            '.active-color');
+                                        if (currentActive) {
+                                            currentActive.classList.remove(
+                                                'active-color');
+                                        }
+                                        target.classList.add('active-color');
+                                    }
+                                }
+                            });
+
+                            // Hàm cập nhật giá
+                            function updatePrice(price, sale_price) {
+                                var priceContainer = modal.querySelector('.cr-product-price');
+                                var newPriceElement = priceContainer.querySelector(
+                                    '.new-price');
+                                var oldPriceElement = priceContainer.querySelector(
+                                    '.old-price');
+
+                                if (sale_price !== undefined) {
+                                    newPriceElement.textContent = sale_price.toLocaleString(
+                                        'vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        });
+                                } else {
+                                    oldPriceElement.textContent =
+                                        ''; // Xử lý khi giá cũ không tồn tại
+                                }
+                                if (price !== undefined) {
+                                    oldPriceElement.textContent = price.toLocaleString(
+                                        'vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        });
+                                } else {
+                                    newPriceElement.textContent =
+                                        'N/A'; // Xử lý khi giá không tồn tại
+                                }
+
+
+                            }
+
+
+                        })
+                        .catch(error => {
+                            console.error('Error fetching product:', error); // Xử lý lỗi nếu có
+                        });
+                });
+            });
+        });
+    </script>
+@endsection --}}
+@section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productButtons = document.querySelectorAll('.model-oraganic-product');
+
+            productButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const proId = button.getAttribute('data_id');
+
+                    axios.get(`/products/${proId}`)
+                        .then(res => {
+                            const product = res.data;
+                            console.log(product); // Debug: Log dữ liệu sản phẩm để kiểm tra
+
+                            var modal = document.querySelector('#quickview');
+                            modal.querySelector('.heading').textContent = product.name;
+                            modal.querySelector('.description').innerHTML = product
+                                .sortdescription;
+                            modal.querySelector('.product-image').src =
+                                '{{ asset('storage/images') }}/' + product.image;
+                            modal.querySelector('#review').innerHTML =
+                                `(${product.ratings.length} Review${product.ratings.length !== 1 ? 's' : ''})`;
+                            var variants = product.variants;
+                            var defaultVariant = variants[
+                                0]; // Chọn biến thể đầu tiên làm mặc định
+
+                            // Cập nhật giá và giá cũ
+                            updatePrice(defaultVariant.price, defaultVariant.sale_price);
+
+                            // Cập nhật số sao, số lượng đánh giá và giá bình luận
+                            updateRatings(product.average_rating, product.review_count);
+
+                            // Hiển thị các size
+                            var sizeContainer = modal.querySelector(
+                                '.cr-size-weight .cr-kg ul');
+                            sizeContainer.innerHTML = '';
+                            variants.forEach(function(variant, index) {
+                                var li = document.createElement('li');
+                                li.textContent = variant.size;
+                                li.classList.add('variant-size');
+                                li.setAttribute('data-id', variant
+                                    .id); // Thiết lập data-id cho từng size tương ứng
+                                if (index === 0) {
+                                    li.classList.add(
+                                        'active-color'
+                                        ); // Đặt lớp active cho size đầu tiên
+                                }
+                                sizeContainer.appendChild(li);
+                            });
+
+                            // Xử lý sự kiện click cho từng size
+                            sizeContainer.addEventListener('click', function(event) {
+                                var target = event.target;
+                                if (target && target.classList.contains(
+                                        'variant-size')) {
+                                    var variantId = target.getAttribute('data-id');
+                                    var selectedVariant = variants.find(variant =>
+                                        variant.id === parseInt(variantId));
+                                    if (selectedVariant) {
+                                        updatePrice(selectedVariant.price,
+                                            selectedVariant.sale_price);
+                                        // Xử lý việc thay đổi lớp active khi click
+                                        var currentActive = sizeContainer.querySelector(
+                                            '.active-color');
+                                        if (currentActive) {
+                                            currentActive.classList.remove(
+                                                'active-color');
+                                        }
+                                        target.classList.add('active-color');
+                                    }
+                                }
+                            });
+
+                            // Sự kiện click để thêm sản phẩm vào giỏ hàng
+                            modal.querySelector('.cr-button').addEventListener('click',
+                                function() {
+                                    var productId = product.id; // Lấy id của sản phẩm
+                                    var selectedVariantId = defaultVariant
+                                        .id; // Lấy id của biến thể (variant)
+
+                                    // Gọi hàm để thêm sản phẩm vào giỏ hàng (ví dụ)
+                                    addToCart(productId, selectedVariantId);
+                                });
+
+                            // Hàm cập nhật giá
+                            function updatePrice(price, sale_price) {
+                                var priceContainer = modal.querySelector('.cr-product-price');
+                                var newPriceElement = priceContainer.querySelector(
+                                    '.new-price');
+                                var oldPriceElement = priceContainer.querySelector(
+                                    '.old-price');
+
+                                if (sale_price !== undefined) {
+                                    newPriceElement.textContent = sale_price.toLocaleString(
+                                        'vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        });
+                                } else {
+                                    newPriceElement.textContent =
+                                        'N/A'; // Xử lý khi giá không tồn tại
+                                }
+
+                                if (price !== undefined) {
+                                    oldPriceElement.textContent = price.toLocaleString(
+                                        'vi-VN', {
+                                            style: 'currency',
+                                            currency: 'VND'
+                                        });
+                                } else {
+                                    oldPriceElement.textContent =
+                                        ''; // Xử lý khi giá cũ không tồn tại
+                                }
+                            }
+
+                            // Hàm cập nhật số sao, số lượng đánh giá và giá bình luận
+                            function updateRatings(averageRating) {
+                                var starContainer = modal.querySelector(
+                                    '.cr-review-star .cr-star');
+
+                                // Xử lý số sao
+                                var numStars = 5; // Số sao tối đa hiển thị
+                                var fullStars = Math.floor(averageRating);
+                                var halfStars = Math.ceil(averageRating) - fullStars;
+
+                                starContainer.innerHTML = ''; // Xóa các sao hiện tại
+                                for (var i = 0; i < fullStars; i++) {
+                                    var star = document.createElement('i');
+                                    star.classList.add('ri-star-fill');
+                                    starContainer.appendChild(star);
+                                }
+                                if (halfStars > 0) {
+                                    var halfStar = document.createElement('i');
+                                    halfStar.classList.add('ri-star-half-fill');
+                                    starContainer.appendChild(halfStar);
+                                }
+                                var emptyStars = numStars - fullStars - (halfStars > 0 ? 1 : 0);
+                                for (var j = 0; j < emptyStars; j++) {
+                                    var emptyStar = document.createElement('i');
+                                    emptyStar.classList.add('ri-star-line');
+                                    starContainer.appendChild(emptyStar);
+                                }
+
+                                // Hiển thị số lượng đánh giá
+
+                            }
+
+                        })
+                        .catch(error => {
+                            console.error('Error fetching product:', error); // Xử lý lỗi nếu có
+                        });
+                });
+            });
+
+            // Hàm để thêm sản phẩm vào giỏ hàng
+            function addToCart(productId, variantId) {
+                var quantity = document.querySelector('.quantity').value;
+                console.log(quantity);
+                var button = document.querySelector('.cr-button');
+                button.disabled = true;
+                axios.post(`/addToCartJs/${productId}`, {
+                        variant_id: variantId,
+                        quantity: quantity
+                    })
+                    .then(response => {
+                        console.log('Product added to cart:', response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error adding product to cart:', error);
+                    });
+            }
+
+        });
+    </script>
 @endsection

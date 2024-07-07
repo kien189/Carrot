@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $cart = Cart::all();
         return view('Fe.Car.cartIdex');
     }
@@ -25,6 +26,20 @@ class CartController extends Controller
         Cart::create($data);
         return redirect()->back();
     }
+    public function addToCartJs(Request $req, Product $product)
+    {
+        $customer_id = auth('customers')->id();
+        $data = [
+            "customer_id" => $customer_id,
+            "product_id" => $product->id,
+            "variant_id" => $req->input('variant_id'),
+            "quantity" => $req->input('quantity')
+        ];
+        Cart::create($data);
+        return response()->json(['success' => true]);
+    }
+
+
 
     public function updateCart(Request $request)
     {
@@ -37,4 +52,19 @@ class CartController extends Controller
             return response()->json(['success' => false, 'message' => 'Không tìm thấy giỏ hàng'], 404);
         }
     }
+
+    public function deleteCart($id)
+    {
+        try {
+            $cartItem = Cart::findOrFail($id); // Tìm mục trong cơ sở dữ liệu
+
+            $cartItem->delete(); // Xóa mục
+
+            return response()->json(['success' => true, 'message' => 'Xóa sản phẩm thành công']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Lỗi xóa sản phẩm: ' . $e->getMessage()], 500);
+        }
+    }
+
+
 }
