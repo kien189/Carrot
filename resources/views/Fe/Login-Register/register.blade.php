@@ -39,13 +39,14 @@
                         <div class="form-logo">
                             <img src="assets/img/logo/logo.png" alt="logo">
                         </div>
-                        <form  action="" method="POST" class="cr-content-form">
+                        <form action="" method="POST" class="cr-content-form">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label>Ho và Tên *</label>
-                                        <input type="text" placeholder="Họ và tên" class="cr-form-control" name="name">
+                                        <input type="text" placeholder="Họ và tên" class="cr-form-control"
+                                            name="name">
                                         @error('name')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -54,7 +55,8 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Mật khẩu *</label>
-                                        <input type="password" placeholder="Nhập mật khẩu" class="cr-form-control" name="password">
+                                        <input type="password" placeholder="Nhập mật khẩu" class="cr-form-control"
+                                            name="password">
                                         @error('password')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -63,7 +65,8 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Xác nhận mật khẩu*</label>
-                                        <input type="password" placeholder="Xác nhận mật khẩu" class="cr-form-control" name="confirmPassword">
+                                        <input type="password" placeholder="Xác nhận mật khẩu" class="cr-form-control"
+                                            name="confirmPassword">
                                         @error('confirmPassword')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -72,7 +75,8 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Email*</label>
-                                        <input type="email" placeholder="Nhập email của bạn" class="cr-form-control" name="email">
+                                        <input type="email" placeholder="Nhập email của bạn" class="cr-form-control"
+                                            name="email">
                                         @error('email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -84,6 +88,22 @@
                                         <input type="text" placeholder="Nhập số điện thoại của bạn"
                                             class="cr-form-control" name="phone">
                                         @error('phone')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group ">
+                                        <label>Giới tính*</label>
+                                        <div class=" pt-2 d-flex">
+                                            <div class="me-5">
+                                                <input type="radio" class="" name="gender" value="0"> Nam
+                                            </div>
+                                            <div>
+                                                <input type="radio" class="" name="gender" value="1"> Nữ
+                                            </div>
+                                        </div>
+                                        @error('gender')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>

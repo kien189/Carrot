@@ -1,14 +1,17 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BlogControllers;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Fe\CommentController;
 use App\Http\Controllers\Fe\HomeController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\VariantController;
+use App\Http\Controllers\Fe\AccountController;
+use App\Http\Controllers\Fe\BlogController;
 use App\Http\Controllers\Fe\CartController;
 use App\Http\Controllers\Fe\LoginGoogleController;
 use App\Http\Controllers\Fe\ShopController;
@@ -34,7 +37,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         'subCategory' => SubCategoryController::class,
         'product' => ProductController::class,
         'variants' => ProductVariantController::class,
-        // 'blog' => BlogController::class,
+        'blog' => BlogControllers::class,
         // 'shop' => ProfileController::class,
     ]);;
     Route::get('/creat/{product}', [ProductVariantController::class, 'add'])->name('variants.add');
@@ -61,6 +64,7 @@ Route::prefix('/admin')->group(function () {
 });
 
 
+// Group for public routes
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -69,39 +73,57 @@ Route::prefix('/')->group(function () {
 
     // Route để xử lý URL thân thiện
     Route::get('/tim-kiem/{search}', [HomeController::class, 'search'])->name('search');
+
     //Login
     Route::get('/login', [HomeController::class, 'login'])->name('login');
     Route::post('/login', [HomeController::class, 'postLogin']);
 
-    //login gg
+    //Login Google
     Route::get('/auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('/auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
+
     // Register
     Route::get('/register', [HomeController::class, 'register'])->name('register');
     Route::post('/register', [HomeController::class, 'postRegister']);
-    // Logot
+
+    // Logout
     Route::get('/logout', [HomeController::class, 'logout'])->name('logout');
-    //  forgotPassword
+
+    // Forgot Password
     Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotPassword');
     Route::post('/forgotPassword', [HomeController::class, 'postForgotPassword']);
-    //ResetPassword
+
+    // Reset Password
     Route::get('/verifyOtp', [HomeController::class, 'showVerifyOTP'])->name('verifyOTP');
     Route::post('/verifyOtp', [HomeController::class, 'postVerifyOTP']);
-
     Route::get('/reset_password/{token}', [HomeController::class, 'resetPassword'])->name('resetPassword');
     Route::post('/reset_password/{token}', [HomeController::class, 'postResetPassword']);
-    //Product detail
-    Route::get('/{product}/{slug}', [HomeController::class, 'detail'])->name('detail');
-    //Add to cart
-    //Shop
-    //filter
+
+    // Shop
     Route::get('/shop', [ShopController::class, 'index'])->name('shop');
     Route::post('/filterByCategory/{id}', [ShopController::class, 'filterByCategory'])->name('filterByCategory');
     Route::get('/filter', [ShopController::class, 'filter'])->name('filter');
     Route::get('/filter_name', [ShopController::class, 'filter_name'])->name('filter_name');
-    //Blog
+
+    // Blog routes
     Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
+    Route::get('/blogs/{slug}', [BlogController::class, 'blogDetail'])->name('blogDetail');
+    Route::get('/blog/search', [BlogController::class, 'getSearch'])->name('getSearchBlog');
+    Route::get('/blog/{search}', [BlogController::class, 'blogSearch'])->name('blogSearch');
+
+    // Comment route
+    Route::post('/comment/{id}', [CommentController::class, 'index'])->name('comment');
+
+    // Product detail route
+    Route::get('/{product}/{slug}', [HomeController::class, 'detail'])->name('detail');
 });
+
+// Group for admin routes
+Route::group(['prefix' => 'account', 'middleware' => 'admin'], function () {
+    Route::resource('profile', AccountController::class);
+});
+
+Route::resource('profile', AccountController::class);
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('/updateCar', [CartController::class, 'updateCart'])->name('updateCart');

@@ -24,11 +24,11 @@
                 <div class="col-lg-3 col-12 md-30">
                     <div class="cr-blog-sideview" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
                         <div class="cr-serch-box">
-                            <form class="cr-search">
-                                <input class="search-input" type="text" placeholder="Search here...">
-                                <a href="javascript:void(0)" class="search-btn">
+                            <form class="cr-search" action="{{ route('getSearchBlog') }}" method="get">
+                                <input class="search-input" name="search" type="text" placeholder="Search here...">
+                                <button type="submit" href="javascript:void(0)" class="search-btn">
                                     <i class="ri-search-line"></i>
-                                </a>
+                                </button>
                             </form>
                         </div>
                         <div class="cr-blog-categories">
@@ -105,21 +105,46 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-12 md-30">
-                    <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
-                        <div class="cr-blog-classic-content">
-                            <div class="cr-comment">
-                                <span>By Admin <code> / 07 commen</code></span>
+                    @isset($blogSearch)
+                    @forelse ($blogSearch as $value)
+                        <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
+                            <div class="cr-blog-classic-content">
+                                <div class="cr-comment">
+                                    <span>{{ $value->user->name }}<code> / 07 comments</code></span>
+                                </div>
+                                <h4>{{ $value->title }}.</h4>
+                                <p>{{ $value->sortdescription }}</p>
+                                <a href="{{ route('blogDetail', $value->slug) }}">read more</a>
                             </div>
-                            <h4>Best guide to Shopping for Organic ingredients.</h4>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste alias odit cupiditate harum
-                                magnam tenetur inventore dicta voluptatum perferendis voluptate!</p>
-                            <a href="javascript:void(0)">read more</a>
+                            <div class="cr-blog-image">
+                                <img src="{{ asset('storage/images/' . $value->image) }}" alt="blog-1">
+                            </div>
                         </div>
-                        <div class="cr-blog-image">
-                            <img src="assets/img/blog/blog-1.jpg" alt="blog-1">
+                    @empty
+                        <p>No blogs found.</p>
+                    @endforelse
+                @else
+                    @forelse ($blog as $value)
+                        <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
+                            <div class="cr-blog-classic-content">
+                                <div class="cr-comment">
+                                    <span>{{ $value->user->name }}<code> / 07 comments</code></span>
+                                </div>
+                                <h4>{{ $value->title }}.</h4>
+                                <p>{{ $value->sortdescription }}</p>
+                                <a href="{{ route('blogDetail', $value->slug) }}">read more</a>
+                            </div>
+                            <div class="cr-blog-image">
+                                <img src="{{ asset('storage/images/' . $value->image) }}" alt="blog-1">
+                            </div>
                         </div>
-                    </div>
-                    <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
+                    @empty
+                        <p>No blogs found.</p>
+                    @endforelse
+                @endisset
+
+
+                    {{-- <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
                         <div class="cr-blog-classic-content">
                             <div class="cr-comment">
                                 <span>By Admin <code> / 07 commen</code></span>
@@ -146,7 +171,7 @@
                         <div class="cr-blog-image">
                             <img src="assets/img/blog/blog-3.jpg" alt="blog-3">
                         </div>
-                    </div>
+                    </div> --}}
 
                     <nav aria-label="..." class="cr-pagination">
                         <ul class="pagination">

@@ -295,7 +295,7 @@
                                         class="hover-title">Liên hệ </span></span></a>
                         </li>
                         <li class="cr-sb-item">
-                            <a href="remix-icons.html" class="cr-page-link">
+                            <a href="{{ route('blog.index') }}" class="cr-page-link">
                                 <i class="fa-brands fa-blogger"></i><span class="condense"><span
                                         class="hover-title">Bài viết</span></span></a>
                         </li>
@@ -651,6 +651,7 @@
         <script src="{{ asset('assets_ad') }}/js/vendor/date-range.js"></script>
         <!-- Main Custom -->
         <script src="{{ asset('assets_ad') }}/js/main.js"></script>
+        <script src="{{ asset('assets_ad') }}/js/variants.js"></script>
         <script src="{{ asset('assets_ad') }}/js/data/ecommerce-chart-data.js"></script>
         @yield('script')
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -666,6 +667,7 @@
                     console.error(error);
                 });
         </script>
+
 </body>
 
 

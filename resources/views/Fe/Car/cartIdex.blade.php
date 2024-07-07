@@ -149,199 +149,60 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cr-popular-product">
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/9.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
+                        @foreach ($products as $value)
+                            <div class="slick-slide">
+                                <div class="cr-product-card">
+                                    <div class="cr-product-image">
+                                        <div class="cr-image-inner zoom-image-hover">
+                                            <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
+                                        <div class="cr-side-view">
+                                            <a href="javascript:void(0)" class="wishlist">
+                                                <i class="ri-heart-line"></i>
+                                            </a>
+                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
+                                                role="button">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                        </div>
+                                        <a class="cr-shopping-bag" href="javascript:void(0)">
+                                            <i class="ri-shopping-bag-line"></i>
+                                        </a>
                                     </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut
-                                        mix pack 200gm</a>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
+                                    <div class="cr-product-details">
+                                        <div class="cr-brand">
+                                            <a href="shop-left-sidebar.html">{{ $value->category->name }}</a>
+                                            <div class="cr-star">
+                                                @php
+                                                    $rating = $value->averageRating();
+                                                    $fullStars = floor($rating);
+                                                    $halfStar = ceil($rating - $fullStars);
+                                                    $emptyStars = 5 - $fullStars - $halfStar;
+                                                @endphp
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                @endfor
+                                                @if ($halfStar)
+                                                    <i class="ri-star-half-line"></i>
+                                                @endif
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <i class="ri-star-line"></i>
+                                                @endfor
+                                                <p>({{ $rating }})</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                            class="title">{{ $value->name }}</a>
+                                        <p class="cr-price"><span
+                                                class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                            <span
+                                                class="old-price">{{ number_format($value->variants->first()->price) }}đ</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/10.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/1.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut
-                                        mix pack 200gm</a>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/2.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/3.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>

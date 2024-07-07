@@ -172,12 +172,22 @@
                                         <div class="cr-brand">
                                             <a href="shop-left-sidebar.html">{{ $value->category->name }}</a>
                                             <div class="cr-star">
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <p>(5.0)</p>
+                                                @php
+                                                    $rating = $value->averageRating();
+                                                    $fullStars = floor($rating);
+                                                    $halfStar = ceil($rating - $fullStars);
+                                                    $emptyStars = 5 - $fullStars - $halfStar;
+                                                @endphp
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                @endfor
+                                                @if ($halfStar)
+                                                    <i class="ri-star-half-line"></i>
+                                                @endif
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <i class="ri-star-line"></i>
+                                                @endfor
+                                                <p>({{ $rating }})</p>
                                             </div>
                                         </div>
                                         <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"

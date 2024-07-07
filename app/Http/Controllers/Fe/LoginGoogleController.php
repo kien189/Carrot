@@ -40,7 +40,7 @@ class LoginGoogleController extends Controller
                 return redirect()->route('home');
             }
         } catch (Exception $e) {
-           dd($e->getMessage());
+            return redirect()->route('login');
         }
     }
 }

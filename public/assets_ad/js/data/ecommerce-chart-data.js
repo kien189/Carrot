@@ -157,7 +157,7 @@
           labels: ['Social', 'Referral', 'Organic'],
           colors: ["#3f51b5", "#50d1f8", "#5caf90"],
           };
-  
+
         var newcampaignsChart = new ApexCharts(document.querySelector("#newcampaignsChart"), options);
         newcampaignsChart.render();
     }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Fe;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
+use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\customer_reset_token;
 use App\Models\Customers;
 use App\Models\Product;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Nette\Utils\Random;
 
 class HomeController extends Controller
 {
@@ -29,16 +32,17 @@ class HomeController extends Controller
     // Sử dụng Dependency Injection để inject các Model vào constructor
     public function __construct(Product $product, Category $category)
     {
-        $this->product = $product->orderBy('id', 'desc')->get();
+        $this->product = $product->inRandomOrder()->get();
         $this->getCate = $category->all();
         $this->cate = $category->where('parent_id', '=', $category->parent_id)->get();
     }
     public function index(Category $category)
     {
-        // dd($this->cate);
+        $blog = Blog::orderBy('created_at', 'asc')->inRandomOrder()->get();
         return view('Fe.index', [
             'product' => $this->product,
             'cate' => $this->cate,
+            'blogs' =>  $blog
         ]);
     }
 
@@ -70,7 +74,9 @@ class HomeController extends Controller
     public function detail($product, $slug)
     {
         $product = Product::where('slug', $slug)->first();
-        return view('Fe.Shop.detail', compact('product'));
+        $getProduct = $product->where('id','!=',$product->id)->inRandomOrder()->get();
+        $comment = Comment::where('product_id', $product->id)->get();
+        return view('Fe.Shop.detail', compact('product', 'comment', 'getProduct'));
     }
     public function login()
     {
@@ -113,7 +119,8 @@ class HomeController extends Controller
                 "email" => $req->email,
                 "address" => $req->address,
                 "phone" => $req->phone,
-                "password" => Hash::make($req->password)
+                "password" => Hash::make($req->password),
+                "gender" => $req->gender
             ];
             // dd($data);
             Customers::create($data);
@@ -124,20 +131,16 @@ class HomeController extends Controller
         }
     }
 
-   
-
     public function logout()
     {
         auth('customers')->logout();
         return redirect()->back()->with('success', 'Logout successfully !');
     }
 
-
     public function forgotPassword()
     {
         return view('Fe.Login-Register.forgotPassword');
     }
-
     // public function postForgotPassword(Request $req)
     // {
     //     $now = Carbon::now('Asia/Ho_Chi_Minh');
@@ -188,7 +191,6 @@ class HomeController extends Controller
     //     // $customer->save();
     // }
 
-
     public function postForgotPassword(Request $req)
     {
         $req->validate([
@@ -203,9 +205,9 @@ class HomeController extends Controller
                 'is_used' => false
             ]
         );
-        $customer = Customers::where('email',$req->email)->first();
+        $customer = Customers::where('email', $req->email)->first();
         // dd($customer);
-        Mail::to($req->email)->queue(new ForgotPassword( $customer, $tokenData->token));
+        Mail::to($req->email)->queue(new ForgotPassword($customer, $tokenData->token));
 
         return redirect()->route('verifyOTP')->with('success', 'Chúng tôi đã gửi mail đến bạn. Vui lòng kiểm tra mail!');
     }
@@ -280,12 +282,9 @@ class HomeController extends Controller
         return redirect()->route('login')->with('success', 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập bằng mật khẩu mới.');
     }
 
+    // public function getCategory($name){
+    //     $getCategory = Category::where('name', $name)->with('products', 'children')->first();
+    //    return view('Fe.layout.master',compact('getCategory'));
+    // }
 
-
-
-
-    public function blogs()
-    {
-        return view('Fe.Blog.blog');
-    }
 }

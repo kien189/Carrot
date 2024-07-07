@@ -370,6 +370,7 @@
                                 </ul>
                             </div>
                         </div>
+                        {{-- Locj category theo danh mục cha  --}}
                         <div class="col-lg-12 col-sm-6 col-6 cr-product-box banner-480 mb-24">
                             <div class="cr-ice-cubes">
                                 <img src="assets/img/product/product-banner.jpg" alt="product banner">
@@ -407,33 +408,41 @@
                                     </div>
                                     <div class="cr-product-details">
                                         <div class="cr-brand">
-                                            <a href="">{{ $value->category->name }}</a>
+                                            <a>{{ $value->category->parent->name }}</a>
                                             <div class="cr-star">
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-fill"></i>
-                                                <i class="ri-star-line"></i>
-                                                <p>(4.5)</p>
+                                                @php
+                                                    $rating = $value->averageRating();
+                                                    $fullStars = floor($rating);
+                                                    $halfStar = ceil($rating - $fullStars);
+                                                    $emptyStars = 5 - $fullStars - $halfStar;
+                                                @endphp
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                @endfor
+                                                @if ($halfStar)
+                                                    <i class="ri-star-half-line"></i>
+                                                @endif
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <i class="ri-star-line"></i>
+                                                @endfor
+                                                <p>({{ $rating }})</p>
                                             </div>
                                         </div>
                                         <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
                                             class="title">{{ $value->name }}</a>
-                                        @if ($value->variants->isNotEmpty())
-                                            <p class="cr-price"><span
-                                                    class="new-price">{{ number_format($value->variants->first()->price) }}đ</span>
-                                                <span
-                                                    class="old-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
-                                            </p>
-                                        @else
-                                            <span class="new-price">Không có giá</span>
-                                        @endif
+                                        <p class="cr-price">
+                                            <span
+                                                class="new-price">{{ number_format($value->variants->first()->price) }}đ</span>
+                                            <span
+                                                class="old-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -598,199 +607,59 @@
             <div class="row">
                 <div class="col-xxl-7 col-xl-6 col-lg-6 col-md-12" data-aos="fade-up" data-aos-duration="2000">
                     <div class="cr-twocolumns-product">
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/9.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
+                        @foreach ($product as $value)
+                            <div class="slick-slide">
+                                <div class="cr-product-card">
+                                    <div class="cr-product-image">
+                                        <div class="cr-image-inner zoom-image-hover">
+                                            <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
+                                        <div class="cr-side-view">
+                                            <a href="javascript:void(0)" class="wishlist">
+                                                <i class="ri-heart-line"></i>
+                                            </a>
+                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
+                                                role="button">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                        </div>
+                                        <a class="cr-shopping-bag" href="javascript:void(0)">
+                                            <i class="ri-shopping-bag-line"></i>
+                                        </a>
                                     </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut
-                                        mix pack 200gm</a>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
+                                    <div class="cr-product-details">
+                                        <div class="cr-brand">
+                                            <a href="shop-left-sidebar.html">{{ $value->category->name }}</a>
+                                            <div class="cr-star">
+                                                @php
+                                                    $rating = $value->averageRating();
+                                                    $fullStars = floor($rating);
+                                                    $halfStar = ceil($rating - $fullStars);
+                                                    $emptyStars = 5 - $fullStars - $halfStar;
+                                                @endphp
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                @endfor
+                                                @if ($halfStar)
+                                                    <i class="ri-star-half-line"></i>
+                                                @endif
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <i class="ri-star-line"></i>
+                                                @endfor
+                                                <p>({{ $rating }})</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                            class="title">{{ $value->name }}</a>
+                                        <p class="cr-price"><span
+                                                class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                            <span
+                                                class="old-price">{{ number_format($value->variants->first()->price) }}đ</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/10.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/1.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut
-                                        mix pack 200gm</a>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/2.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/3.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-12" data-aos="fade-up" data-aos-duration="2000">
@@ -923,77 +792,28 @@
                 <div class="col-lg-12">
                     <div class="cr-blog-slider swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide" data-aos="fade-up" data-aos-duration="2000">
-                                <div class="cr-blog">
-                                    <div class="cr-blog-content">
-                                        <span><code>By Admin</code> | <a href="blog-left-sidebar.html">Snacks</a></span>
-                                        <h5>Urna pretium elit mauris cursus at elit Vestibulum.</h5>
-                                        <a class="read" href="blog-detail-left-sidebar.html">Read More</a>
-                                    </div>
-                                    <div class="cr-blog-image">
-                                        <img src="assets/img/blog/2.jpg" alt="blog-2">
-                                        <div class="cr-blog-date">
-                                            <span>
-                                                10
-                                                <code>oct</code>
-                                            </span>
+                            @foreach ($blogs as $value)
+                                <div class="swiper-slide" data-aos="fade-up" data-aos-duration="2000">
+                                    <div class="cr-blog">
+                                        <div class="cr-blog-content">
+                                            <span><code>{{ $value->user->name }}</code> | <a
+                                                    href="blog-left-sidebar.html">{{ $value->category->name }}</a></span>
+                                            <h5>{{ $value->title }}</h5>
+                                            <a class="read" href="{{ route('blogDetail',$value->slug) }}">Read More</a>
+                                        </div>
+                                        <div class="cr-blog-image">
+                                            <img src="{{ asset('storage/images/'.$value->image) }}" alt="blog-2">
+                                            <div class="cr-blog-date">
+                                                <span>
+                                                    {{ $value->created_at->format('d') }}
+                                                    <code>{{ $value->created_at->format('M') }}</code>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="swiper-slide" data-aos="fade-up" data-aos-duration="2000">
-                                <div class="cr-blog">
-                                    <div class="cr-blog-content">
-                                        <span><code>By Admin</code> | <a href="blog-left-sidebar.html">Food</a></span>
-                                        <h5>Best guide to Shopping for organic ingredients.</h5>
-                                        <a class="read" href="blog-detail-left-sidebar.html">Read More</a>
-                                    </div>
-                                    <div class="cr-blog-image">
-                                        <img src="assets/img/blog/1.jpg" alt="blog-1">
-                                        <div class="cr-blog-date">
-                                            <span>
-                                                09<code>sep</code>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide" data-aos="fade-up" data-aos-duration="2000">
-                                <div class="cr-blog">
-                                    <div class="cr-blog-content">
-                                        <span><code>By Admin</code> | <a href="blog-left-sidebar.html">Snacks</a></span>
-                                        <h5>Cursus at elit vestibulum urna pretium elit mauris.</h5>
-                                        <a class="read" href="blog-detail-left-sidebar.html">Read More</a>
-                                    </div>
-                                    <div class="cr-blog-image">
-                                        <img src="assets/img/blog/3.jpg" alt="blog-2">
-                                        <div class="cr-blog-date">
-                                            <span>
-                                                12
-                                                <code>oct</code>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide" data-aos="fade-up" data-aos-duration="2000">
-                                <div class="cr-blog">
-                                    <div class="cr-blog-content">
-                                        <span><code>By Admin</code> | <a href="blog-left-sidebar.html">Vegetable</a></span>
-                                        <h5>Condimentum Nam enim bestMorbi odio sodales.</h5>
-                                        <a class="read" href="blog-detail-left-sidebar.html">Read More</a>
-                                    </div>
-                                    <div class="cr-blog-image">
-                                        <img src="assets/img/blog/2.jpg" alt="blog-3">
-                                        <div class="cr-blog-date">
-                                            <span>
-                                                22
-                                                <code>jan</code>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
@@ -1001,4 +821,3 @@
         </div>
     </section>
 @endsection
-

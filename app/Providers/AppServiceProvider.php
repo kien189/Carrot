@@ -27,9 +27,15 @@ class AppServiceProvider extends ServiceProvider
             $view->with(compact('carts'));
         });
 
-       view()->composer('*',function($view){
-        $cates= Category::orderBy('id','asc')->get();
-        $view->with(compact('cates'));
-       });
+        view()->composer('Fe.layout.master', function($view) {
+            // Lấy tất cả các danh mục cha và con
+            $categories = Category::whereNull('parent_id')->with('children')->get();
+            $view->with(compact('categories'));
+        });
+        view()->composer('*', function($view) {
+            // Lấy tất cả các danh mục cha và con
+            $products = Product::inRandomOrder()->get();
+            $view->with(compact('products'));
+        });
     }
 }

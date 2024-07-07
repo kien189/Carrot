@@ -66,15 +66,25 @@
                         <div class="cr-size-and-weight">
                             <div class="cr-review-star">
                                 <div class="cr-star">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
+                                    @php
+                                        $rating = $product->averageRating();
+                                        $fullStars = floor($rating);
+                                        $halfStar = ceil($rating - $fullStars);
+                                        $emptyStars = 5 - $fullStars - $halfStar;
+                                    @endphp
+                                    @for ($i = 0; $i < $fullStars; $i++)
+                                        <i class="ri-star-fill" style="color:#f5885f"></i>
+                                    @endfor
+                                    @if ($halfStar)
+                                        <i class="ri-star-half-line"></i>
+                                    @endif
+                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                        <i class="ri-star-line"></i>
+                                    @endfor
                                 </div>
-                                <p>( 75 Review )</p>
+                                <p>( {{ $product->ratings->count() }})</p>
                             </div>
-                            <div class="list">
+                            {{-- <div class="list">
                                 <ul>
                                     <li><label>Brand <span>:</span></label>ESTA BETTERU CO</li>
                                     <li><label>Flavour <span>:</span></label>Super Saver Pack</li>
@@ -84,7 +94,7 @@
                                     <li><label>Info <span>:</span></label>Egg Free, Allergen-Free</li>
                                     <li><label>Items <span>:</span></label>1</li>
                                 </ul>
-                            </div>
+                            </div> --}}
                             <div class="cr-product-price">
                                 <span class="new-price"
                                     id="sale-price">{{ number_format($product->variants->first()->sale_price, 0, ',', '.') }}đ</span>
@@ -112,8 +122,8 @@
                                 <div class="cr-qty-main">
                                     <input type="text" name="quantity" placeholder="." value="1" minlength="1"
                                         maxlength="20" class="quantity">
-                                    <button type="button" class="plus">+</button>
-                                    <button type="button" class="minus">-</button>
+                                    <button type="button" class="plus plussss">+</button>
+                                    <button type="button" class="minus minusss">-</button>
                                 </div>
                                 <div class="cr-add-button">
                                     <button type="submit" class="cr-button cr-shopping-bag">Add to cart</button>
@@ -141,11 +151,11 @@
                                 data-bs-target="#description" type="button" role="tab" aria-controls="description"
                                 aria-selected="true">Description</button>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        {{-- <li class="nav-item" role="presentation">
                             <button class="nav-link" id="additional-tab" data-bs-toggle="tab"
                                 data-bs-target="#additional" type="button" role="tab" aria-controls="additional"
                                 aria-selected="false">Information</button>
-                        </li>
+                        </li> --}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review"
                                 type="button" role="tab" aria-controls="review"
@@ -157,24 +167,18 @@
                             aria-labelledby="description-tab">
                             <div class="cr-tab-content">
                                 <div class="cr-description">
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero
-                                        sapiente odio, error dolore vero temporibus consequatur, nobis veniam odit
-                                        dignissimos consectetur quae in perferendis
-                                        doloribusdebitis corporis, eaque dicta, repellat amet, illum adipisci vel
-                                        perferendis dolor! Quis vel consequuntur repellat distinctio rem. Corrupti
-                                        ratione alias odio, error dolore temporibus consequatur, nobis veniam odit
-                                        laborum dignissimos consectetur quae vero in perferendis provident quis.</p>
+                                    <p>{!! $product->description !!}.</p>
                                 </div>
-                                <h4 class="heading">Packaging & Delivery</h4>
+                                {{-- <h4 class="heading">Packaging & Delivery</h4>
                                 <div class="cr-description">
                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero
                                         perferendis dolor! Quis vel consequuntur repellat distinctio rem. Corrupti
                                         ratione alias odio, error dolore temporibus consequatur, nobis veniam odit
                                         laborum dignissimos consectetur quae vero in perferendis provident quis.</p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
+                        {{-- <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">
                             <div class="cr-tab-content">
                                 <div class="cr-description">
                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero
@@ -196,70 +200,55 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                             <div class="cr-tab-content-from">
-                                <div class="post">
-                                    <div class="content">
-                                        <img src="assets/img/review/1.jpg" alt="review">
-                                        <div class="details">
-                                            <span class="date">Jan 08, 2024</span>
-                                            <span class="name">Oreo Noman</span>
+                                <div class="post" id="comments-container">
+                                    @foreach ($comment as $item)
+                                        <div class="content">
+                                            <img src="assets/img/review/1.jpg" alt="review">
+                                            <div class="details">
+                                                <span class="date">{{ $item->created_at->format('d-m-Y') }}</span>
+                                                <span class="name">{{ $item->customers->name }}</span>
+                                            </div>
+                                            <div class="cr-t-review-rating">
+                                                @for ($i = 0; $i < $item->rating; $i++)
+                                                    <i class="ri-star-s-fill"></i>
+                                                @endfor
+                                                @for ($i = $item->rating; $i < 5; $i++)
+                                                    <i class="ri-star-s-line"></i>
+                                                @endfor
+                                            </div>
                                         </div>
-                                        <div class="cr-t-review-rating">
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                        </div>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero
-                                        sapiente doloribus debitis corporis, eaque dicta, repellat amet, illum
-                                        adipisci vel
-                                        perferendis dolor! quae vero in perferendis provident quis.</p>
-                                    <div class="content mt-30">
-                                        <img src="assets/img/review/2.jpg" alt="review">
-                                        <div class="details">
-                                            <span class="date">Mar 22, 2024</span>
-                                            <span class="name">Lina Wilson</span>
-                                        </div>
-                                        <div class="cr-t-review-rating">
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-line"></i>
-                                        </div>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero
-                                        sapiente doloribus debitis corporis, eaque dicta, repellat amet, illum
-                                        adipisci vel
-                                        perferendis dolor! quae vero in perferendis provident quis.</p>
+                                        <p>{{ $item->content }}.</p>
+                                    @endforeach
                                 </div>
-
                                 <h4 class="heading">Add a Review</h4>
-                                <form action="javascript:void(0)">
+                                <form id="rating-form" action="{{ route('comment', $product->id) }}" method="POST">
+                                    @csrf
                                     <div class="cr-ratting-star">
                                         <span>Your rating :</span>
                                         <div class="cr-t-review-rating">
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-fill"></i>
-                                            <i class="ri-star-s-line"></i>
-                                            <i class="ri-star-s-line"></i>
-                                            <i class="ri-star-s-line"></i>
+                                            <i class="ri-star ri-star-empty" data-index="1"></i>
+                                            <i class="ri-star ri-star-empty" data-index="2"></i>
+                                            <i class="ri-star ri-star-empty" data-index="3"></i>
+                                            <i class="ri-star ri-star-empty" data-index="4"></i>
+                                            <i class="ri-star ri-star-empty" data-index="5"></i>
                                         </div>
-                                    </div>
-                                    <div class="cr-ratting-input">
-                                        <input name="your-name" placeholder="Name" type="text">
-                                    </div>
-                                    <div class="cr-ratting-input">
-                                        <input name="your-email" placeholder="Email*" type="email" required="">
+                                        <input type="hidden" name="rating" id="rating-input" value="0">
+                                        <input type="hidden" name="product_id" id="product-id"
+                                            value="{{ $product->id }}">
+                                        <input type="hidden" name="customer_id" id="customer-id"
+                                            value="{{ Auth::guard('customers')->id() }}">
+                                        <input type="hidden" name="customer_id" id="customer-name"
+                                            value="{{ Auth::guard('customers')->user()->name }}">
+                                        <!-- Input ẩn để lưu trữ rating -->
                                     </div>
                                     <div class="cr-ratting-input form-submit">
-                                        <textarea name="your-commemt" placeholder="Enter Your Comment"></textarea>
-                                        <button class="cr-button" type="submit" value="Submit">Submit</button>
+                                        <textarea name="content" placeholder="Nhập bình luận của bạn" id="content" required=''></textarea>
+                                        <button class="cr-button" type="submit" id="btnSubmit">Submit</button>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -290,231 +279,58 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cr-popular-product">
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/9.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
+                        @foreach ($getProduct as $value)
+                            <div class="slick-slide">
+                                <div class="cr-product-card">
+                                    <div class="cr-product-image">
+                                        <div class="cr-image-inner zoom-image-hover">
+                                            <img src="{{ asset("storage/images/".$value->image) }}" alt="product-1">
                                         </div>
+                                        <div class="cr-side-view">
+                                            <a href="javascript:void(0)" class="wishlist">
+                                                <i class="ri-heart-line"></i>
+                                            </a>
+                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
+                                                role="button">
+                                                <i class="ri-eye-line"></i>
+                                            </a>
+                                        </div>
+                                        <a class="cr-shopping-bag" href="javascript:void(0)">
+                                            <i class="ri-shopping-bag-line"></i>
+                                        </a>
                                     </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut
-                                        mix pack 200gm</a>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
+                                    <div class="cr-product-details">
+                                        <div class="cr-brand">
+                                            <a >{{ $value->category->name}}</a>
+                                            <div class="cr-star">
+                                                @php
+                                                    $rating = $value->averageRating();
+                                                    $fullStars = floor($rating);
+                                                    $halfStar = ceil($rating - $fullStars);
+                                                    $emptyStars = 5 - $fullStars - $halfStar;
+                                                @endphp
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                @endfor
+                                                @if ($halfStar)
+                                                    <i class="ri-star-half-line"></i>
+                                                @endif
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <i class="ri-star-line"></i>
+                                                @endfor
+                                                <p>({{ $rating }})</p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('detail',['product'=>$value->category->parent->slug,'slug' => $value->slug]) }}" class="title">{{ $value->name }}</a>
+                                        <p class="cr-price"><span class="new-price">{{ number_format($value->variants->first()->sale_price)}}đ</span> <span
+                                                class="old-price">{{ number_format($value->variants->first()->price)}}đ</span></p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/10.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/1.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-line"></i>
-                                            <p>(4.5)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut
-                                        mix pack 200gm</a>
-                                    <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                            class="old-price">$123.25</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/2.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide">
-                            <div class="cr-product-card">
-                                <div class="cr-product-image">
-                                    <div class="cr-image-inner zoom-image-hover">
-                                        <img src="assets/img/product/3.jpg" alt="product-1">
-                                    </div>
-                                    <div class="cr-side-view">
-                                        <a href="javascript:void(0)" class="wishlist">
-                                            <i class="ri-heart-line"></i>
-                                        </a>
-                                        <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            role="button">
-                                            <i class="ri-eye-line"></i>
-                                        </a>
-                                    </div>
-                                    <a class="cr-shopping-bag" href="javascript:void(0)">
-                                        <i class="ri-shopping-bag-line"></i>
-                                    </a>
-                                </div>
-                                <div class="cr-product-details">
-                                    <div class="cr-brand">
-                                        <a href="shop-left-sidebar.html">Snacks</a>
-                                        <div class="cr-star">
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <i class="ri-star-fill"></i>
-                                            <p>(5.0)</p>
-                                        </div>
-                                    </div>
-                                    <a href="product-left-sidebar.html" class="title">Sweet snakes crunchy nut
-                                        mix 250gm
-                                        pack</a>
-                                    <p class="cr-price"><span class="new-price">$100.00</span> <span
-                                            class="old-price">$110.00</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </section>
-@endsection
-@section('script')
-    <script>
-        // Xử lý sự kiện khi click vào từng size
-        document.querySelectorAll('.variant-size').forEach(item => {
-            item.addEventListener('click', function() {
-                let price = parseFloat(this.getAttribute('data-price'));
-                let salePrice = parseFloat(this.getAttribute('data-sale-price'));
-                console.log(salePrice)
-                // Định dạng số tiền thành tiền Việt Nam
-                let formattedPrice = price.toLocaleString('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND'
-                });
-                let formattedSalePrice = salePrice.toLocaleString('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND'
-                });
-
-                document.getElementById('product-price').textContent = formattedPrice;
-                document.getElementById('sale-price').textContent = formattedSalePrice;
-            });
-        });
-
-        function handleSizeSelection(element) {
-            let variantId = element.getAttribute('data-variant-id');
-            document.getElementById('selected-variant-id').value = variantId;
-        }
-    </script>
 @endsection

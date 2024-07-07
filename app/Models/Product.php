@@ -29,4 +29,21 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariants::class, 'product_id','id');
     }
+    public function ratings()
+    {
+        return $this->hasMany(Comment::class, 'product_id','id');
+    }
+
+    public function averageRating()
+    {
+        $ratings = $this->ratings()->pluck('rating')->toArray();
+        $totalRatings = count($ratings);
+
+        if ($totalRatings > 0) {
+            $sum = array_sum($ratings);
+            return round($sum / $totalRatings, 1); // Lấy trung bình cộng với một chữ số thập phân
+        }
+
+        return 0; // Trả về 0 nếu không có đánh giá nào
+    }
 }

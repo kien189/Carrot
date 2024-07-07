@@ -51,3 +51,41 @@
 .text-center {
     text-align: center;
 }
+
+
+.ri-star {
+    cursor: pointer;
+    font-size: 24px;
+    color: #ccc;
+}
+
+.ri-star-empty:before {
+    content: "\2606";
+    /* icon sao rỗng */
+}
+
+.ri-star-filled:before {
+    content: "\2605";
+    /* icon sao đã được chọn */
+    color: #f7c600;
+}
+
+
+/*  */
+
+
+.userspan{
+    border-radius: 50%;
+    border: 1px solid rgb(219, 208, 208)
+}
+.user-avatar {
+    width: 22px;
+    /* Kích thước của ảnh đại diện */
+    height:22px;
+    /* Kích thước của ảnh đại diện */
+    border-radius: 50%;
+    /* Để ảnh tròn */
+    /* Khoảng cách giữa ảnh và tên người dùng */
+    object-fit: cover;
+    /* Để ảnh không bị méo */
+}
