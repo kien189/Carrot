@@ -30,6 +30,7 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/css/style.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/css/css1.css">
+    @vite('resources/js/app.js')
 </head>
 
 <body class="body-bg-6">

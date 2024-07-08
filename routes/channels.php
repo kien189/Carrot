@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -15,4 +17,18 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+// routes/channels.php
+// Broadcast::channel('comments', function ($user) {
+//     return true; // Hoặc logic để xác định người dùng có quyền truy cập kênh này
+// });
+Broadcast::channel('comments', function ($user) {
+    if($user != null){
+        return [
+            'id' =>$user->id,
+            'name'=>$user->name,
+        ];
+    }else{
+        return false;
+    }
 });

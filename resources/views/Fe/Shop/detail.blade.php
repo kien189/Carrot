@@ -82,7 +82,7 @@
                                         <i class="ri-star-line"></i>
                                     @endfor
                                 </div>
-                                <p>( {{ $product->ratings->count() }})</p>
+                                <p>( {{ $product->ratings->count() }} Review )</p>
                             </div>
                             {{-- <div class="list">
                                 <ul>
@@ -224,32 +224,30 @@
                                     @endforeach
                                 </div>
                                 <h4 class="heading">Add a Review</h4>
-                                <form id="rating-form" action="{{ route('comment', $product->id) }}" method="POST">
-                                    @csrf
-                                    <div class="cr-ratting-star">
-                                        <span>Your rating :</span>
-                                        <div class="cr-t-review-rating">
-                                            <i class="ri-star ri-star-empty" data-index="1"></i>
-                                            <i class="ri-star ri-star-empty" data-index="2"></i>
-                                            <i class="ri-star ri-star-empty" data-index="3"></i>
-                                            <i class="ri-star ri-star-empty" data-index="4"></i>
-                                            <i class="ri-star ri-star-empty" data-index="5"></i>
-                                        </div>
-                                        <input type="hidden" name="rating" id="rating-input" value="0">
-                                        <input type="hidden" name="product_id" id="product-id"
-                                            value="{{ $product->id }}">
-                                        <input type="hidden" name="customer_id" id="customer-id"
-                                            value="{{ Auth::guard('customers')->id() }}">
-                                        <input type="hidden" name="customer_id" id="customer-name"
-                                            value="{{ Auth::guard('customers')->user()->name }}">
-                                        <!-- Input ẩn để lưu trữ rating -->
-                                    </div>
-                                    <div class="cr-ratting-input form-submit">
-                                        <textarea name="content" placeholder="Nhập bình luận của bạn" id="content" required=''></textarea>
-                                        <button class="cr-button" type="submit" id="btnSubmit">Submit</button>
-                                    </div>
 
-                                </form>
+                                <div class="cr-ratting-star">
+                                    <span>Your rating :</span>
+                                    <div class="cr-t-review-rating">
+                                        <i class="ri-star ri-star-empty" data-index="1"></i>
+                                        <i class="ri-star ri-star-empty" data-index="2"></i>
+                                        <i class="ri-star ri-star-empty" data-index="3"></i>
+                                        <i class="ri-star ri-star-empty" data-index="4"></i>
+                                        <i class="ri-star ri-star-empty" data-index="5"></i>
+                                    </div>
+                                    <input type="hidden" name="rating" id="rating-input" value="0">
+                                    <input type="hidden" name="product_id" id="product-id"
+                                        value="{{ $product->id }}">
+                                    <input type="hidden" name="customer_id" id="customer-id"
+                                        value="{{ Auth::guard('customers')->id() }}">
+                                    <input type="hidden" name="customer_id" id="customer-name"
+                                        value="{{ Auth::guard('customers')->user()->name }}">
+                                    <!-- Input ẩn để lưu trữ rating -->
+                                </div>
+                                <div class="cr-ratting-input form-submit">
+                                    <textarea name="content" placeholder="Nhập bình luận của bạn" id="content" required=''></textarea>
+                                    <button class="cr-button" type="button" id="btnSubmit">Submit</button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -284,7 +282,7 @@
                                 <div class="cr-product-card">
                                     <div class="cr-product-image">
                                         <div class="cr-image-inner zoom-image-hover">
-                                            <img src="{{ asset("storage/images/".$value->image) }}" alt="product-1">
+                                            <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
                                         <div class="cr-side-view">
                                             <a href="javascript:void(0)" class="wishlist">
@@ -301,7 +299,7 @@
                                     </div>
                                     <div class="cr-product-details">
                                         <div class="cr-brand">
-                                            <a >{{ $value->category->name}}</a>
+                                            <a>{{ $value->category->name }}</a>
                                             <div class="cr-star">
                                                 @php
                                                     $rating = $value->averageRating();
@@ -321,9 +319,13 @@
                                                 <p>({{ $rating }})</p>
                                             </div>
                                         </div>
-                                        <a href="{{ route('detail',['product'=>$value->category->parent->slug,'slug' => $value->slug]) }}" class="title">{{ $value->name }}</a>
-                                        <p class="cr-price"><span class="new-price">{{ number_format($value->variants->first()->sale_price)}}đ</span> <span
-                                                class="old-price">{{ number_format($value->variants->first()->price)}}đ</span></p>
+                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                            class="title">{{ $value->name }}</a>
+                                        <p class="cr-price"><span
+                                                class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                            <span
+                                                class="old-price">{{ number_format($value->variants->first()->price) }}đ</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -333,4 +335,67 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script type="module">
+        // Ví dụ sử dụng Axios để lắng nghe sự kiện từ kênh 'comments'
+
+
+        window.Echo.channel('comments')
+            .listen('CommentEvents', (e) => {
+                console.log('New comment:', e.comment);
+                // Xử lý khi có bình luận mới được phát
+            });
+
+        const btnSubmit = document.querySelector('#btnSubmit');
+        btnSubmit.addEventListener('click', function() {
+            const productId = document.querySelector('#product-id').value;
+            console.log(productId);
+            const rating = document.querySelector('#rating-input').value;
+            const contentInput = document.querySelector('#content'); // Lấy phần tử input
+            const content = contentInput.value; // Lấy giá trị của input
+
+            axios.post(`/comment/${productId}`, {
+                    product_id: productId,
+                    rating: rating,
+                    content: content // Đúng cấu trúc của object
+                })
+                .then(res => {
+                    console.log(res.data);
+                    var content = res.data.comment.content;
+                    console.log(content);
+                    const commentDisplay = document.querySelector('#comments-container');
+                    commentDisplay.insertAdjacentHTML(
+                        'beforeend', // Thêm nội dung mới mà không làm mất nội dung cũ
+                        `
+                <div class="post">
+                    <div class="content mt-30">
+                        <img src="assets/img/review/2.jpg" alt="review">
+                        <div class="details">
+                            <span class="date">Mar 22, 2024</span>
+                            <span class="name">Lina Wilson</span>
+                        </div>
+                        <div class="cr-t-review-rating">
+                            <i class="ri-star-s-fill"></i>
+                            <i class="ri-star-s-fill"></i>
+                            <i class="ri-star-s-fill"></i>
+                            <i class="ri-star-s-fill"></i>
+                            <i class="ri-star-s-line"></i>
+                        </div>
+                    </div>
+                    <p> ${content}.</p>
+                </div>
+                `
+                    );
+
+                    // Xóa nội dung input sau khi gửi thành công
+                    contentInput.value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Xử lý lỗi nếu cần
+                });
+        });
+    </script>
 @endsection
