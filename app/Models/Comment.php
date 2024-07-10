@@ -12,9 +12,10 @@ class Comment extends Model
 
     protected $fillable = ['customer_id', 'product_id', 'content', 'reply_id', 'rating'];
 
-    public function customers(){
-        return $this->hasOne(Customers::class,'id','customer_id');
+    public function customers() {
+        return $this->hasOne(Customers::class, 'id', 'customer_id');
     }
+
 
     public function products()
     {

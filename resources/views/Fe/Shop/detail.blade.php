@@ -339,15 +339,30 @@
 
 @section('script')
     <script type="module">
-        // Ví dụ sử dụng Axios để lắng nghe sự kiện từ kênh 'comments'
+        Echo.channel("comment").listen('CommentEvents', event => {
+            console.log("Event received:", event);
+            console.log("Event received:", event.content);
+            console.log("New comment:", comment);
+            let newCommentHtml = `
+            <div class="post">
+                <div class="content">
+                    <img src="{{ asset('storage/images') }}/${event.comment.customers.image}" alt="review">
+                    <div class="details">
+                        <span class="date">${new Date(event.comment.customers.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                        <span class="name">${event.comment.customers.name}</span>
+                    </div>
+                    <div class="cr-t-review-rating">
+                        ${'★'.repeat(event.comment.rating)}
+                        ${'☆'.repeat(5 - event.comment.rating)}
+                    </div>
+                </div>
+                <p>${event.comment.content}</p>
+            </div>
+        `;
 
-
-        window.Echo.channel('comments')
-            .listen('CommentEvents', (e) => {
-                console.log('New comment:', e.comment);
-                // Xử lý khi có bình luận mới được phát
-            });
-
+            // Append new comment to comments div
+            document.getElementById('comments-container').insertAdjacentHTML('beforeend', newCommentHtml);
+        });
         const btnSubmit = document.querySelector('#btnSubmit');
         btnSubmit.addEventListener('click', function() {
             const productId = document.querySelector('#product-id').value;
@@ -363,34 +378,34 @@
                 })
                 .then(res => {
                     console.log(res.data);
-                    var content = res.data.comment.content;
-                    console.log(content);
-                    const commentDisplay = document.querySelector('#comments-container');
-                    commentDisplay.insertAdjacentHTML(
-                        'beforeend', // Thêm nội dung mới mà không làm mất nội dung cũ
-                        `
-                <div class="post">
-                    <div class="content mt-30">
-                        <img src="assets/img/review/2.jpg" alt="review">
-                        <div class="details">
-                            <span class="date">Mar 22, 2024</span>
-                            <span class="name">Lina Wilson</span>
-                        </div>
-                        <div class="cr-t-review-rating">
-                            <i class="ri-star-s-fill"></i>
-                            <i class="ri-star-s-fill"></i>
-                            <i class="ri-star-s-fill"></i>
-                            <i class="ri-star-s-fill"></i>
-                            <i class="ri-star-s-line"></i>
-                        </div>
-                    </div>
-                    <p> ${content}.</p>
-                </div>
-                `
-                    );
+                //     var content = res.data.comment.content;
+                //     console.log(content);
+                //     const commentDisplay = document.querySelector('#comments-container');
+                //     commentDisplay.insertAdjacentHTML(
+                //         'beforeend', // Thêm nội dung mới mà không làm mất nội dung cũ
+                //         `
+                // <div class="post">
+                //     <div class="content mt-30">
+                //         <img src="assets/img/review/2.jpg" alt="review">
+                //         <div class="details">
+                //             <span class="date">Mar 22, 2024</span>
+                //             <span class="name">Lina Wilson</span>
+                //         </div>
+                //         <div class="cr-t-review-rating">
+                //             <i class="ri-star-s-fill"></i>
+                //             <i class="ri-star-s-fill"></i>
+                //             <i class="ri-star-s-fill"></i>
+                //             <i class="ri-star-s-fill"></i>
+                //             <i class="ri-star-s-line"></i>
+                //         </div>
+                //     </div>
+                //     <p> ${content}.</p>
+                // </div>
+                // `
+                //     );
 
-                    // Xóa nội dung input sau khi gửi thành công
-                    contentInput.value = '';
+                //     // Xóa nội dung input sau khi gửi thành công
+                //     contentInput.value = '';
                 })
                 .catch(error => {
                     console.error('Error:', error);

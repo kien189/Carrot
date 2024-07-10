@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-
     public function index(Request $request, $id)
     {
         $comment = Comment::create([
@@ -20,9 +19,11 @@ class CommentController extends Controller
             'customer_id' => Auth::guard('customers')->id(),
         ]);
 
+        $comment->load('customers');
+
         broadcast(new CommentEvents($comment));
-        // Gửi sự kiện broadcast
 
         return response()->json(['message' => 'Bình luận thành công', 'comment' => $comment], 200);
     }
+
 }
