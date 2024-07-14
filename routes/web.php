@@ -1,21 +1,24 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\BlogControllers;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\ProductVariantController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Fe\CommentController;
-use App\Http\Controllers\Fe\HomeController;
-use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\VariantController;
-use App\Http\Controllers\Fe\AccountController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Fe\BlogController;
 use App\Http\Controllers\Fe\CartController;
-use App\Http\Controllers\Fe\LoginGoogleController;
+use App\Http\Controllers\Fe\HomeController;
 use App\Http\Controllers\Fe\ShopController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Fe\AccountController;
+use App\Http\Controllers\Fe\CommentController;
+use App\Http\Controllers\Fe\ContactController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BlogControllers;
+use App\Http\Controllers\Fe\CheckoutController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\VariantController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Fe\LoginGoogleController;
+use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\ProductVariantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +41,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         'product' => ProductController::class,
         'variants' => ProductVariantController::class,
         'blog' => BlogControllers::class,
+        'coupon' => CouponController::class,
         // 'shop' => ProfileController::class,
     ]);;
     Route::get('/creat/{product}', [ProductVariantController::class, 'add'])->name('variants.add');
@@ -64,7 +68,6 @@ Route::prefix('/admin')->group(function () {
 });
 Route::get('/products/{id}', [HomeController::class, 'modalProduct'])->name('modalProduct');
 
-// Group for public routes
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -115,10 +118,18 @@ Route::prefix('/')->group(function () {
     Route::post('/comment/{id}', [CommentController::class, 'index'])->name('comment');
 
     // Product detail route
-    Route::get('/{product}/{slug}', [HomeController::class, 'detail'])->name('detail');
+    Route::get('/{category}/{slug}', [HomeController::class, 'detail'])->name('detail');
+
+    Route::post('/addToCartJs/{product}', [CartController::class, 'addToCartJs'])->name('addToCartJs');
+
+    //contact
+    Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'postContact'])->name('postContact');
 });
-Route::post('/addToCartJs/{product}', [CartController::class, 'addToCartJs'])->name('addToCartJs');
-// Group for admin routes
+Route::prefix('checkout')->group(function () {
+    Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::post('/checkCoupon', [CheckoutController::class, 'checkCoupon'])->name('checkCoupon');
+});
 Route::group(['prefix' => 'account', 'middleware' => 'admin'], function () {
     Route::resource('profile', AccountController::class);
 });
@@ -128,7 +139,5 @@ Route::prefix('cart')->group(function () {
     Route::post('/updateCar', [CartController::class, 'updateCart'])->name('updateCart');
     Route::get('/addToCart/{product}', [CartController::class, 'addToCart'])->name('addToCart');
     Route::post('/addToCartJs/{product}', [CartController::class, 'addToCartJs'])->name('addToCartJs');
-    Route::get('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');
-
+    Route::delete('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');
 });
-Route::delete('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');

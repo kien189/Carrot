@@ -430,7 +430,7 @@
                                                     <p>(4.5)</p>
                                                 </div>
                                             </div>
-                                            <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                            <a href="{{ route('detail', ['category' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
                                                 class="title">{{ $value->name }}</a>
                                             <p class="cr-price"><span
                                                     class="new-price">{{ number_format($value->variants->first()->price) }}đ</span>

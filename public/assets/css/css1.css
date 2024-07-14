@@ -74,18 +74,28 @@
 /*  */
 
 
-.userspan{
+.userspan {
     border-radius: 50%;
     border: 1px solid rgb(219, 208, 208)
 }
+
 .user-avatar {
     width: 22px;
     /* Kích thước của ảnh đại diện */
-    height:22px;
+    height: 22px;
     /* Kích thước của ảnh đại diện */
     border-radius: 50%;
     /* Để ảnh tròn */
     /* Khoảng cách giữa ảnh và tên người dùng */
     object-fit: cover;
     /* Để ảnh không bị méo */
+}
+
+.star {
+    color: #f5885f;
+}
+
+.star.empty {
+    color: transparent;
+    -webkit-text-stroke: 1px #f5885f;
 }

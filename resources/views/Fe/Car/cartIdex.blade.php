@@ -168,7 +168,7 @@
                                                 <i class="ri-heart-line"></i>
                                             </a>
                                             <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                role="button">
+                                                data_id= "{{ $value->id }}" role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -198,7 +198,7 @@
                                                 <p>({{ $rating }})</p>
                                             </div>
                                         </div>
-                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                        <a href="{{ route('detail', ['category' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
                                             class="title">{{ $value->name }}</a>
                                         <p class="cr-price"><span
                                                 class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
@@ -228,29 +228,5 @@
 
 
         });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const btnDeleteCart = document.querySelectorAll('.btnDeleteCart');
-
-            btnDeleteCart.forEach(function(button) {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault(); // Ngăn chặn hành động mặc định của form submit
-                    const cartId = button.getAttribute('data-id');
-
-                    axios.delete(`/deleteCart/${cartId}`)
-                        .then(res => {
-                            console.log(res.data);
-                            // Xử lý phản hồi thành công, ví dụ như cập nhật giao diện
-                            button.closest('tr').remove(); // Xóa hàng trong bảng
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi
-                        });
-                });
-            });
-        });
-    </script>
     </script>
 @endsection

@@ -36,14 +36,14 @@
                                             class="product-image">
                                     </div>
                                 </div> --}}
-                                    @foreach ($product->images as $item)
+
                                         <div class="slider-banner-image">
                                             <div class="zoom-image-hover">
-                                                <img src="{{ asset('storage/images/' . $item->image) }}" alt="product-tab-2"
+                                                <img src="{{ asset('storage/images/' . $product->image) }}" alt="product-tab-2"
                                                     class="product-image">
                                             </div>
                                         </div>
-                                    @endforeach
+
                                 </div>
                                 <div class="slider slider-nav thumb-image">
                                     @foreach ($product->images as $value)
@@ -289,7 +289,7 @@
                                                 <i class="ri-heart-line"></i>
                                             </a>
                                             <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                role="button">
+                                            data_id= "{{ $value->id }}"  role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -319,7 +319,7 @@
                                                 <p>({{ $rating }})</p>
                                             </div>
                                         </div>
-                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                        <a href="{{ route('detail', ['category' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
                                             class="title">{{ $value->name }}</a>
                                         <p class="cr-price"><span
                                                 class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
@@ -340,27 +340,32 @@
 @section('script')
     <script type="module">
         Echo.channel("comment").listen('CommentEvents', event => {
-            console.log("Event received:", event);
-            console.log("Event received:", event.content);
-            console.log("New comment:", comment);
-            let newCommentHtml = `
-            <div class="post">
-                <div class="content">
-                    <img src="{{ asset('storage/images') }}/${event.comment.customers.image}" alt="review">
-                    <div class="details">
-                        <span class="date">${new Date(event.comment.customers.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                        <span class="name">${event.comment.customers.name}</span>
-                    </div>
-                    <div class="cr-t-review-rating">
-                        ${'★'.repeat(event.comment.rating)}
-                        ${'☆'.repeat(5 - event.comment.rating)}
-                    </div>
-                </div>
-                <p>${event.comment.content}</p>
-            </div>
-        `;
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= event.comment.rating) {
+                    starsHtml += `<i class="star">★</i>`;
+                } else {
+                    starsHtml += `<i class="star empty">★</i>`;
+                }
+            }
 
-            // Append new comment to comments div
+            let newCommentHtml = `
+        <div class="post">
+            <div class="content">
+                <img src="assets/img/review/1.jpg" alt="review">
+                <div class="details">
+                    <span class="date">${new Date(event.comment.customers.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                    <span class="name">${event.comment.customers.name}</span>
+                </div>
+                <div class="cr-t-review-rating">
+                    ${starsHtml}
+                </div>
+            </div>
+            <p>${event.comment.content}</p>
+        </div>
+    `;
+
+
             document.getElementById('comments-container').insertAdjacentHTML('beforeend', newCommentHtml);
         });
         const btnSubmit = document.querySelector('#btnSubmit');
@@ -368,48 +373,19 @@
             const productId = document.querySelector('#product-id').value;
             console.log(productId);
             const rating = document.querySelector('#rating-input').value;
-            const contentInput = document.querySelector('#content'); // Lấy phần tử input
-            const content = contentInput.value; // Lấy giá trị của input
+            const contentInput = document.querySelector('#content');
+            const content = contentInput.value;
 
             axios.post(`/comment/${productId}`, {
                     product_id: productId,
                     rating: rating,
-                    content: content // Đúng cấu trúc của object
+                    content: content
                 })
                 .then(res => {
                     console.log(res.data);
-                //     var content = res.data.comment.content;
-                //     console.log(content);
-                //     const commentDisplay = document.querySelector('#comments-container');
-                //     commentDisplay.insertAdjacentHTML(
-                //         'beforeend', // Thêm nội dung mới mà không làm mất nội dung cũ
-                //         `
-                // <div class="post">
-                //     <div class="content mt-30">
-                //         <img src="assets/img/review/2.jpg" alt="review">
-                //         <div class="details">
-                //             <span class="date">Mar 22, 2024</span>
-                //             <span class="name">Lina Wilson</span>
-                //         </div>
-                //         <div class="cr-t-review-rating">
-                //             <i class="ri-star-s-fill"></i>
-                //             <i class="ri-star-s-fill"></i>
-                //             <i class="ri-star-s-fill"></i>
-                //             <i class="ri-star-s-fill"></i>
-                //             <i class="ri-star-s-line"></i>
-                //         </div>
-                //     </div>
-                //     <p> ${content}.</p>
-                // </div>
-                // `
-                //     );
-
-                //     // Xóa nội dung input sau khi gửi thành công
-                //     contentInput.value = '';
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // Xử lý lỗi nếu cần
                 });
         });
     </script>

@@ -160,7 +160,7 @@
                                                 <i class="ri-heart-line"></i>
                                             </a>
                                             <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                role="button">
+                                            data_id= "{{ $value->id }}"  role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -190,7 +190,7 @@
                                                 <p>({{ $rating }})</p>
                                             </div>
                                         </div>
-                                        <a href="{{ route('detail', ['product' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
+                                        <a href="{{ route('detail', ['category' => $value->category->parent->slug, 'slug' => $value->slug]) }}"
                                             class="title">{{ $value->name }}</a>
                                         <p class="text">{{ $value->sortdescription }}.</p>
                                         <ul class="list">
@@ -334,5 +334,8 @@
                 }).format(amount);
             }
         });
+    </script>
+    <script>
+
     </script>
 @endsection

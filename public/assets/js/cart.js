@@ -107,20 +107,20 @@ document.addEventListener('DOMContentLoaded', function () {
             id: cartId,
             quantity: quantity
         })
-        .then(response => {
-            // console.log(response.data);
-            // Chỉ gọi updateTotal sau khi nhận được phản hồi từ server
-            // if (item.tagName.toLowerCase() === 'li') {
-            //     updateTotal(cartItemsList);
-            // } else if (item.tagName.toLowerCase() === 'tr') {
-            //     updateTotal(cartItemsTable);
-            // }
-            // // Cập nhật phần tử còn lại
-            // updateOtherElement(cartId, quantity);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+            .then(response => {
+                // console.log(response.data);
+                // Chỉ gọi updateTotal sau khi nhận được phản hồi từ server
+                // if (item.tagName.toLowerCase() === 'li') {
+                //     updateTotal(cartItemsList);
+                // } else if (item.tagName.toLowerCase() === 'tr') {
+                //     updateTotal(cartItemsTable);
+                // }
+                // // Cập nhật phần tử còn lại
+                // updateOtherElement(cartId, quantity);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     // Đảm bảo chỉ đính kèm sự kiện một lần
@@ -142,4 +142,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // cartItemsTable.forEach(function (item, index) {
     //     console.log(`Cart item table ${index}:`, item);
     // });
+
+
+
+
+
+
+
+
+    const btnDeleteCart = document.querySelectorAll('.btnDeleteCart');
+
+    btnDeleteCart.forEach(function (button) {
+        button.addEventListener('click', function (e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của form submit
+            const cartId = button.getAttribute('data-id');
+
+            axios.delete(`cart/deleteCart/${cartId}`)
+                .then(res => {
+                    console.log(res.data);
+                    // Xử lý phản hồi thành công, ví dụ như cập nhật giao diện
+                    button.closest('tr').remove(); // Xóa hàng trong bảng
+                })
+                .catch(err => {
+                    console.error(err);
+                    // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi
+                });
+        });
+    });
 });

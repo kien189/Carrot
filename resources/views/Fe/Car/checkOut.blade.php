@@ -1,8 +1,8 @@
 @extends('Fe.layout.master')
 @section('main_fe')
     <base href="/">
-      <!-- Breadcrumb -->
-      <section class="section-breadcrumb">
+    <!-- Breadcrumb -->
+    <section class="section-breadcrumb">
         <div class="cr-breadcrumb-image">
             <div class="container">
                 <div class="row">
@@ -39,63 +39,47 @@
                                         <span class="text-left">Delivery Charges</span>
                                         <span class="text-right">$80.00</span>
                                     </div>
+                                    <div>
+                                        <form action="{{ route('checkCoupon') }}" method="post"
+                                            class=" d-flex align-items-center">
+                                            @csrf
+                                            <input type="text" class="form control" name="couponInput"
+                                                placeholder="Mã khuyễn mãi "
+                                                style="border:1px solid #e9e9e9;outline:none;padding:10px">
+                                            <span><button class="cr-button">gửi</button></span>
+                                        </form>
+                                    </div>
                                     <div class="cr-checkout-summary-total">
                                         <span class="text-left">Total Amount</span>
                                         <span class="text-right">$80.00</span>
                                     </div>
                                 </div>
                                 <div class="cr-checkout-pro">
-                                    <div class="col-sm-12 mb-6">
-                                        <div class="cr-product-inner">
-                                            <div class="cr-pro-image-outer">
-                                                <div class="cr-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
-                                                        <img class="main-image" src="assets/img/product/10.jpg"
-                                                            alt="Product">
-                                                    </a>
+                                    @foreach ($cart as $value)
+                                        <div class="col-sm-12 mb-6">
+                                            <div class="cr-product-inner">
+                                                <div class="cr-pro-image-outer">
+                                                    <div class="cr-pro-image">
+                                                        <a href="{{ route('detail', ['category' => $pro->category->parent->slug, 'slug' => $value->products->slug]) }}"
+                                                            class="image">
+                                                            <img class="main-image"
+                                                                src="{{ asset('storage/images/' . $value->products->image) }}"
+                                                                alt="Product">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="cr-pro-content cr-product-details">
+                                                            <h5 class="cr-pro-title"><a
+                                                                href="product-left-sidebar.html">{{ $value->name }}</a></h5>
+                                                            <p class="cr-price">
+                                                                <span class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
+                                                                <span class="fw-bold ">x {{ $value->quantity }}</span>
+                                                                <span class="float-end fw-bold text-danger me-2">{{ number_format($value->variants->first()->sale_price * $value->quantity) }}đ</span>
+                                                            </p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="cr-pro-content cr-product-details">
-                                                <h5 class="cr-pro-title"><a href="product-left-sidebar.html">Dates Value
-                                                        Pack Pouch</a></h5>
-                                                <div class="cr-pro-rating">
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-line"></i>
-                                                </div>
-                                                <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                                        class="old-price">$123.25</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 mb-0">
-                                        <div class="cr-product-inner">
-                                            <div class="cr-pro-image-outer">
-                                                <div class="cr-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
-                                                        <img class="main-image" src="assets/img/product/12.jpg"
-                                                            alt="Product">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="cr-pro-content cr-product-details">
-                                                <h5 class="cr-pro-title"><a href="product-left-sidebar.html">Smoked
-                                                        Honey Spiced Nuts</a></h5>
-                                                <div class="cr-pro-rating">
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-fill"></i>
-                                                    <i class="ri-star-line"></i>
-                                                </div>
-                                                <p class="cr-price"><span class="new-price">$120.25</span> <span
-                                                        class="old-price">$123.25</span></p>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -222,8 +206,8 @@
                                         <form action="#" method="post">
                                             <span class="cr-check-login-wrap">
                                                 <label>Email Address</label>
-                                                <input type="text" name="name" placeholder="Enter your email address"
-                                                    required>
+                                                <input type="text" name="name"
+                                                    placeholder="Enter your email address" required>
                                             </span>
                                             <span class="cr-check-login-wrap">
                                                 <label>Password</label>
@@ -334,5 +318,4 @@
         </div>
     </section>
     <!-- Checkout section End -->
-
 @endsection

@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function($view) {
             // Lấy tất cả các danh mục cha và con
             $products = Product::inRandomOrder()->get();
-            $view->with(compact('products'));
+            $pro = Product::inRandomOrder()->first();
+            $view->with(compact('products','pro'));
         });
     }
 }

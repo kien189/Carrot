@@ -58,7 +58,7 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item"
-                                                                href="{{ route('variants.add', $value->id) }}">Edit</a>
+                                                                href="{{ route('variants.edit', $value->id) }}">Edit</a>
                                                             <form action="{{ route('variants.destroy', $value->id) }}"
                                                                 method="post">
                                                                 @method('DELETE')

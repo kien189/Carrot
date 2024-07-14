@@ -321,29 +321,29 @@
                                                     <label class="form-label">Size</label>
                                                     <div class="form-checkbox-box">
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio" name="size" value="S" {{ $editVariant->size == 'S' ? 'checked' : '' }}
-                                                                value="S">
-                                                            <label>S</label>
+                                                            <input type="radio" name="size" value="250g" {{ $editVariant->size == '250g' ? 'checked' : '' }}
+                                                                value="250g">
+                                                            <label>250g</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio" name="size" value="M" {{ $editVariant->size == 'M' ? 'checked' : '' }}
-                                                                value="M">
-                                                            <label>M</label>
+                                                            <input type="radio" name="size" value="500g" {{ $editVariant->size == '500g' ? 'checked' : '' }}
+                                                                value="500g">
+                                                            <label>500g</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio" name="size" value="L" {{ $editVariant->size == 'L' ? 'checked' : '' }}
-                                                                value="L">
-                                                            <label>L</label>
+                                                            <input type="radio" name="size" value="1kg" {{ $editVariant->size == '1kg' ? 'checked' : '' }}
+                                                                >
+                                                            <label>1kg</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio" name="size" value="XL" {{ $editVariant->size == 'XL' ? 'checked' : '' }}
-                                                                value="XL">
-                                                            <label>XL</label>
+                                                            <input type="radio" name="size" value="2kg" {{ $editVariant->size == '2kg' ? 'checked' : '' }}
+                                                                >
+                                                            <label>2kg</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input type="radio" name="size" value="XXL" {{ $editVariant->size == 'XXL' ? 'checked' : '' }}
-                                                                value="XXL">
-                                                            <label>XXL</label>
+                                                            <input type="radio" name="size" value="3kg" {{ $editVariant->size == '3kg' ? 'checked' : '' }}
+                                                                value="3kg">
+                                                            <label>3kg</label>
                                                         </div>
                                                     </div>
                                                 </div>

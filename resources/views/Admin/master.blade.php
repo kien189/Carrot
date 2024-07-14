@@ -279,6 +279,17 @@
                                             class="ri-checkbox-blank-circle-line"></i>Biến thể</a></li>
                             </ul>
                         </li>
+                        <li class="cr-sb-item sb-drop-item">
+                            <a href="javascript:void(0)" class="cr-drop-toggle">
+                                <i class="fa-solid fa-ticket"></i><span class="condense">Mã giảm giá<i
+                                        class="drop-arrow ri-arrow-down-s-line"></i></span></a>
+                            <ul class="cr-sb-drop condense">
+                                <li><a href="{{ route('coupon.index') }}" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Mã giảm giá </a></li>
+                                <li><a href="{{ route('variants.index') }}" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Biến thể</a></li>
+                            </ul>
+                        </li>
                         <li class="cr-sb-item">
                             <a href="remix-icons.html" class="cr-page-link">
                                 <i class="fa-solid fa-comment-dots"></i><span class="condense"><span

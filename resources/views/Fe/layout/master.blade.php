@@ -277,6 +277,26 @@
                                     </ul> --}}
                                 </li>
                                 <li class="nav-item dropdown">
+                                    <a class="nav-link " href="{{ route('contact') }}">
+                                        Contact
+                                    </a>
+                                    {{-- <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="shop-left-sidebar.html">Shop Left
+                                                sidebar</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="shop-right-sidebar.html">Shop
+                                                Right
+                                                sidebar</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="shop-full-width.html">Full
+                                                Width</a>
+                                        </li>
+                                    </ul> --}}
+                                </li>
+                                <li class="nav-item dropdown">
                                     <a class="nav-link " href="{{ route('cart') }}">
                                         Carts
                                     </a>
@@ -629,7 +649,7 @@
     </a>
 
     <!-- Model -->
-    <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
+    {{-- <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
             <div class="modal-content">
                 <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
@@ -693,8 +713,66 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+    <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                            <div class="zoom-image-hover modal-border-image">
+                                <img src="" alt="product-tab-2" class="product-image">
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="cr-size-and-weight-contain">
+                                <h2 class="heading"></h2>
+                                <p class="description"></p>
+                            </div>
+                            <div class="cr-size-and-weight">
+                                <div class="cr-review-star">
+                                    <div class="cr-star">
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                    </div>
+                                    <p id="review">( 75 Review )</p>
+                                </div>
+                                <div class="cr-product-price">
+                                    <span class="new-price"></span>
+                                    <span class="old-price"></span>
+                                </div>
+                                <div class="cr-size-weight">
+                                    <h5><span>Size</span>/<span>Weight</span> :</h5>
+                                    <div class="cr-kg">
+                                        <ul>
+                                            <li class="active-color"></li>
 
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cr-add-card">
+                                    <div class="cr-qty-main">
+                                        <input type="text" placeholder="." value="1" minlength="1"
+                                            maxlength="20" class="quantity">
+                                        <button type="button" id="add_model" class="plus plussss">+</button>
+                                        <button type="button" id="sub_model" class="minus minusss">-</button>
+                                    </div>
+                                    <div class="cr-add-button">
+                                        <button type="button" class="cr-button cr-shopping-bag">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Cart -->
     <div class="cr-cart-overlay"></div>
     <div class="cr-cart-view">
@@ -738,7 +816,8 @@
                                         <button type="button" class="btnMinus minus">-</button>
                                     </div>
                                 </div>
-                                <a href="{{ route('deleteCart',$value->id) }}" class="remove btnDelete" data-cart-id="{{ $value->id }}">×</a>
+                                <a href="{{ route('deleteCart', $value->id) }}" class="remove btnDelete"
+                                    data-cart-id="{{ $value->id }}">×</a>
                             </div>
                         </li>
                     @endforeach
@@ -878,6 +957,7 @@
     <script src="{{ asset('assets') }}/js/cart.js"></script>
     <script src="{{ asset('assets') }}/js/search.js"></script>
     <script src="{{ asset('assets') }}/js/variants.js"></script>
+    <script src="{{ asset('assets') }}/js/modal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         var updateCartRoute = '{{ route('updateCart') }}';
@@ -887,6 +967,9 @@
     </script>
     <script>
         var comment = "{{ route('comment', ['id' => ':product_id']) }}";
+    </script>
+    <script>
+        var assetUrl = "{{ asset('storage/images') }}";
     </script>
 </body>
 
