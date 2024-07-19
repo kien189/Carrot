@@ -47,4 +47,10 @@ class Product extends Model
 
         return 0; // Trả về 0 nếu không có đánh giá nào
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'product_id');
+    }
+    
 }

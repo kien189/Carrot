@@ -152,21 +152,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const btnDeleteCart = document.querySelectorAll('.btnDeleteCart');
 
-    btnDeleteCart.forEach(function (button) {
-        button.addEventListener('click', function (e) {
-            e.preventDefault(); // Ngăn chặn hành động mặc định của form submit
-            const cartId = button.getAttribute('data-id');
+    // btnDeleteCart.forEach(function (button) {
+    //     button.addEventListener('click', function (e) {
+    //         // e.preventDefault(); // Ngăn chặn hành động mặc định của form submit
+    //         const cartId = button.getAttribute('data-id');
+    //         axios.delete(`cart/deleteCart/${cartId}`)
+    //             .then(res => {
+    //                 console.log(res.data);
+    //                 // Xử lý phản hồi thành công, ví dụ như cập nhật giao diện
+    //                 const liElement = button.closest('li');
+    //                 const trElement = button.closest('tr');
 
-            axios.delete(`cart/deleteCart/${cartId}`)
-                .then(res => {
-                    console.log(res.data);
-                    // Xử lý phản hồi thành công, ví dụ như cập nhật giao diện
-                    button.closest('tr').remove(); // Xóa hàng trong bảng
-                })
-                .catch(err => {
-                    console.error(err);
-                    // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi
-                });
-        });
-    });
+    //                 if (trElement) {
+    //                     trElement.remove(); // Xóa thẻ <tr>
+    //                     if (liElement) {
+    //                         liElement.remove(); // Xóa thẻ <li> nếu có
+    //                     }
+    //                 } else if (liElement) {
+    //                     liElement.remove();
+    //                     if (trElement) {
+    //                         trElement.remove();
+    //                     } // Xóa thẻ <li>
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.error(err);
+    //                 // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi
+    //             });
+    //     });
+    // });
 });

@@ -378,7 +378,7 @@
                                     <h4 class="title">Juicy </h4>
                                     <h5 class="sub-title">Fruits</h5>
                                     <span>100% Natural</span>
-                                    <a href="shop-left-sidebar.html" class="cr-button">Shop Now</a>
+                                    <a href="{{ route('shop') }}" class="cr-button">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -397,8 +397,8 @@
                                             <a href="javascript:void(0)" class="wishlist">
                                                 <i class="ri-heart-line"></i>
                                             </a>
-                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                data_id= "{{ $value->id }}" role="button">
+                                            <a class="model-oraganic-product" data-bs-toggle="modal"
+                                                href="#quickview{{ $value->id }}" role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -462,7 +462,7 @@
                                         <p><span class="percent">30%</span> Off <span class="text">on first order</span>
                                         </p>
                                         <div class="cr-product-banner-buttons">
-                                            <a href="shop-left-sidebar.html" class="cr-button">shop now</a>
+                                            <a href="{{ route('shop') }}" class="cr-button">shop now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -475,7 +475,7 @@
                                         <p><span class="percent">20%</span> Off <span class="text">on first order</span>
                                         </p>
                                         <div class="cr-product-banner-buttons">
-                                            <a href="shop-left-sidebar.html" class="cr-button">shop now</a>
+                                            <a href="{{ route('shop') }}" class="cr-button">shop now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -488,7 +488,7 @@
                                         <p><span class="percent">35%</span> Off <span class="text">on first order</span>
                                         </p>
                                         <div class="cr-product-banner-buttons">
-                                            <a href="shop-left-sidebar.html" class="cr-button">shop now</a>
+                                            <a href="{{ route('shop') }}" class="cr-button">shop now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -615,11 +615,11 @@
                                             <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
                                         <div class="cr-side-view">
-                                            <a href="javascript:void(0)" class="wishlist">
+                                            <a href="{{ route('wishList') }}" class="wishlist">
                                                 <i class="ri-heart-line"></i>
                                             </a>
-                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                                role="button" data_id= "{{ $value->id }}">
+                                            <a class="model-oraganic-product" data-bs-toggle="modal"
+                                                href="#quickview{{ $value->id }}" role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -671,7 +671,7 @@
                                 <span>25% <code>OFF</code></span>
                             </div>
                             <div class="rightbar-buttons">
-                                <a href="shop-left-sidebar.html" class="cr-button">
+                                <a href="{{ route('shop') }}" class="cr-button">
                                     shop now
                                 </a>
                             </div>
@@ -821,64 +821,6 @@
             </div>
         </div>
     </section>
-    <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
-            <div class="modal-content">
-                <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-5 col-sm-12 col-xs-12">
-                            <div class="zoom-image-hover modal-border-image">
-                                <img src="" alt="product-tab-2" class="product-image">
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-12 col-xs-12">
-                            <div class="cr-size-and-weight-contain">
-                                <h2 class="heading"></h2>
-                                <p class="description"></p>
-                            </div>
-                            <div class="cr-size-and-weight">
-                                <div class="cr-review-star">
-                                    <div class="cr-star">
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                    </div>
-                                    <p id="review">( 75 Review )</p>
-                                </div>
-                                <div class="cr-product-price">
-                                    <span class="new-price"></span>
-                                    <span class="old-price"></span>
-                                </div>
-                                <div class="cr-size-weight">
-                                    <h5><span>Size</span>/<span>Weight</span> :</h5>
-                                    <div class="cr-kg">
-                                        <ul>
-                                            <li class="active-color"></li>
 
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="cr-add-card">
-                                    <div class="cr-qty-main">
-                                        <input type="text" placeholder="." value="1" minlength="1"
-                                            maxlength="20" class="quantity">
-                                        <button type="button" id="add_model" class="plus plussss">+</button>
-                                        <button type="button" id="sub_model" class="minus minusss">-</button>
-                                    </div>
-                                    <div class="cr-add-button">
-                                        <button type="button" class="cr-button cr-shopping-bag">Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 @endsection
-

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Dashboard;
+use App\Http\Controllers\Fe\ApiController;
 use App\Http\Controllers\Fe\BlogController;
 use App\Http\Controllers\Fe\CartController;
 use App\Http\Controllers\Fe\HomeController;
@@ -11,14 +13,18 @@ use App\Http\Controllers\Fe\ContactController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BlogControllers;
 use App\Http\Controllers\Fe\CheckoutController;
+use App\Http\Controllers\Fe\WishListController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\VariantController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Fe\LoginGoogleController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Fe\FavoriteController;
+use App\Http\Controllers\Fe\Payment\vnPayPayMentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +38,8 @@ use App\Http\Controllers\Admin\ProductVariantController;
 */
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
-
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.index');
+    Route::get('/dash_board', [DashboardController::class, 'getStatistics'])->name('admin.getStatistics');
     Route::resources([
         'profile' => ProfileController::class,
         'category' => CategoryController::class,
@@ -125,13 +131,15 @@ Route::prefix('/')->group(function () {
     //contact
     Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactController::class, 'postContact'])->name('postContact');
+
+    Route::get('/profile', [AccountController::class, 'index'])->name('profile');
 });
 Route::prefix('checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
     Route::post('/checkCoupon', [CheckoutController::class, 'checkCoupon'])->name('checkCoupon');
-});
-Route::group(['prefix' => 'account', 'middleware' => 'admin'], function () {
-    Route::resource('profile', AccountController::class);
+    Route::post('/vnpay_payment', [vnPayPayMentController::class, 'vnpay_payment'])->name('vnPay_Payment');
+    Route::post('/momo_payment', [vnPayPayMentController::class, 'momo_payment'])->name('momo_Payment');
+    Route::post('/cash', [CheckoutController::class, 'cash'])->name('cash');
 });
 
 Route::prefix('cart')->group(function () {
@@ -139,5 +147,12 @@ Route::prefix('cart')->group(function () {
     Route::post('/updateCar', [CartController::class, 'updateCart'])->name('updateCart');
     Route::get('/addToCart/{product}', [CartController::class, 'addToCart'])->name('addToCart');
     Route::post('/addToCartJs/{product}', [CartController::class, 'addToCartJs'])->name('addToCartJs');
-    Route::delete('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');
+    Route::get('/deleteCart/{id}', [CartController::class, 'deleteCart'])->name('deleteCart');
+});
+
+Route::prefix('wishList')->group(function () {
+    Route::get('/', [FavoriteController::class, 'index'])->name('wishList');
+    Route::get('/addWishList/{product}', [FavoriteController::class, 'addFavorite'])->name('addFavorite');
+    Route::delete('/deleteWishList/{id}', [FavoriteController::class, 'deleteWishList'])->name('deleteWishList');
+
 });

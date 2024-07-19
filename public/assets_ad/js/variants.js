@@ -104,11 +104,11 @@ function ChangeToSlug() {
     //In slug ra textbox có id “slug”
     document.getElementById('slug').value = slug;
 }
-ClassicEditor
-.create(document.querySelector('#editor1'))
-.then(editor => {
-    console.log(editor);
-})
-.catch(error => {
-    console.error(error);
-});
+
+// ClassicEditor.create(document.querySelector('#editor1'))
+// .then(editor => {
+//     console.log(editor);
+// })
+// .catch(error => {
+//     console.error(error);
+// });

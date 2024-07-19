@@ -2,7 +2,7 @@
 
 (function ($) {
     "use strict";
-    function newrevenueChart() {
+    function newrevenueChart(ordersData, revenueData) {
         var options = {
             chart: {
                 height: 365,
@@ -30,23 +30,26 @@
             },
             series: [
                 {
-                    name: 'Revenue',
-                    data: [25, 65, 42, 52, 14, 32, 54, 12, 24, 63, 24],
-                }, {
                     name: 'Orders',
-                    data: [15, 65 ,45, 44, 65, 85, 23, 74, 53, 65, 75],
-                }, {
+                    data: revenueData,
+                },
+                {
+                    name: 'Revenue',
+                    data: ordersData,
+                },
+
+                {
                     name: 'Expence',
                     data: [12, 31, 40, 39, 54, 74, 20, 48, 50, 25, 43],
                 },
             ],
             plotOptions: {
                 bar: {
-                  horizontal: false,
-                  columnWidth: '20%',
+                    horizontal: false,
+                    columnWidth: '20%',
                 }
-              },
-              stroke: {
+            },
+            stroke: {
                 width: [2, 2, 2],
                 curve: "smooth",
             },
@@ -71,14 +74,20 @@
                     show: !1
                 }
             },
-            yaxis: {
-                labels: {
-                    formatter: function (e) {
-                        return e + "k"
-                    },
-                    offsetX: -15
-                }
-            },
+            yaxis: [
+                {
+                    // Định dạng trục Y cho doanh thu
+                    labels: {
+                        formatter: function (e) {
+                            if (ordersData) { }
+                            // Giữ nguyên giá trị cho doanh thu
+                            return e.toLocaleString('vi-VN');
+                        },
+                        offsetX: -15
+                    }
+                },
+
+            ],
             legend: {
                 show: !0,
                 horizontalAlign: "center",
@@ -128,42 +137,55 @@
         var newrevenueChart = new ApexCharts(document.querySelector("#newrevenueChart"), options);
         newrevenueChart.render();
     }
-    function newcampaignsChart() {
+    function newcampaignsChart(ordersData, revenueData) {
         var options = {
             series: [44, 55, 67],
             chart: {
-            height: 350,
-            type: 'radialBar',
-          },
-          plotOptions: {
-            radialBar: {
-              dataLabels: {
-                name: {
-                  fontSize: '22px',
-                },
-                value: {
-                  fontSize: '16px',
-                },
-                total: {
-                  show: true,
-                  label: 'Total',
-                  formatter: function (w) {
-                    return 249
-                  }
+                height: 350,
+                type: 'radialBar',
+            },
+            plotOptions: {
+                radialBar: {
+                    dataLabels: {
+                        name: {
+                            fontSize: '22px',
+                        },
+                        value: {
+                            fontSize: '16px',
+                        },
+                        total: {
+                            show: true,
+                            label: 'Total',
+                            formatter: function (w) {
+                                return 249
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          },
-          labels: ['Social', 'Referral', 'Organic'],
-          colors: ["#3f51b5", "#50d1f8", "#5caf90"],
-          };
+            },
+            labels: ['Social', 'Referral', 'Organic'],
+            colors: ["#3f51b5", "#50d1f8", "#5caf90"],
+        };
 
         var newcampaignsChart = new ApexCharts(document.querySelector("#newcampaignsChart"), options);
         newcampaignsChart.render();
     }
 
     jQuery(window).on('load', function () {
-        newrevenueChart();
+        axios.get(startics)
+            .then(function (response) {
+                console.log(response.data);  // Add this line to log the response data
+                var revenueData = response.data.revenue;
+                console.log(revenueData);
+                var ordersData = response.data.orders;
+                var expensesData = response.data.expenses;
+
+                newrevenueChart(revenueData, ordersData, expensesData);
+            })
+            .catch(function (error) {
+                console.error('Error fetching data:', error);
+            });
+        // newrevenueChart();
         newcampaignsChart();
     });
 

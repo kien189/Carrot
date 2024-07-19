@@ -132,10 +132,10 @@
                                     <a href="javascript:void(0)" class="wishlist">
                                         <i class="ri-heart-line"></i>
                                     </a>
-                                    <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
+                                    {{-- <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
                                         role="button">
                                         <i class="ri-eye-line"></i>
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -288,7 +288,7 @@
                                             <a href="javascript:void(0)" class="wishlist">
                                                 <i class="ri-heart-line"></i>
                                             </a>
-                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
+                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview{{ $value->id }}"
                                             data_id= "{{ $value->id }}"  role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
@@ -383,6 +383,8 @@
                 })
                 .then(res => {
                     console.log(res.data);
+                    rating = 0; // hoặc giá trị mặc định của bạn
+                    contentInput = '';
                 })
                 .catch(error => {
                     console.error('Error:', error);

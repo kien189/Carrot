@@ -667,7 +667,9 @@
         @yield('script')
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
+        <script>
+            var startics = "{{ route('admin.getStatistics') }}";
+        </script>
         <script>
             ClassicEditor
                 .create(document.querySelector('#editor1'))

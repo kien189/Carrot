@@ -12,7 +12,8 @@ class AccountController extends Controller
      */
     public function index()
     {
-       return view('Fe.Profile.index');
+        $profile = auth('customers')->user();
+        return view('Fe.Profile.index', compact('profile'));
     }
 
     /**

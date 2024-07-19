@@ -16,7 +16,18 @@
             </div>
         </div>
     </section>
+    @if (session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
+    @if (session()->has('coupon'))
+        <div class="alert alert-success">
+            Coupon applied successfully: {{ session('coupon')->coupon_condition }} - Discount:
+            {{ session('coupon')->coupon_number }}đ
+        </div>
+    @endif
     <!-- Checkout section -->
     <section class="cr-checkout-section padding-tb-100">
         <div class="container">
@@ -32,27 +43,64 @@
                             <div class="cr-sb-block-content">
                                 <div class="cr-checkout-summary">
                                     <div>
-                                        <span class="text-left">Sub-Total</span>
-                                        <span class="text-right">$80.00</span>
+                                        <span class="text-left">Tổng phụ</span>
+                                        <span class="text-right"> {{ number_format($totalPrice, 0, ',', '.') }}đ</span>
                                     </div>
-                                    <div>
-                                        <span class="text-left">Delivery Charges</span>
-                                        <span class="text-right">$80.00</span>
-                                    </div>
-                                    <div>
-                                        <form action="{{ route('checkCoupon') }}" method="post"
-                                            class=" d-flex align-items-center">
-                                            @csrf
-                                            <input type="text" class="form control" name="couponInput"
-                                                placeholder="Mã khuyễn mãi "
-                                                style="border:1px solid #e9e9e9;outline:none;padding:10px">
-                                            <span><button class="cr-button">gửi</button></span>
-                                        </form>
-                                    </div>
+
+                                    {{-- Hiển thị các mã giảm giá --}}
+                                    {{-- Hiển thị các mã giảm giá --}}
+                                    {{-- Hiển thị các mã giảm giá --}}
+                                    @if (Session::has('coupons'))
+                                        @foreach (Session::get('coupons') as $coupon)
+                                            @if ($coupon->coupon_condition == 1)
+                                                <div>
+                                                    <span class="text-left">Giảm giá</span>
+                                                    <span
+                                                        class="text-right">-{{ number_format($totalPrice / $coupon->coupon_number) }}đ</span>
+                                                </div>
+                                            @elseif ($coupon->coupon_condition == 2)
+                                                <div>
+                                                    <span class="text-left">Giảm giá</span>
+                                                    <span
+                                                        class="text-right">-{{ number_format($coupon->coupon_number) }}đ</span>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <div>
+                                            <span class="text-left">Giảm giá</span>
+                                            <span class="text-right">-0đ</span>
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('coupon'))
+                                        <div class="text-danger">{{ $errors->first('coupon') }}</div>
+                                    @endif
+                                    @if (session('success'))
+                                        <p class="text-success">{{ session('success') }}</p>
+                                    @endif
+                                    {{-- Hiển thị tổng tiền --}}
                                     <div class="cr-checkout-summary-total">
-                                        <span class="text-left">Total Amount</span>
-                                        <span class="text-right">$80.00</span>
+                                        <span class="text-left">Tổng tiền</span>
+                                        @php
+                                            $finalTotal = $totalPrice; // Giá trị ban đầu là tổng giá trị của đơn hàng
+
+                                            // Duyệt qua các mã giảm giá đã áp dụng
+                                            if (Session::has('coupons')) {
+                                                foreach (Session::get('coupons') as $coupon) {
+                                                    if ($coupon->coupon_condition == 1) {
+                                                        $finalTotal -= $totalPrice / $coupon->coupon_number;
+                                                    } elseif ($coupon->coupon_condition == 2) {
+                                                        $finalTotal -= $coupon->coupon_number;
+                                                    }
+                                                }
+                                            }
+                                        @endphp
+
+                                        <span class="text-right">{{ number_format($finalTotal, 0, ',', '.') }}đ</span>
                                     </div>
+
+
+
                                 </div>
                                 <div class="cr-checkout-pro">
                                     @foreach ($cart as $value)
@@ -69,16 +117,19 @@
                                                     </div>
                                                 </div>
                                                 <div class="cr-pro-content cr-product-details">
-                                                            <h5 class="cr-pro-title"><a
-                                                                href="product-left-sidebar.html">{{ $value->name }}</a></h5>
-                                                            <p class="cr-price">
-                                                                <span class="new-price">{{ number_format($value->variants->first()->sale_price) }}đ</span>
-                                                                <span class="fw-bold ">x {{ $value->quantity }}</span>
-                                                                <span class="float-end fw-bold text-danger me-2">{{ number_format($value->variants->first()->sale_price * $value->quantity) }}đ</span>
-                                                            </p>
-                                                    </div>
+                                                    <h5 class="cr-pro-title"><a
+                                                            href="product-left-sidebar.html">{{ $value->products->name }}</a>
+                                                    </h5>
+                                                    <p class="cr-price">
+                                                        <span
+                                                            class="new-price">{{ number_format($value->variants->sale_price) }}đ</span>
+                                                        <span class="fw-bold ">x {{ $value->quantity }}</span>
+                                                        <span
+                                                            class="float-end fw-bold text-danger me-2">{{ number_format($value->variants->sale_price * $value->quantity) }}đ</span>
+                                                    </p>
                                                 </div>
                                             </div>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -147,6 +198,26 @@
                                                 <label for="pay3">Bank Transfer</label>
                                             </span>
                                         </span>
+                                        <span class="cr-pay-option">
+                                            <span>
+                                                <label for="pay4">Thanh toán bằng VnPay</label>
+                                            </span>
+                                        </span>
+                                    </form>
+                                    <form action="{{ route('vnPay_Payment') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="quantity">
+                                        <input type="hidden" name="totalPrice"
+                                            value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
+                                        <button type="submit" name="redirect" class="btn btn-success">Thanh toán bằng
+                                            vnPay </button>
+                                    </form>
+                                    <form action="{{ route('momo_Payment') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="total"
+                                            value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
+                                        <button type="submit" name="payUrl" class="btn btn-danger">Thanh toán bằng MoMo
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -178,6 +249,7 @@
                                 <div class="cr-checkout-block cr-check-new">
                                     <h3 class="cr-checkout-title">New Customer</h3>
                                     <div class="cr-check-block-content">
+
                                         <div class="cr-check-subtitle">Checkout Options</div>
                                         <form action="#">
                                             <span class="cr-new-option">
@@ -191,7 +263,8 @@
                                                 </span>
                                             </span>
                                         </form>
-                                        <div class="cr-new-desc">By creating an account you will be able to shop faster,
+                                        <div class="cr-new-desc">By creating an account you will be able to shop
+                                            faster,
                                             be up to date on an order's status, and keep track of the orders you have
                                             previously made.
                                         </div>
@@ -228,32 +301,36 @@
                                 <div class="cr-checkout-block cr-check-bill">
                                     <h3 class="cr-checkout-title">Billing Details</h3>
                                     <div class="cr-bl-block-content">
-                                        <div class="cr-check-subtitle">Checkout Options</div>
-                                        <span class="cr-bill-option">
-                                            <span>
-                                                <input type="radio" id="bill1" name="radio-group">
-                                                <label for="bill1">I want to use an existing address</label>
-                                            </span>
-                                            <span>
-                                                <input type="radio" id="bill2" name="radio-group" checked>
-                                                <label for="bill2">I want to use new address</label>
-                                            </span>
-                                        </span>
                                         <div class="cr-check-bill-form mb-minus-24">
-                                            <form action="#" method="post">
+                                            <form action="{{ route('cash') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="customer_id"
+                                                    value="{{ auth('customers')->user()->id }}">
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>First Name*</label>
-                                                    <input type="text" name="firstname"
-                                                        placeholder="Enter your first name" required>
+                                                    <input type="text" name="name"
+                                                        placeholder="Enter your first name" required
+                                                        value="{{ $account->name }}">
                                                 </span>
                                                 <span class="cr-bill-wrap cr-bill-half">
-                                                    <label>Last Name*</label>
-                                                    <input type="text" name="lastname"
-                                                        placeholder="Enter your last name" required>
+                                                    <label>Phone*</label>
+                                                    <input type="text" name="phone"
+                                                        placeholder="Enter your last name" required
+                                                        value="{{ $account->phone }}">
                                                 </span>
                                                 <span class="cr-bill-wrap">
-                                                    <label>Address</label>
-                                                    <input type="text" name="address" placeholder="Address Line 1">
+                                                    <label>Address*</label>
+                                                    <input type="text" name="address" placeholder="Address Line 1"
+                                                        value="{{ $account->address }}">
+                                                </span>
+                                                <span class="cr-bill-wrap">
+                                                    <label>Email*</label>
+                                                    <input type="text" name="email" placeholder="Address Line 1"
+                                                        value="{{ $account->email }}">
+                                                </span>
+                                                <span class="cr-bill-wrap mb-3">
+                                                    <label>Note*</label>
+                                                    <textarea name="note" id="" class="form-control" cols="30" rows="4"></textarea>
                                                 </span>
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>City *</label>
@@ -271,7 +348,7 @@
                                                 </span>
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>Post Code</label>
-                                                    <input type="text" name="postalcode" placeholder="Post Code">
+                                                    <input type="text"  placeholder="Post Code">
                                                 </span>
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>Country *</label>
@@ -301,15 +378,14 @@
                                                         </select>
                                                     </span>
                                                 </span>
-                                            </form>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                             <span class="cr-check-order-btn">
-                                <a class="cr-button mt-30" href="#">Place Order</a>
+                                <button type="submit" class="cr-button mt-30">Place Order</button>
                             </span>
+                        </form>
                         </div>
                     </div>
                     <!--cart content End -->

@@ -1,49 +1,63 @@
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.variant-size').forEach(function(item) {
+        item.addEventListener('click', function() {
+            let price = parseFloat(this.getAttribute('data-price'));
+            let salePrice = parseFloat(this.getAttribute('data-sale-price'));
 
-// Xử lý sự kiện khi click vào từng size
-document.querySelectorAll('.variant-size').forEach(item => {
-    item.addEventListener('click', function () {
-        let price = parseFloat(this.getAttribute('data-price'));
-        let salePrice = parseFloat(this.getAttribute('data-sale-price'));
-        console.log(salePrice)
-        // Định dạng số tiền thành tiền Việt Nam
-        let formattedPrice = price.toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        });
-        let formattedSalePrice = salePrice.toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        });
+            let formattedPrice = price.toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
+            let formattedSalePrice = salePrice.toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
 
-        document.getElementById('product-price').textContent = formattedPrice;
-        document.getElementById('sale-price').textContent = formattedSalePrice;
+            if (this.closest('.modal')) {
+                let modal = this.closest('.modal');
+                modal.querySelector('.product-price').textContent = formattedPrice;
+                modal.querySelector('.sale-price').textContent = formattedSalePrice;
+                modal.querySelector('#selected-variant-id').value = this.getAttribute('data-variant-id');
+            } else {
+                document.getElementById('product-price').textContent = formattedPrice;
+                document.getElementById('sale-price').textContent = formattedSalePrice;
+                document.getElementById('selected-variant-id').value = this.getAttribute('data-variant-id');
+            }
+
+            // console.log("Selected Variant ID:", this.getAttribute('data-variant-id'));
+            // console.log("Formatted Price:", formattedPrice);
+            // console.log("Formatted Sale Price:", formattedSalePrice);
+        });
     });
 });
 
 function handleSizeSelection(element) {
-    let variantId = element.getAttribute('data-variant-id');
-    document.getElementById('selected-variant-id').value = variantId;
+    let price = parseFloat(element.getAttribute('data-price'));
+    let salePrice = parseFloat(element.getAttribute('data-sale-price'));
+
+    let formattedPrice = price.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    });
+    let formattedSalePrice = salePrice.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    });
+
+    if (element.closest('.modal')) {
+        let modal = element.closest('.modal');
+        modal.querySelector('.product-price').textContent = formattedPrice;
+        modal.querySelector('.sale-price').textContent = formattedSalePrice;
+        modal.querySelector('#selected-variant-id').value = element.getAttribute('data-variant-id');
+    } else {
+        document.getElementById('product-price').textContent = formattedPrice;
+        document.getElementById('sale-price').textContent = formattedSalePrice;
+        document.getElementById('selected-variant-id').value = element.getAttribute('data-variant-id');
+    }
 }
 
 
-// const stars = document.querySelectorAll(".ri-star");
 
-// stars.forEach(star => {
-//     star.addEventListener("click", function () {
-//         const index = parseInt(star.getAttribute("data-index"));
-
-//         // Reset all stars to empty
-//         stars.forEach((s, i) => {
-//             if (i < index) {
-//                 s.classList.remove("ri-star-empty");
-//                 s.classList.add("ri-star-filled");
-//             } else {
-//                 s.classList.remove("ri-star-filled");
-//                 s.classList.add("ri-star-empty");
-//             }
-//         });
-//     });
-// });
 
 document.addEventListener("DOMContentLoaded", function () {
     const stars = document.querySelectorAll(".ri-star");

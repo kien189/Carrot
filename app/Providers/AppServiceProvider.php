@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Product;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('*',function($view){
             $carts = Cart::where('customer_id',auth('customers')->id())->get();
-            $view->with(compact('carts'));
+            $favorite = Favorite::where('customer_id',auth('customers')->id())->get();
+            $view->with(compact('carts','favorite'));
         });
 
         view()->composer('Fe.layout.master', function($view) {

@@ -156,11 +156,11 @@
                                             <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
                                         <div class="cr-side-view">
-                                            <a href="javascript:void(0)" class="wishlist">
+                                            <a href="{{ route('addFavorite',$value->id) }}" class="wishlist">
                                                 <i class="ri-heart-line"></i>
                                             </a>
-                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview"
-                                            data_id= "{{ $value->id }}"  role="button">
+                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview{{ $value->id }}"
+                                             role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -308,7 +308,7 @@
             });
     </script>
     <script>
-        $(function() {
+         $(function() {
             $("#slider-ranges").slider({
                 range: true,
                 min: 0,

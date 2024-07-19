@@ -5,7 +5,6 @@ function updateProductDisplay(products, image_path) {
     products.forEach(function (product) {
         // Check if product.category and product.category.name exist before accessing
         var categoryName = product.category && product.category.name ? product.category.name : '';
-
         // Check if product.variants is an array and has at least one item
         var salePrice = Array.isArray(product.variants) && product.variants.length > 0 ? product.variants[0].sale_price : 0;
         var price = Array.isArray(product.variants) && product.variants.length > 0 ? product.variants[0].price : 0;
@@ -41,7 +40,7 @@ function updateProductDisplay(products, image_path) {
                             <a href="javascript:void(0)" class="wishlist">
                                 <i class="ri-heart-line"></i>
                             </a>
-                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview" role="button">
+                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview${product.id}" role="button">
                                 <i class="ri-eye-line"></i>
                             </a>
                         </div>

@@ -77,8 +77,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('profile.index') }}">Profile</a>
+                                                <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" href="checkout.html">Checkout</a>
@@ -106,9 +105,22 @@
                                     @endif
                                 </li>
                             </ul>
-                            <a href="wishlist.html" class="cr-right-bar-item">
+                            <a href="{{ route('wishList') }}" class="cr-right-bar-item">
                                 <i class="ri-heart-3-line"></i>
                                 <span>Wishlist</span>
+                                @if ($favorite->count() > 0)
+                                    <span
+                                        class="position-absolute start-100  translate-middle badge rounded-pill bg-danger text-white"
+                                        style="margin-left:-100px;margin-top:  ">
+                                        {{ $favorite->count() }}
+                                    </span>
+                                @else
+                                    <span hidden
+                                        class="position-absolute start-100  translate-middle badge rounded-pill bg-danger text-white"
+                                        style="margin-left:-100px;margin-top:  ">
+                                        {{ $favorite->count() }}
+                                    </span>
+                                @endif
                             </a>
                             <a href="javascript:void(0)" class="cr-right-bar-item Shopping-toggle">
                                 <i class="ri-shopping-cart-line"></i>
@@ -411,7 +423,7 @@
                     </nav>
                     <div class="cr-calling">
                         <i class="ri-phone-line"></i>
-                        <a href="javascript:void(0)">+123 ( 456 ) ( 7890 )</a>
+                        <a href="javascript:void(0)">+ 033 ( 795 ) ( 5330 )</a>
                     </div>
                 </div>
             </div>
@@ -511,13 +523,13 @@
                         </h4>
                         <ul class="cr-footer-links cr-footer-dropdown">
                             <li class="location-icon">
-                                51 Green St.Huntington ohaio beach ontario, NY 11746 KY 4783, USA.
+                                Tiên Phương , Chương Mỹ , Hà Nội.
                             </li>
                             <li class="mail-icon">
-                                <a href="javascript:void(0)">example@email.com</a>
+                                <a href="javascript:void(0)">carrot@gmai.com</a>
                             </li>
                             <li class="phone-icon">
-                                <a href="javascript:void(0)"> +91 123 4567890</a>
+                                <a href="javascript:void(0)"> +033 7955 330</a>
                             </li>
                         </ul>
                     </div>
@@ -533,7 +545,7 @@
                             <li><a href="track-order.html">Delivery Information</a></li>
                             <li><a href="policy.html">Privacy Policy</a></li>
                             <li><a href="terms.html">Terms & Conditions</a></li>
-                            <li><a href="contact-us.html">contact Us</a></li>
+                            <li><a href="{{ route('contact') }}">contact Us</a></li>
                             <li><a href="faq.html">Support Center</a></li>
                         </ul>
                     </div>
@@ -649,130 +661,101 @@
     </a>
 
     <!-- Model -->
-    {{-- <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
-            <div class="modal-content">
-                <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-                <div class="modal-body">
+    @foreach ($products as $value)
+        <div class="modal fade quickview-modal" id="quickview{{ $value->id }}" aria-hidden="true"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
+                <div class="modal-content">
+                    <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                    <div class="modal-body">
+                        <form action="{{ route('addToCart', $value->id) }}" method="get">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-5 col-sm-12 col-xs-12">
+                                    <div class="zoom-image-hover modal-border-image">
+                                        <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-tab-2"
+                                            class="product-image">
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <div class="cr-size-and-weight-contain">
+                                        <h2 class="heading">{{ $value->name }}{{ $value->id }}</h2>
+                                        <p class="description"></p>
+                                    </div>
+                                    <div class="cr-size-and-weight">
+                                        <div class="cr-review-star">
+                                            <div class="cr-star">
+                                                @php
+                                                    $rating = $value->averageRating();
+                                                    $fullStars = floor($rating);
+                                                    $halfStar = ceil($rating - $fullStars);
+                                                    $emptyStars = 5 - $fullStars - $halfStar;
+                                                @endphp
+                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                    <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                @endfor
+                                                @if ($halfStar)
+                                                    <i class="ri-star-half-line"></i>
+                                                @endif
+                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                    <i class="ri-star-line"></i>
+                                                @endfor
+                                            </div>
+                                            <p>( {{ $value->ratings->count() }} Review )</p>
+                                        </div>
 
-                    <div class="row">
-                        <div class="col-md-5 col-sm-12 col-xs-12">
-                            <div class="zoom-image-hover modal-border-image">
-                                <img src="{{ asset('assets') }}/img/product/tab-1.jpg" alt="product-tab-2"
-                                    class="product-image">
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-12 col-xs-12">
-                            <div class="cr-size-and-weight-contain">
-                                <h2 class="heading"></h2>
-                                <p>Lorem Ipsum is simply dummy text of the printing and
-                                    typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
-                                    since the 1900s,</p>
-                            </div>
-                            <div class="cr-size-and-weight">
-                                <div class="cr-review-star">
-                                    <div class="cr-star">
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                    </div>
-                                    <p>( 75 Review )</p>
-                                </div>
-                                <div class="cr-product-price">
-                                    <span class="new-price">$120.25</span>
-                                    <span class="old-price">$123.25</span>
-                                </div>
-                                <div class="cr-size-weight">
-                                    <h5><span>Size</span>/<span>Weight</span> :</h5>
-                                    <div class="cr-kg">
-                                        <ul>
-                                            <li class="active-color">500gm</li>
-                                            <li>1kg</li>
-                                            <li>2kg</li>
-                                            <li>5kg</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="cr-add-card">
-                                    <div class="cr-qty-main">
-                                        <input type="text" placeholder="." value="1" minlength="1"
-                                            maxlength="20" class="quantity">
-                                        <button type="button" id="add_model" class="plus">+</button>
-                                        <button type="button" id="sub_model" class="minus">-</button>
-                                    </div>
-                                    <div class="cr-add-button">
-                                        <button type="button" class="cr-button">Add to cart</button>
+                                        <div class="cr-product-price">
+                                            <span
+                                                class="new-price sale-price">{{ number_format($value->variants->first()->sale_price, 0, ',', '.') }}đ</span>
+                                            <span
+                                                class="old-price product-price">{{ number_format($value->variants->first()->price, 0, ',', '.') }}đ</span>
+                                        </div>
+                                        <div class="cr-size-weight">
+                                            <h5><span>Size</span>/<span>Weight</span> :</h5>
+                                            <div class="cr-kg">
+                                                <ul>
+                                                    @foreach ($value->variants as $key => $items)
+                                                        <li class="variant-size "
+                                                            data-variant-id="{{ $items->id }}"
+                                                            data-price="{{ $items->price }}"
+                                                            data-sale-price="{{ $items->sale_price }}"
+                                                            onclick="handleSizeSelection(this)">
+                                                            {{ $items->size }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                                <input type="hidden" id="selected-variant-id" name="variant_id"
+                                                    value="{{ $value->variants->first()->id }}"
+                                                    data-product-id="{{ $value->id }}">
+                                            </div>
+                                        </div>
+                                        <div class="cr-add-card">
+                                            <div class="cr-qty-main">
+                                                <input type="text" name="quantity" placeholder="." value="1"
+                                                    minlength="1" maxlength="20" class="quantity">
+                                                <button type="button" class="plus plussss">+</button>
+                                                <button type="button" class="minus minusss">-</button>
+                                            </div>
+                                            <div class="cr-add-button">
+                                                <button type="submit" class="cr-button cr-shopping-bag">Add to
+                                                    cart</button>
+                                            </div>
+                                            <div class="cr-card-icon">
+                                                <a href="javascript:void(0)" class="wishlist">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div> --}}
-    <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
-            <div class="modal-content">
-                <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-5 col-sm-12 col-xs-12">
-                            <div class="zoom-image-hover modal-border-image">
-                                <img src="" alt="product-tab-2" class="product-image">
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-12 col-xs-12">
-                            <div class="cr-size-and-weight-contain">
-                                <h2 class="heading"></h2>
-                                <p class="description"></p>
-                            </div>
-                            <div class="cr-size-and-weight">
-                                <div class="cr-review-star">
-                                    <div class="cr-star">
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                        <i class="ri-star-fill"></i>
-                                    </div>
-                                    <p id="review">( 75 Review )</p>
-                                </div>
-                                <div class="cr-product-price">
-                                    <span class="new-price"></span>
-                                    <span class="old-price"></span>
-                                </div>
-                                <div class="cr-size-weight">
-                                    <h5><span>Size</span>/<span>Weight</span> :</h5>
-                                    <div class="cr-kg">
-                                        <ul>
-                                            <li class="active-color"></li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="cr-add-card">
-                                    <div class="cr-qty-main">
-                                        <input type="text" placeholder="." value="1" minlength="1"
-                                            maxlength="20" class="quantity">
-                                        <button type="button" id="add_model" class="plus plussss">+</button>
-                                        <button type="button" id="sub_model" class="minus minusss">-</button>
-                                    </div>
-                                    <div class="cr-add-button">
-                                        <button type="button" class="cr-button cr-shopping-bag">Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
+    @endforeach
     <!-- Cart -->
     <div class="cr-cart-overlay"></div>
     <div class="cr-cart-view">
@@ -852,8 +835,8 @@
                     </table>
                 </div>
                 <div class="cart_btn">
-                    <a href="cart.html" class="cr-button">View Cart</a>
-                    <a href="checkout.html" class="cr-btn-secondary">Checkout</a>
+                    <a href="{{ route('cart') }}" class="cr-button">View Cart</a>
+                    <a href="{{ route('checkout') }}" class="cr-btn-secondary">Checkout</a>
                 </div>
             </div>
         </div>
@@ -971,6 +954,10 @@
     <script>
         var assetUrl = "{{ asset('storage/images') }}";
     </script>
+    <script src="https://esgoo.net/scripts/jquery.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </body>
 
 

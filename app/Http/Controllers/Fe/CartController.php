@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     public function index()
     {
+        // $sesion = Session::all();
+        // dd($sesion);
         $cart = Cart::all();
         return view('Fe.Car.cartIdex');
     }
@@ -26,18 +29,18 @@ class CartController extends Controller
         Cart::create($data);
         return redirect()->back();
     }
-    public function addToCartJs(Request $req, Product $product)
-    {
-        $customer_id = auth('customers')->id();
-        $data = [
-            "customer_id" => $customer_id,
-            "product_id" => $product->id,
-            "variant_id" => $req->input('variant_id'),
-            "quantity" => $req->input('quantity')
-        ];
-        Cart::create($data);
-        return response()->json(['success' => true]);
-    }
+    // public function addToCartJs(Request $req, Product $product)
+    // {
+    //     $customer_id = auth('customers')->id();
+    //     $data = [
+    //         "customer_id" => $customer_id,
+    //         "product_id" => $product->id,
+    //         "variant_id" => $req->input('variant_id'),
+    //         "quantity" => $req->input('quantity')
+    //     ];
+    //     Cart::create($data);
+    //     return response()->json(['success' => true]);
+    // }
 
 
 
@@ -53,18 +56,26 @@ class CartController extends Controller
         }
     }
 
-    public function deleteCart($id)
-    {
+    // public function deleteCart($id)
+    // {
+    //     try {
+    //         $cartItem = Cart::findOrFail($id); // Tìm mục trong cơ sở dữ liệu
+
+    //         $cartItem->delete(); // Xóa mục
+
+    //         return response()->json(['success' => true, 'message' => 'Xóa sản phẩm thành công']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false, 'message' => 'Lỗi xóa sản phẩm: ' . $e->getMessage()], 500);
+    //     }
+    // }
+
+    public function deleteCart($id){
         try {
-            $cartItem = Cart::findOrFail($id); // Tìm mục trong cơ sở dữ liệu
-
-            $cartItem->delete(); // Xóa mục
-
-            return response()->json(['success' => true, 'message' => 'Xóa sản phẩm thành công']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Lỗi xóa sản phẩm: ' . $e->getMessage()], 500);
+            $deleteCart= Cart::findOrFail($id)->delete();
+            return back();
+        } catch (\Throwable $th) {
+           dd($th->getMessage());
         }
+
     }
-
-
 }

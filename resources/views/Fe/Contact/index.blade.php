@@ -43,8 +43,8 @@
                         </div>
                         <div class="cr-info-content">
                             <h4 class="heading">Contact</h4>
-                            <p><a href="javascript:void(0)"><i class="ri-phone-line"></i> &nbsp; (+91)-9876XXXXX</a></p>
-                            <p><a href="javascript:void(0)"><i class="ri-phone-line"></i> &nbsp; (+91)-987654XXXX</a>
+                            <p><a href="javascript:void(0)"><i class="ri-phone-line"></i> &nbsp; (+84)-0337XXXXXX</a></p>
+                            <p><a href="javascript:void(0)"><i class="ri-phone-line"></i> &nbsp; (+84)-0337XXXXXX</a>
                             </p>
                         </div>
                     </div>
@@ -58,8 +58,8 @@
                         <div class="cr-info-content">
                             <h4 class="heading">Mail & Website</h4>
                             <p><a href="javascript:void(0)"><i class="ri-mail-line"></i> &nbsp;
-                                    mail.example@gmail.com</a></p>
-                            <p><a href="javascript:void(0)"><i class="ri-globe-line"></i> &nbsp; www.yourdomain.com</a>
+                                    carrot@gmail.com</a></p>
+                            <p><a href="javascript:void(0)"><i class="ri-globe-line"></i> &nbsp; www.carrot.com</a>
                             </p>
                         </div>
                     </div>
@@ -72,8 +72,7 @@
                         <div class="cr-info-content">
                             <h4 class="heading">Address</h4>
                             <p><a href="javascript:void(0)"><i class="ri-map-pin-line"></i> &nbsp; 140 Ruami Moraes
-                                    Filho,
-                                    987 - Salvador - MA, 40352, Brazil.</a></p>
+                                    Tiên Phương , Chương Mỹ , Hà Nội.</a></p>
                         </div>
                     </div>
                 </div>
