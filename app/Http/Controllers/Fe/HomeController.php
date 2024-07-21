@@ -300,4 +300,9 @@ class HomeController extends Controller
 
 
 
+    public function mail()
+    {
+        return view('Fe.Mail.orderMail');
+    }
+
 }

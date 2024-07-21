@@ -23,6 +23,7 @@ use App\Http\Controllers\Fe\LoginGoogleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Fe\FavoriteController;
 use App\Http\Controllers\Fe\Payment\vnPayPayMentController;
 
@@ -73,6 +74,8 @@ Route::prefix('/admin')->group(function () {
     Route::post('/register', [AdminController::class, 'postregister']);
 });
 Route::get('/products/{id}', [HomeController::class, 'modalProduct'])->name('modalProduct');
+
+    Route::get('/mail',[HomeController::class,'mail']);
 
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -154,5 +157,4 @@ Route::prefix('wishList')->group(function () {
     Route::get('/', [FavoriteController::class, 'index'])->name('wishList');
     Route::get('/addWishList/{product}', [FavoriteController::class, 'addFavorite'])->name('addFavorite');
     Route::delete('/deleteWishList/{id}', [FavoriteController::class, 'deleteWishList'])->name('deleteWishList');
-
 });

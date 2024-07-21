@@ -8,7 +8,9 @@ use App\Models\Product;
 use App\Models\Oder_detail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\MailOrder;
 use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
@@ -90,7 +92,7 @@ class CheckoutController extends Controller
     public function cash(Request $req)
     {
         try {
-            if ($order_detail=Oder_detail::create($req->all())) {
+            if ($order_detail = Oder_detail::create($req->all())) {
                 $couponId = optional(Session::get('coupons')[0] ?? null)->id;
                 $cart = Cart::where('customer_id', auth('customers')->id())->get();
 
@@ -98,19 +100,20 @@ class CheckoutController extends Controller
                     $data1 = [
                         'customer_id' => auth('customers')->id(),
                         'product_id' => $value->product_id,
-                        'order_id' =>$order_detail->id,
+                        'order_id' => $order_detail->id,
                         'variant_id' => $value->variant_id, // Đảm bảo sử dụng đúng tên trường
                         'quantity' => $value->quantity,
                         'coupon_id' => $couponId,
                         'totalPrice' => $value->quantity * $value->variants->sale_price,
                     ];
                     // dd($data1);
-                    Order::create($data1);
+                    $order = Order::create($data1);
+                    Mail::to($req->email)->queue(new MailOrder($order_detail));
                 }
-                Cart::where('customer_id', auth('customers')->id())->delete();
+                // Cart::where('customer_id', auth('customers')->id())->delete();
                 $req->session()->forget('coupons');
             }
-            return redirect()->route('home')->with('success', 'Đặt hàng thành công');
+            // return redirect()->route('home')->with('success', 'Đặt hàng thành công');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             return redirect()->back()->with('error', 'Đặt hàng không thành công');

@@ -182,31 +182,129 @@
                                     <form action="#" class="payment-options">
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay1" name="radio-group" checked>
+                                                <input type="radio" id="pay1" name="radio-groups" checked>
                                                 <label for="pay1">Cash On Delivery</label>
                                             </span>
                                         </span>
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay2" name="radio-group">
+                                                <input type="radio" id="pay2" name="radio-groups">
                                                 <label for="pay2">UPI</label>
                                             </span>
                                         </span>
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay3" name="radio-group">
+                                                <input type="radio" id="pay3" name="radio-groups">
                                                 <label for="pay3">Bank Transfer</label>
                                             </span>
                                         </span>
                                         <span class="cr-pay-option">
                                             <span>
+                                                <input type="radio" id="pay4" name="radio-groups">
                                                 <label for="pay4">Thanh toán bằng VnPay</label>
                                             </span>
                                         </span>
                                     </form>
-                                    <form action="{{ route('vnPay_Payment') }}" method="POST">
+                                    <div id="order-form">
+                                        <!-- Thông tin đơn hàng -->
+                                        <form action="{{ route('vnPay_Payment') }}" method="POST" class="hidden">
+                                            @csrf
+                                            <div hidden>
+                                                <input type="hidden" name="customer_id"
+                                                    value="{{ auth('customers')->user()->id }}">
+                                                <span class="cr-bill-wrap cr-bill-half">
+                                                    <label>First Name*</label>
+                                                    <input type="text" name="name"
+                                                        placeholder="Enter your first name" required
+                                                        value="{{ $account->name }}">
+                                                </span>
+                                                <span class="cr-bill-wrap cr-bill-half">
+                                                    <label>Phone*</label>
+                                                    <input type="text" name="phone"
+                                                        placeholder="Enter your last name" required
+                                                        value="{{ $account->phone }}">
+                                                </span>
+                                                <span class="cr-bill-wrap">
+                                                    <label>Address*</label>
+                                                    <input type="text" name="address" placeholder="Address Line 1"
+                                                        value="{{ $account->address }}">
+                                                </span>
+                                                <span class="cr-bill-wrap">
+                                                    <label>Email*</label>
+                                                    <input type="text" name="email" placeholder="Address Line 1"
+                                                        value="{{ $account->email }}">
+                                                </span>
+                                                <span class="cr-bill-wrap mb-3">
+                                                    <label>Note*</label>
+                                                    <textarea name="note" id="" class="form-control" cols="30" rows="4"></textarea>
+                                                </span>
+                                                <span class="cr-bill-wrap cr-bill-half">
+                                                    <label>City *</label>
+                                                    <span class="cr-bl-select-inner">
+                                                        <select name="cr_select_city" id="cr-select-city"
+                                                            class="cr-bill-select">
+                                                            <option selected disabled>City</option>
+                                                            <option value="1">City 1</option>
+                                                            <option value="2">City 2</option>
+                                                            <option value="3">City 3</option>
+                                                            <option value="4">City 4</option>
+                                                            <option value="5">City 5</option>
+                                                        </select>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <input type="hidden" name="totalPrice"
+                                                value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
+                                            <button hidden type="submit" name="redirect" id="vnpay-form"
+                                                class="btn btn-success">Thanh
+                                                toán
+                                                bằng vnPay</button>
+                                        </form>
+                                    </div>
+                                    {{-- <form action="{{ route('vnPay_Payment') }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="quantity">
+                                        <div hidden>
+                                            <input type="hidden" name="customer_id"
+                                                value="{{ auth('customers')->user()->id }}">
+                                            <span class="cr-bill-wrap cr-bill-half">
+                                                <label>First Name*</label>
+                                                <input type="text" name="name" placeholder="Enter your first name"
+                                                    required value="{{ $account->name }}">
+                                            </span>
+                                            <span class="cr-bill-wrap cr-bill-half">
+                                                <label>Phone*</label>
+                                                <input type="text" name="phone" placeholder="Enter your last name"
+                                                    required value="{{ $account->phone }}">
+                                            </span>
+                                            <span class="cr-bill-wrap">
+                                                <label>Address*</label>
+                                                <input type="text" name="address" placeholder="Address Line 1"
+                                                    value="{{ $account->address }}">
+                                            </span>
+                                            <span class="cr-bill-wrap">
+                                                <label>Email*</label>
+                                                <input type="text" name="email" placeholder="Address Line 1"
+                                                    value="{{ $account->email }}">
+                                            </span>
+                                            <span class="cr-bill-wrap mb-3">
+                                                <label>Note*</label>
+                                                <textarea name="note" id="" class="form-control" cols="30" rows="4"></textarea>
+                                            </span>
+                                            <span class="cr-bill-wrap cr-bill-half">
+                                                <label>City *</label>
+                                                <span class="cr-bl-select-inner">
+                                                    <select name="cr_select_city" id="cr-select-city"
+                                                        class="cr-bill-select">
+                                                        <option selected disabled>City</option>
+                                                        <option value="1">City 1</option>
+                                                        <option value="2">City 2</option>
+                                                        <option value="3">City 3</option>
+                                                        <option value="4">City 4</option>
+                                                        <option value="5">City 5</option>
+                                                    </select>
+                                                </span>
+                                            </span>
+                                        </div>
                                         <input type="hidden" name="totalPrice"
                                             value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
                                         <button type="submit" name="redirect" class="btn btn-success">Thanh toán bằng
@@ -218,7 +316,7 @@
                                             value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
                                         <button type="submit" name="payUrl" class="btn btn-danger">Thanh toán bằng MoMo
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
                             </div>
                         </div>
@@ -302,7 +400,7 @@
                                     <h3 class="cr-checkout-title">Billing Details</h3>
                                     <div class="cr-bl-block-content">
                                         <div class="cr-check-bill-form mb-minus-24">
-                                            <form action="{{ route('cash') }}" method="post">
+                                            <form id="cash" action="{{ route('cash') }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="customer_id"
                                                     value="{{ auth('customers')->user()->id }}">
@@ -348,7 +446,7 @@
                                                 </span>
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>Post Code</label>
-                                                    <input type="text"  placeholder="Post Code">
+                                                    <input type="text" placeholder="Post Code">
                                                 </span>
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>Country *</label>
@@ -383,9 +481,9 @@
                                 </div>
                             </div>
                             <span class="cr-check-order-btn">
-                                <button type="submit" class="cr-button mt-30">Place Order</button>
+                                <button type="button" class="cr-button mt-30" id="order-button">Place Order</button>
                             </span>
-                        </form>
+                            </form>
                         </div>
                     </div>
                     <!--cart content End -->
@@ -394,4 +492,23 @@
         </div>
     </section>
     <!-- Checkout section End -->
+@endsection
+@section('script')
+    <script>
+        document.getElementById('order-button').addEventListener('click', function() {
+            var selectedPayment = document.querySelector('input[name="radio-groups"]:checked').id;
+            console.log(selectedPayment);
+            if (selectedPayment === 'pay4') {
+                document.getElementById('order-form').classList.add('hidden');
+                document.getElementById('vnpay-form').classList.remove('hidden');
+                document.getElementById('vnpay-form').click();
+                console.log('abcsd');
+            } else {
+                document.getElementById('cash').submit();
+                // alert('Thông tin đơn hàng đã được ghi nhận. Phương thức thanh toán: ' + document.querySelector(
+                //     'input[name="radio-group"]:checked + label').innerText);
+                // document.getElementById('order-form').classList.add('hidden');
+            }
+        });
+    </script>
 @endsection

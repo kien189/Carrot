@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers\Fe\Payment;
 
-use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Mail\MailOrder;
+use App\Models\Oder_detail;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class vnPayPayMentController extends Controller
 {
+
     public function vnpay_payment(Request $req)
     {
-        dd($req->all());
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://localhost:8000/";
         $vnp_TmnCode = "ROGC3KGV";
         $vnp_HashSecret = "HFMZ2NHJU1BZMMA5UE5KOUTX1ZY5STQ8";
 
-        $vnp_TxnRef = rand(00,99);
+        $vnp_TxnRef = rand(00, 99);
         $vnp_OrderInfo = 'thanh toan hoa don';
         $vnp_OrderType = 'Carrot Shop';
-        $vnp_Amount = $req->total * 100;
+        $vnp_Amount = $req->totalPrice * 100;
         $vnp_Locale = 'VN';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -59,6 +65,29 @@ class vnPayPayMentController extends Controller
         $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
         $vnp_Url .= "?" . $query . 'vnp_SecureHash=' . $vnpSecureHash;
 
+        // Tạo order_detail trước
+        if ($order_detail = Oder_detail::create($req->all())) {
+            $couponId = optional(Session::get('coupons')[0] ?? null)->id;
+            $cart = Cart::where('customer_id', auth('customers')->id())->get();
+
+            foreach ($cart as $value) {
+                $data1 = [
+                    'customer_id' => auth('customers')->id(),
+                    'product_id' => $value->product_id,
+                    'order_id' => $order_detail->id,
+                    'variant_id' => $value->variant_id, // Đảm bảo sử dụng đúng tên trường
+                    'quantity' => $value->quantity,
+                    'coupon_id' => $couponId,
+                    'totalPrice' => $value->quantity * $value->variants->sale_price,
+                ];
+                // dd($data1);
+                $order = Order::create($data1);
+                Mail::to($req->email)->queue(new MailOrder($order_detail));
+            }
+            Cart::where('customer_id', auth('customers')->id())->delete();
+            $req->session()->forget('coupons');
+        }
+
         $returnData = array(
             'code' => '00',
             'message' => 'success',
@@ -71,8 +100,8 @@ class vnPayPayMentController extends Controller
         } else {
             echo json_encode($returnData);
         }
-
     }
+
 
 
     public function execPostRequest($url, $data)
@@ -153,5 +182,4 @@ class vnPayPayMentController extends Controller
         // header('Location: ' . $jsonResult['payUrl']);
         // }
     }
-
 }
