@@ -156,11 +156,11 @@
                                             <img src="{{ asset('storage/images/' . $value->image) }}" alt="product-1">
                                         </div>
                                         <div class="cr-side-view">
-                                            <a href="{{ route('addFavorite',$value->id) }}" class="wishlist">
+                                            <a href="{{ route('addFavorite', $value->id) }}" class="wishlist">
                                                 <i class="ri-heart-line"></i>
                                             </a>
-                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview{{ $value->id }}"
-                                             role="button">
+                                            <a class="model-oraganic-product" data-bs-toggle="modal"
+                                                href="#quickview{{ $value->id }}" role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -210,17 +210,47 @@
                     </div>
                     <nav aria-label="..." class="cr-pagination">
                         <ul class="pagination">
-                            <li class="page-item disabled">
-                                <span class="page-link">Previous</span>
-                            </li>
-                            <li class="page-item active" aria-current="page">
-                                <span class="page-link">1</span>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
+                            <!-- Previous Page Link -->
+                            @if ($shop->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">Previous</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $shop->previousPageUrl() }}">Previous</a>
+                                </li>
+                            @endif
+
+                            <!-- Pagination Elements -->
+                            @foreach ($shop->links()->elements as $element)
+                                @if (is_string($element))
+                                    <li class="page-item disabled"><span class="page-link">{{ $element }}</span>
+                                    </li>
+                                @endif
+
+                                @if (is_array($element))
+                                    @foreach ($element as $page => $url)
+                                        @if ($page == $shop->currentPage())
+                                            <li class="page-item active" aria-current="page"><span
+                                                    class="page-link">{{ $page }}</span></li>
+                                        @else
+                                            <li class="page-item"><a class="page-link"
+                                                    href="{{ $url }}">{{ $page }}</a></li>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            @endforeach
+
+                            <!-- Next Page Link -->
+                            @if ($shop->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $shop->nextPageUrl() }}">Next</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">Next</span>
+                                </li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
@@ -288,27 +318,27 @@
         });
     </script>
     <script>
-         const selectElement = document.getElementById('sortBy');
-            // console.log(selectElement);
-            selectElement.addEventListener('change', function() {
-                const sort = this.value;
-                // console.log(sort);
-                axios.get('{{ route('filter_name') }}', {
-                        params: {
-                            sort: sort
-                        }
-                    })
-                    .then(function(response) {
-                        // console.log(response.data);
-                        updateProductDisplay(response.data.products, response.data.image_path);
-                    })
-                    .catch(function(error) {
-                        console.error(error);
-                    });
-            });
+        const selectElement = document.getElementById('sortBy');
+        // console.log(selectElement);
+        selectElement.addEventListener('change', function() {
+            const sort = this.value;
+            // console.log(sort);
+            axios.get('{{ route('filter_name') }}', {
+                    params: {
+                        sort: sort
+                    }
+                })
+                .then(function(response) {
+                    // console.log(response.data);
+                    updateProductDisplay(response.data.products, response.data.image_path);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        });
     </script>
     <script>
-         $(function() {
+        $(function() {
             $("#slider-ranges").slider({
                 range: true,
                 min: 0,
@@ -335,7 +365,5 @@
             }
         });
     </script>
-    <script>
-
-    </script>
+    <script></script>
 @endsection

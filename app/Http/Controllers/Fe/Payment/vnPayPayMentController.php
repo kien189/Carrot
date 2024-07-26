@@ -66,34 +66,14 @@ class vnPayPayMentController extends Controller
         $vnp_Url .= "?" . $query . 'vnp_SecureHash=' . $vnpSecureHash;
 
         // Tạo order_detail trước
-        if ($order_detail = Oder_detail::create($req->all())) {
-            $couponId = optional(Session::get('coupons')[0] ?? null)->id;
-            $cart = Cart::where('customer_id', auth('customers')->id())->get();
 
-            foreach ($cart as $value) {
-                $data1 = [
-                    'customer_id' => auth('customers')->id(),
-                    'product_id' => $value->product_id,
-                    'order_id' => $order_detail->id,
-                    'variant_id' => $value->variant_id, // Đảm bảo sử dụng đúng tên trường
-                    'quantity' => $value->quantity,
-                    'coupon_id' => $couponId,
-                    'totalPrice' => $value->quantity * $value->variants->sale_price,
-                ];
-                // dd($data1);
-                $order = Order::create($data1);
-                Mail::to($req->email)->queue(new MailOrder($order_detail));
-            }
-            Cart::where('customer_id', auth('customers')->id())->delete();
-            $req->session()->forget('coupons');
-        }
-
+        $order = Oder_detail::createOrder($req);
+        // dd($order);
         $returnData = array(
             'code' => '00',
             'message' => 'success',
             'data' => $vnp_Url
         );
-
         if (isset($_POST['redirect'])) {
             header('Location: ' . $vnp_Url);
             die();

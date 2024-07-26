@@ -13,7 +13,7 @@ class ShopController extends Controller
     {
         // Lấy tất cả các danh mục con của danh mục cha được chuyển vào
         $categories = Category::where('parent_id', $category->parent_id)->get();
-        $shop = Product::orderBy('id', 'asc')->get();
+        $shop = Product::orderBy('id', 'asc')->paginate(8);
         // Trả về view 'shop' với các biến dữ liệu compact
         return view('Fe.Shop.shop', compact('shop', 'categories'));
     }

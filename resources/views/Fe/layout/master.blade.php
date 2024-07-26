@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/jquery.slick.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/css/vendor/slick-theme.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/css/style.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/css/css1.css">
@@ -80,7 +81,7 @@
                                                 <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="checkout.html">Checkout</a>
+                                                <a class="dropdown-item" href="{{ route('trackOrder') }}">Treck Order</a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
@@ -204,11 +205,11 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="register.html">Profile</a>
+                                                <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                                             </li>
-                                            {{-- <li>
-                                                <a class="dropdown-item" href="checkout.html">Checkout</a>
-                                            </li> --}}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('trackOrder') }}">Track Order</a>
+                                            </li>
                                             <li>
                                                 <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                             </li>
@@ -738,7 +739,7 @@
                                                 <button type="button" class="minus minusss">-</button>
                                             </div>
                                             <div class="cr-add-button">
-                                                <button type="submit" class="cr-button cr-shopping-bag">Add to
+                                                <button type="submit" class=" cr-button cr-shopping-bag">Add to
                                                     cart</button>
                                             </div>
                                             <div class="cr-card-icon">
@@ -805,9 +806,6 @@
                         </li>
                     @endforeach
                 </ul>
-
-
-
             </div>
             <div class="cr-cart-bottom">
                 <div class="cart-sub-total">
@@ -837,7 +835,6 @@
                 <div class="cart_btn">
                     <a href="{{ route('cart') }}" class="cr-button">View Cart</a>
                     <a href="{{ route('checkout') }}" class="cr-btn-secondary">Checkout</a>
-                </div>
             </div>
         </div>
     </div>
@@ -942,20 +939,11 @@
     <script src="{{ asset('assets') }}/js/variants.js"></script>
     <script src="{{ asset('assets') }}/js/modal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        var updateCartRoute = '{{ route('updateCart') }}';
-    </script>
-    <script>
-        var filterByCategoryRoute = "{{ route('filterByCategory', ['id' => ':categoryId']) }}";
-    </script>
-    <script>
-        var comment = "{{ route('comment', ['id' => ':product_id']) }}";
-    </script>
-    <script>
-        var assetUrl = "{{ asset('storage/images') }}";
-    </script>
+    <script>var updateCartRoute = '{{ route('updateCart') }}';</script>
+    <script> var filterByCategoryRoute = "{{ route('filterByCategory', ['id' => ':categoryId']) }}";</script>
+    <script>var comment = "{{ route('comment', ['id' => ':product_id']) }}";</script>
+    <script> var assetUrl = "{{ asset('storage/images') }}";</script>
     <script src="https://esgoo.net/scripts/jquery.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </body>

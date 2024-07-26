@@ -55,13 +55,13 @@
                                             @if ($coupon->coupon_condition == 1)
                                                 <div>
                                                     <span class="text-left">Giảm giá</span>
-                                                    <span
+                                                    <span name="coupon"
                                                         class="text-right">-{{ number_format($totalPrice / $coupon->coupon_number) }}đ</span>
                                                 </div>
                                             @elseif ($coupon->coupon_condition == 2)
                                                 <div>
                                                     <span class="text-left">Giảm giá</span>
-                                                    <span
+                                                    <span name="coupon"
                                                         class="text-right">-{{ number_format($coupon->coupon_number) }}đ</span>
                                                 </div>
                                             @endif
@@ -150,12 +150,14 @@
                                         <span class="cr-del-option">
                                             <span>
                                                 <span class="cr-del-opt-head">Free Shipping</span>
-                                                <input type="radio" id="del1" name="radio-group" checked>
+                                                <input type="radio" id="del1" name="radio-group-delivery"
+                                                    value="1" checked>
                                                 <label for="del1">Rate - $0 .00</label>
                                             </span>
                                             <span>
                                                 <span class="cr-del-opt-head">Flat Rate</span>
-                                                <input type="radio" id="del2" name="radio-group">
+                                                <input type="radio" id="del2" name="radio-group-delivery"
+                                                    value="2">
                                                 <label for="del2">Rate - $5.00</label>
                                             </span>
                                         </span>
@@ -182,32 +184,35 @@
                                     <form action="#" class="payment-options">
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay1" name="radio-groups" checked>
+                                                <input type="radio" id="pay1" name="radio-groups" value="1"
+                                                    checked>
                                                 <label for="pay1">Cash On Delivery</label>
                                             </span>
                                         </span>
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay2" name="radio-groups">
+                                                <input type="radio" id="pay2" name="radio-groups" value="2">
                                                 <label for="pay2">UPI</label>
                                             </span>
                                         </span>
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay3" name="radio-groups">
+                                                <input type="radio" id="pay3" name="radio-groups" value="3">
                                                 <label for="pay3">Bank Transfer</label>
                                             </span>
                                         </span>
                                         <span class="cr-pay-option">
                                             <span>
-                                                <input type="radio" id="pay4" name="radio-groups">
+                                                <input type="radio" id="pay4" name="radio-groups" value="4">
                                                 <label for="pay4">Thanh toán bằng VnPay</label>
                                             </span>
                                         </span>
                                     </form>
+
                                     <div id="order-form">
                                         <!-- Thông tin đơn hàng -->
-                                        <form action="{{ route('vnPay_Payment') }}" method="POST" class="hidden">
+                                        <form action="{{ route('vnPay_Payment') }}" id="vnpay-form" method="POST"
+                                            class="hidden">
                                             @csrf
                                             <div hidden>
                                                 <input type="hidden" name="customer_id"
@@ -253,70 +258,17 @@
                                                     </span>
                                                 </span>
                                             </div>
+                                            <input type="hidden" name="payment_id" id="payment_id">
+                                                <input type="hidden" name="delivery_id" id="delivery_id">
                                             <input type="hidden" name="totalPrice"
                                                 value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
-                                            <button hidden type="submit" name="redirect" id="vnpay-form"
+                                            <button hidden type="submit" name="redirect" id="vnpays-form"
                                                 class="btn btn-success">Thanh
                                                 toán
                                                 bằng vnPay</button>
                                         </form>
                                     </div>
-                                    {{-- <form action="{{ route('vnPay_Payment') }}" method="POST">
-                                        @csrf
-                                        <div hidden>
-                                            <input type="hidden" name="customer_id"
-                                                value="{{ auth('customers')->user()->id }}">
-                                            <span class="cr-bill-wrap cr-bill-half">
-                                                <label>First Name*</label>
-                                                <input type="text" name="name" placeholder="Enter your first name"
-                                                    required value="{{ $account->name }}">
-                                            </span>
-                                            <span class="cr-bill-wrap cr-bill-half">
-                                                <label>Phone*</label>
-                                                <input type="text" name="phone" placeholder="Enter your last name"
-                                                    required value="{{ $account->phone }}">
-                                            </span>
-                                            <span class="cr-bill-wrap">
-                                                <label>Address*</label>
-                                                <input type="text" name="address" placeholder="Address Line 1"
-                                                    value="{{ $account->address }}">
-                                            </span>
-                                            <span class="cr-bill-wrap">
-                                                <label>Email*</label>
-                                                <input type="text" name="email" placeholder="Address Line 1"
-                                                    value="{{ $account->email }}">
-                                            </span>
-                                            <span class="cr-bill-wrap mb-3">
-                                                <label>Note*</label>
-                                                <textarea name="note" id="" class="form-control" cols="30" rows="4"></textarea>
-                                            </span>
-                                            <span class="cr-bill-wrap cr-bill-half">
-                                                <label>City *</label>
-                                                <span class="cr-bl-select-inner">
-                                                    <select name="cr_select_city" id="cr-select-city"
-                                                        class="cr-bill-select">
-                                                        <option selected disabled>City</option>
-                                                        <option value="1">City 1</option>
-                                                        <option value="2">City 2</option>
-                                                        <option value="3">City 3</option>
-                                                        <option value="4">City 4</option>
-                                                        <option value="5">City 5</option>
-                                                    </select>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <input type="hidden" name="totalPrice"
-                                            value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
-                                        <button type="submit" name="redirect" class="btn btn-success">Thanh toán bằng
-                                            vnPay </button>
-                                    </form>
-                                    <form action="{{ route('momo_Payment') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="total"
-                                            value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
-                                        <button type="submit" name="payUrl" class="btn btn-danger">Thanh toán bằng MoMo
-                                        </button>
-                                    </form> --}}
+
                                 </div>
                             </div>
                         </div>
@@ -430,6 +382,8 @@
                                                     <label>Note*</label>
                                                     <textarea name="note" id="" class="form-control" cols="30" rows="4"></textarea>
                                                 </span>
+                                                <input type="hidden" name="totalPrice"
+                                                    value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>City *</label>
                                                     <span class="cr-bl-select-inner">
@@ -476,6 +430,9 @@
                                                         </select>
                                                     </span>
                                                 </span>
+                                                <input type="hidden" name="payment_id" id="payment_id">
+                                                <input type="hidden" name="delivery_id" id="delivery_id">
+                                                <!-- Input ẩn để lưu payment_id -->
                                         </div>
                                     </div>
                                 </div>
@@ -496,18 +453,27 @@
 @section('script')
     <script>
         document.getElementById('order-button').addEventListener('click', function() {
-            var selectedPayment = document.querySelector('input[name="radio-groups"]:checked').id;
-            console.log(selectedPayment);
-            if (selectedPayment === 'pay4') {
-                document.getElementById('order-form').classList.add('hidden');
-                document.getElementById('vnpay-form').classList.remove('hidden');
-                document.getElementById('vnpay-form').click();
-                console.log('abcsd');
+            // Lấy giá trị của radio button được chọn
+            var selectedPayment = document.querySelector('input[name="radio-groups"]:checked');
+            var selectedDelivery = document.querySelector('input[name="radio-group-delivery"]:checked');
+            console.log(selectedDelivery);
+            if (selectedPayment) {
+                // Gán giá trị của radio button được chọn vào input ẩn
+                var edd = document.getElementById('payment_id').value = selectedPayment.value;
+                document.getElementById('delivery_id').value = selectedDelivery.value;
+                // Kiểm tra nếu phương thức thanh toán là VNPay
+                if (selectedPayment.id === 'pay4') {
+                    document.getElementById('order-form').classList.add('hidden');
+                    document.getElementById('vnpay-form').classList.remove('hidden');
+                    document.getElementById('vnpay-form').click();
+                    document.getElementById('vnpays-form').click();
+
+                } else {
+                    // Submit form cash nếu phương thức thanh toán khác VNPay
+                    document.getElementById('cash').submit();
+                }
             } else {
-                document.getElementById('cash').submit();
-                // alert('Thông tin đơn hàng đã được ghi nhận. Phương thức thanh toán: ' + document.querySelector(
-                //     'input[name="radio-group"]:checked + label').innerText);
-                // document.getElementById('order-form').classList.add('hidden');
+                alert('Please select a payment method');
             }
         });
     </script>

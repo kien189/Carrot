@@ -559,6 +559,9 @@
         $(this).addClass("active");
     });
 
+    ///
+
+    ///
     /* Potfolio for Mixit up */
     var portfolioContent = $(".product-content");
     portfolioContent.mixItUp();

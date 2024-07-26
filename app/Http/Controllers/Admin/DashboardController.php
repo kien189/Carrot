@@ -26,14 +26,14 @@ class DashboardController extends Controller
     {
         $count_customer = Customers::count();
         $count_order = Oder_detail::count();
-        $totalPrice = Order::sum('totalPrice');
+        $totalPrice = Oder_detail::sum('totalPrice');
         return view('Admin.index', compact('count_customer', 'count_order', 'totalPrice'));
 
     }
 
     public function getStatistics()
     {
-        $revenue = Order::select(DB::raw('SUM(totalPrice) as total'), DB::raw('MONTH(created_at) as month'))
+        $revenue = Oder_detail::select(DB::raw('SUM(totalPrice) as total'), DB::raw('MONTH(created_at) as month'))
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('total', 'month')

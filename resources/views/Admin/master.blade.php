@@ -286,12 +286,10 @@
                             <ul class="cr-sb-drop condense">
                                 <li><a href="{{ route('coupon.index') }}" class="cr-page-link drop"><i
                                             class="ri-checkbox-blank-circle-line"></i>Mã giảm giá </a></li>
-                                <li><a href="{{ route('variants.index') }}" class="cr-page-link drop"><i
-                                            class="ri-checkbox-blank-circle-line"></i>Biến thể</a></li>
                             </ul>
                         </li>
                         <li class="cr-sb-item">
-                            <a href="remix-icons.html" class="cr-page-link">
+                            <a href="" class="cr-page-link">
                                 <i class="fa-solid fa-comment-dots"></i><span class="condense"><span
                                         class="hover-title">Bình luận</span></span></a>
                         </li>
@@ -310,7 +308,7 @@
                                 <i class="fa-brands fa-blogger"></i><span class="condense"><span
                                         class="hover-title">Bài viết</span></span></a>
                         </li>
-                        <li class="cr-sb-item">
+                        {{-- <li class="cr-sb-item">
                             <a href="material-icons.html" class="cr-page-link">
                                 <i class="mdi mdi-material-ui"></i><span class="condense"><span
                                         class="hover-title">Material icons</span></span></a>
@@ -334,7 +332,7 @@
                             <a href="typography.html" class="cr-page-link">
                                 <i class="ri-file-text-line"></i><span class="condense"><span
                                         class="hover-title">Typography</span></span></a>
-                        </li>
+                        </li> --}}
                         <li class="cr-sb-item">
                             <a href="{{ route('profile.index') }}" class="cr-page-link">
                                 <i class="fa-solid fa-gear"></i><span class="condense"><span class="hover-title">Cài

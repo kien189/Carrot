@@ -24,16 +24,17 @@
                                     <img src="{{ asset('storage/images/' . $value->products->image) }}" alt="product-1">
                                 </div>
                                 <div class="cr-side-view">
-                                    <form action="{{ route('deleteWishList', $value->id) }}" method="POST">
+                                    <form action="{{ route('deleteWishList', $value->id) }}" id="delete_wishlist_form"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="bg-black">Xóa</button>
+                                        <a type="submit" class="wishlist_delete"> <i class="ri-close-line"></i></a>
                                     </form>
 
 
-                                    <a href="javascript:void(0)" class="wishlist">
+                                    {{-- <a href="javascript:void(0)" class="wishlist">
                                         <i class="ri-close-line"></i>
-                                    </a>
+                                    </a> --}}
                                     <a class="model-oraganic-product" data-bs-toggle="modal"
                                         href="#quickview{{ $value->products->id }}" role="button">
                                         <i class="ri-eye-line"></i>
@@ -80,13 +81,15 @@
         </div>
     </section>
 @endsection
-{{-- @section('script')
+@section('script')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const wishlist = document.querySelector('.wishlist');
-           wishlist.addEventListener('click' ,function(){
-            axios.post('{{ route('deleteWishList') }}')
-           })
+            const delete_wishlist = document.querySelector('.wishlist_delete');
+            if (delete_wishlist) {
+                delete_wishlist.addEventListener('click', function() {
+                    document.querySelector('#delete_wishlist_form').submit();
+                });
+            }
         });
     </script>
-@endsection --}}
+@endsection

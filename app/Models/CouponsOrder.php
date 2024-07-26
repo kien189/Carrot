@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CouponsOrder extends Model
+{
+    use HasFactory;
+    protected $table = 'coupon_order';
+    protected $fillable=['coupon_id','order_id'];
+
+
+    public function coupons(){
+        return $this->hasMany(Coupon::class,'id','coupon_id');
+    }
+    
+}

@@ -24,3 +24,6 @@ GOOGLE_REDIRECT_URI=http://your-callback-url/google/callback
 FACEBOOK_CLIENT_ID=your-facebook-client-id
 FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
 FACEBOOK_REDIRECT_URI=http://your-callback-url/facebook/callback
+
+
+['array_merge'] để gộp hai mảng lại thành một dòng duy nhất

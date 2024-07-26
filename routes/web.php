@@ -75,7 +75,7 @@ Route::prefix('/admin')->group(function () {
 });
 Route::get('/products/{id}', [HomeController::class, 'modalProduct'])->name('modalProduct');
 
-    Route::get('/mail',[HomeController::class,'mail']);
+// Route::get('/mail', [HomeController::class, 'mail']);
 
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -136,6 +136,8 @@ Route::prefix('/')->group(function () {
     Route::post('/contact', [ContactController::class, 'postContact'])->name('postContact');
 
     Route::get('/profile', [AccountController::class, 'index'])->name('profile');
+
+    Route::get('trackOrder', [CheckOutController::class, 'trackOrder'])->name('trackOrder');
 });
 Route::prefix('checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');
@@ -158,3 +160,5 @@ Route::prefix('wishList')->group(function () {
     Route::get('/addWishList/{product}', [FavoriteController::class, 'addFavorite'])->name('addFavorite');
     Route::delete('/deleteWishList/{id}', [FavoriteController::class, 'deleteWishList'])->name('deleteWishList');
 });
+
+

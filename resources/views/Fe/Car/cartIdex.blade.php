@@ -155,11 +155,11 @@
                                                             }
                                                         @endphp
 
-                                                        <span class="text-right fw-bold text-danger ">
+                                                        <span class="text-right fw-bold text-danger subTotal ">
                                                             {{ number_format($finalPrice, 0, ',', '.') }}đ</span>
                                                     @else
                                                         <span
-                                                            class="text-right fw-bold text-danger ">{{ number_format($value->totalPrice, 0, ',', '.') }}đ</span>
+                                                            class="text-right fw-bold text-danger subTotal ">{{ number_format($value->totalPrice, 0, ',', '.') }}đ</span>
                                                     @endif
                                                 </div>
                                             @endisset

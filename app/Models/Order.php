@@ -16,7 +16,6 @@ class Order extends Model
         'customer_id',
         'product_id',
         'order_id',
-        'totalPrice',
         'quantity',
         'variant_id',
         'coupon_id'

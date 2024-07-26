@@ -37,12 +37,12 @@
                                     </div>
                                 </div> --}}
 
-                                        <div class="slider-banner-image">
-                                            <div class="zoom-image-hover">
-                                                <img src="{{ asset('storage/images/' . $product->image) }}" alt="product-tab-2"
-                                                    class="product-image">
-                                            </div>
+                                    <div class="slider-banner-image">
+                                        <div class="zoom-image-hover">
+                                            <img src="{{ asset('storage/images/' . $product->image) }}" alt="product-tab-2"
+                                                class="product-image">
                                         </div>
+                                    </div>
 
                                 </div>
                                 <div class="slider slider-nav thumb-image">
@@ -288,8 +288,9 @@
                                             <a href="javascript:void(0)" class="wishlist">
                                                 <i class="ri-heart-line"></i>
                                             </a>
-                                            <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview{{ $value->id }}"
-                                            data_id= "{{ $value->id }}"  role="button">
+                                            <a class="model-oraganic-product" data-bs-toggle="modal"
+                                                href="#quickview{{ $value->id }}" data_id= "{{ $value->id }}"
+                                                role="button">
                                                 <i class="ri-eye-line"></i>
                                             </a>
                                         </div>
@@ -364,8 +365,6 @@
             <p>${event.comment.content}</p>
         </div>
     `;
-
-
             document.getElementById('comments-container').insertAdjacentHTML('beforeend', newCommentHtml);
         });
         const btnSubmit = document.querySelector('#btnSubmit');
@@ -377,18 +376,17 @@
             const content = contentInput.value;
 
             axios.post(`/comment/${productId}`, {
-                    product_id: productId,
-                    rating: rating,
-                    content: content
-                })
-                .then(res => {
-                    console.log(res.data);
-                    rating = 0; // hoặc giá trị mặc định của bạn
-                    contentInput = '';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                product_id: productId,
+                rating: rating,
+                content: content
+            })
+            .then(res => {
+                console.log(res.data);
+                contentInput.value = ''; // đặt lại giá trị của trường content
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         });
     </script>
 @endsection

@@ -187,9 +187,9 @@
                                                             <td>{{ number_format($value->quantity * $value->variants->sale_price) }}
                                                                 đ</td>
                                                         </tr>
-                                                        <span class="d-inline-block float-right">
+                                                        {{-- <span class="d-inline-block float-right">
                                                             {{ number_format($order_detail->orders->totalPrice) }}
-                                                            đ</span>
+                                                            đ</span> --}}
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -213,7 +213,7 @@
                                                     <span class="d-inline-block float-right text-default">$100.00</span>
                                                 </li>
                                                 <li class="text-dark">Total
-                                                    {{-- <span class="d-inline-block float-right"> {{ number_format($order_detail->orders->totalPrice) }} đ</span> --}}
+                                                    <span class="d-inline-block float-right"> {{ number_format($order_detail->totalPrice) }} đ</span>
                                                 </li>
                                             </ul>
                                         </div>

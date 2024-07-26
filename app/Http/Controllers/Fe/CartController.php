@@ -10,39 +10,39 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // $sesion = Session::all();
-        // dd($sesion);
+        // $request->session()->forget('coupons');
+        // $session = Session::get('coupons');
+        // dd($session);
         $cart = Cart::all();
         return view('Fe.Car.cartIdex');
     }
     public function addToCart(Request $req, Product  $product)
     {
         $customer_id = auth('customers')->id();
-        $data = [
-            "customer_id" => $customer_id,
-            "product_id" => $product->id,
-            "variant_id" => $req->input('variant_id'),
-            "quantity" => $req->input('quantity')
-        ];
-        Cart::create($data);
+        if (!$this->exitAddToCart($req, $product)) {
+            $data = array_merge(
+                ['customer_id' => $customer_id, 'product_id' => $product->id],
+                $req->only('variant_id', 'quantity')
+            );
+            Cart::create($data);
+            return redirect()->back();
+        }
         return redirect()->back();
     }
-    // public function addToCartJs(Request $req, Product $product)
-    // {
-    //     $customer_id = auth('customers')->id();
-    //     $data = [
-    //         "customer_id" => $customer_id,
-    //         "product_id" => $product->id,
-    //         "variant_id" => $req->input('variant_id'),
-    //         "quantity" => $req->input('quantity')
-    //     ];
-    //     Cart::create($data);
-    //     return response()->json(['success' => true]);
-    // }
 
-
+    public function exitAddToCart(Request $req, Product $product)
+    {
+        $cartItem = Cart::where(['product_id' => $product->id, 'variant_id' => $req->variant_id])
+            ->where('customer_id', auth('customers')->id())->first();
+        if ($cartItem) {
+            $cartItem->quantity += $req->quantity;
+            $cartItem->save();
+            return true; 
+        }
+        return false;
+    }
 
     public function updateCart(Request $request)
     {
@@ -69,13 +69,13 @@ class CartController extends Controller
     //     }
     // }
 
-    public function deleteCart($id){
+    public function deleteCart($id)
+    {
         try {
-            $deleteCart= Cart::findOrFail($id)->delete();
+            $deleteCart = Cart::findOrFail($id)->delete();
             return back();
         } catch (\Throwable $th) {
-           dd($th->getMessage());
+            dd($th->getMessage());
         }
-
     }
 }
