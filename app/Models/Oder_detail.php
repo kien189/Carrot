@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Oder_detail extends Model
 {
     use HasFactory;
+    protected $appends = 'TotalPrice';
     protected $table = 'order_detail';
-    protected $fillable = ['name', 'email', 'phone', 'address', 'customer_id', 'status', 'note','totalPrice', 'token'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'customer_id', 'status', 'note', 'totalPrice', 'token'];
 
     public function customers()
     {
@@ -23,6 +24,20 @@ class Oder_detail extends Model
     public function orders()
     {
         return $this->hasMany(Order::class, 'order_id', 'id');
+    }
+
+    public function shipment_detail()
+    {
+        return $this->hasOne(ShipmentOrder::class, 'order_id', 'id');
+    }
+    public function getTotalPriceAttribute()
+    {
+        $totalPrice = 0;
+        $carts = Order::where(['customer_id'=>auth('customers')->id(),'product_id'=>$orders->product_id])->get();
+        foreach ($carts as  $value) {
+            $totalPrice += $value->orders->variants->sale_price * $value->quantity;
+        }
+        return $totalPrice;
     }
 
     // Các thuộc tính và phương thức của model
@@ -104,5 +119,3 @@ class Oder_detail extends Model
         Session::forget('coupons');
     }
 }
-
-

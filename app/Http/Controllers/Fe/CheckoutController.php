@@ -43,9 +43,7 @@ class CheckoutController extends Controller
         $couponValue = $req->input('couponInput');
         $coupons = Session::get('coupons', []);
         $coupon = Coupon::where('coupon_code', $couponValue)->first();
-
         if ($coupon) {
-            // Kiểm tra xem mã giảm giá đã tồn tại trong danh sách chưa
             $exists = false;
             foreach ($coupons as $existingCoupon) {
                 if ($existingCoupon->id === $coupon->id) {
@@ -56,13 +54,14 @@ class CheckoutController extends Controller
             }
             if (!$exists) {
                 $coupons[] = $coupon;
+                $coupon->coupon_quantity --;
+                $coupon->save();
                 Session::put('coupons', $coupons);
                 return Redirect::back()->with('success','Áp mã giảm thành công ! ');
             }
         } else {
             return Redirect::back()->withInput()->withErrors(['coupon' => 'Mã giảm giá không hợp lệ hoặc không tồn tại !']);
         }
-
         // Redirect back with the updated coupons list
         return Redirect::back()->withInput();
     }
@@ -158,8 +157,9 @@ class CheckoutController extends Controller
     {
         try {
             $order=Oder_detail::createOrder($req);
-            return redirect()->route('home')->with('success', 'Đặt hàng thành công');
+            // return redirect()->route('home')->with('success', 'Đặt hàng thành công');
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             return redirect()->back()->with('error', 'Đặt hàng không thành công');
         }
     }

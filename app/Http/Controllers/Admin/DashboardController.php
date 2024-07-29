@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $count_customer = Customers::count();
         $count_order = Oder_detail::count();
         $totalPrice = Oder_detail::sum('totalPrice');
-        return view('Admin.index', compact('count_customer', 'count_order', 'totalPrice'));
+        return view('Admin.Email.index', compact('count_customer', 'count_order', 'totalPrice'));
 
     }
 

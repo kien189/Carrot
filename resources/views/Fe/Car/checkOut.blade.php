@@ -258,8 +258,8 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="hidden" name="payment_id" id="payment_id">
-                                                <input type="hidden" name="delivery_id" id="delivery_id">
+                                            <input type="hidden" name="payment_id" class="payment_id">
+                                            <input type="hidden" name="delivery_id" class="delivery_id">
                                             <input type="hidden" name="totalPrice"
                                                 value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
                                             <button hidden type="submit" name="redirect" id="vnpays-form"
@@ -430,15 +430,15 @@
                                                         </select>
                                                     </span>
                                                 </span>
-                                                <input type="hidden" name="payment_id" id="payment_id">
-                                                <input type="hidden" name="delivery_id" id="delivery_id">
+                                                <input type="hidden" name="payment_id" class="payment_ids">
+                                                <input type="hidden" name="delivery_id" class="delivery_ids">
                                                 <!-- Input ẩn để lưu payment_id -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <span class="cr-check-order-btn">
-                                <button type="button" class="cr-button mt-30" id="order-button">Place Order</button>
+                                <button type="submit" class="cr-button mt-30" id="order-button">Place Order</button>
                             </span>
                             </form>
                         </div>
@@ -456,12 +456,11 @@
             // Lấy giá trị của radio button được chọn
             var selectedPayment = document.querySelector('input[name="radio-groups"]:checked');
             var selectedDelivery = document.querySelector('input[name="radio-group-delivery"]:checked');
+
             console.log(selectedDelivery);
             if (selectedPayment) {
-                // Gán giá trị của radio button được chọn vào input ẩn
-                var edd = document.getElementById('payment_id').value = selectedPayment.value;
-                document.getElementById('delivery_id').value = selectedDelivery.value;
-                // Kiểm tra nếu phương thức thanh toán là VNPay
+                document.querySelector('.payment_id').value = selectedPayment.value;
+                document.querySelector('.delivery_id').value = selectedDelivery.value;
                 if (selectedPayment.id === 'pay4') {
                     document.getElementById('order-form').classList.add('hidden');
                     document.getElementById('vnpay-form').classList.remove('hidden');
@@ -469,7 +468,8 @@
                     document.getElementById('vnpays-form').click();
 
                 } else {
-                    // Submit form cash nếu phương thức thanh toán khác VNPay
+                    document.querySelector('.payment_ids').value = selectedPayment.value;
+                    document.querySelector('.delivery_ids').value = selectedDelivery.value;
                     document.getElementById('cash').submit();
                 }
             } else {

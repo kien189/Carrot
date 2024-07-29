@@ -39,7 +39,7 @@ class CartController extends Controller
         if ($cartItem) {
             $cartItem->quantity += $req->quantity;
             $cartItem->save();
-            return true; 
+            return true;
         }
         return false;
     }
