@@ -12,8 +12,9 @@ class CouponsOrder extends Model
     protected $fillable=['coupon_id','order_id'];
 
 
-    public function coupons(){
-        return $this->hasMany(Coupon::class,'id','coupon_id');
+    public function coupons()
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
     }
-    
+
 }

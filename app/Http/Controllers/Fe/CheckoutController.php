@@ -98,6 +98,7 @@ class CheckoutController extends Controller
 
     // public function cash(Request $req)
     // {
+    //     // dd($req->all());
     //     try {
     //         if ($order_detail = Oder_detail::create($req->all())) {
     //             $cart = Cart::where('customer_id', auth('customers')->id())->get();
@@ -157,7 +158,7 @@ class CheckoutController extends Controller
     {
         try {
             $order=Oder_detail::createOrder($req);
-            // return redirect()->route('home')->with('success', 'Đặt hàng thành công');
+            return redirect()->route('home')->with('success', 'Đặt hàng thành công');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             return redirect()->back()->with('error', 'Đặt hàng không thành công');

@@ -66,7 +66,7 @@
                                                 <p style="font-weight: bold; margin-bottom: 5px;">Details</p>
                                                 <address>
                                                     <span>Invoice ID:</span>
-                                                    <span>#{{ $order_detail->shipment_detail->shipment_detail }}</span>
+                                                    <span>#{{ $order_detail->shipment_detail->code_orders }}</span>
                                                     @if ($order_detail->shipment_detail->payment_id == 1)
                                                         <br><span>Payment :</span> Payment on delivery
                                                     @elseif($order_detail->shipment_detail->payment_id == 4)
@@ -78,7 +78,7 @@
                                         </tr>
                                     </table>
 
-                                    <table class="cr-chart-header" style="width: 100%">
+                                    {{-- <table class="cr-chart-header" style="width: 100%">
                                         <tr>
                                             <td style="width: 33%" class="block">
                                                 <h6>Invoice</h6>
@@ -94,14 +94,14 @@
                                                 <h5>{{ $order_detail->created_at->format('d-m-y') }}</h5>
                                             </td>
                                         </tr>
-                                    </table>
+                                    </table> --}}
                                     <div class="table-responsive tbl-800" style="margin-bottom: 20px;">
                                         <table class="table-invoice table-striped"
                                             style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                                             <thead>
                                                 <tr>
                                                     <th style="border: 1px solid #ddd; padding: 10px;">#</th>
-                                                    <th style="border: 1px solid #ddd; padding: 10px;">Image</th>
+                                                    {{-- <th style="border: 1px solid #ddd; padding: 10px;">Image</th> --}}
                                                     <th style="border: 1px solid #ddd; padding: 10px;">Item</th>
                                                     <th style="border: 1px solid #ddd; padding: 10px;">Description</th>
                                                     <th style="border: 1px solid #ddd; padding: 10px;">Quantity</th>
@@ -114,10 +114,10 @@
                                                     <tr>
                                                         <td style="border: 1px solid #ddd; padding: 10px;">
                                                             {{ $loop->index + 1 }}</td>
-                                                        <td style="border: 1px solid #ddd; padding: 10px;"><img
+                                                        {{-- <td style="border: 1px solid #ddd; padding: 10px;"><img
                                                                 class="invoice-item-img"
                                                                 src="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
-                                                                alt="product-image" style="max-width: 100%;"></td>
+                                                                alt="product-image" style="max-width: 100%;"></td> --}}
                                                         <td style="border: 1px solid #ddd; padding: 10px;">
                                                             {{ $value->products->name }}</td>
                                                         <td style="border: 1px solid #ddd; padding: 10px;">Half Sleeve
@@ -142,9 +142,9 @@
                                                     @if ($order_detail->note)
                                                         <p>{{ $order_detail->note }}</p>
                                                     @else
-                                                        <p>Your country territory tax has been apply.</p>
+                                                        {{-- <p>Your country territory tax has been apply.</p>
                                                         <p>Your voucher cannot be applied, because you enter wrong code.
-                                                        </p>
+                                                        </p> --}}
                                                     @endif
 
                                                 </div>
@@ -153,22 +153,74 @@
                                                 style="width:50%;float:right">
                                                 <ul class="list-unstyled" style="list-style: none; padding: 0;">
                                                     <li class="mid pb-3 text-dark"
-                                                        style="padding-bottom: 10px; color: #333;"> Subtotal
+                                                        style="padding-bottom: 10px; color: #333;">
+                                                        Subtotal
                                                         <span class="d-inline-block float-right text-default"
-                                                            style="float: right;">{{ number_format($order_detail->TotalPrice) }} đ</span>
+                                                            style="float: right;">
+                                                            {{ number_format($order_detail->totalPrice) }} đ
+                                                        </span>
                                                     </li>
-                                                    <li class="mid pb-3 text-dark"
-                                                        style="padding-bottom: 10px; color: #333;">Vat(10%)
+
+                                                    @if ($order_detail->coupon_order)
+                                                        @foreach ($order_detail->coupon_order as $coupon)
+                                                            @if ($coupon->coupons->coupon_condition == 1)
+                                                                <li class="mid pb-3 text-dark"
+                                                                    style="padding-bottom: 10px; color: #333;">
+                                                                    Sale
+                                                                    <span
+                                                                        class="d-inline-block float-right text-default"
+                                                                        style="float: right;">
+                                                                        -{{ number_format($order_detail->totalPrice / $coupon->coupons->coupon_number) }}đ
+                                                                    </span>
+                                                                </li>
+                                                            @elseif ($coupon->coupons->coupon_condition == 2)
+                                                                <li class="mid pb-3 text-dark"
+                                                                    style="padding-bottom: 10px; color: #333;">
+                                                                    Sale
+                                                                    <span
+                                                                        class="d-inline-block float-right text-default"
+                                                                        style="float: right;">
+                                                                        -{{ number_format($coupon->coupons->coupon_number) }}đ
+                                                                    </span>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
                                                         <span class="d-inline-block float-right text-default"
-                                                            style="float: right;"></span>
+                                                            style="float: right;">
+                                                            0 đ
+                                                        </span>
+                                                    @endif
+
+
+                                                    <li class="text-dark" style="color: #333;">
+                                                        Total
+                                                        @if ($order_detail->coupon_order)
+                                                            @php
+                                                                $finalPrice = $order_detail->totalPrice;
+                                                                foreach ($order_detail->coupon_order as $coupon) {
+                                                                    if ($coupon->coupons->coupon_condition == 1) {
+                                                                        $finalPrice -=
+                                                                            $finalPrice *
+                                                                            ($coupon->coupons->coupon_number / 100);
+                                                                    } elseif ($coupon->coupons->coupon_condition == 2) {
+                                                                        $finalPrice -= $coupon->coupons->coupon_number;
+                                                                    }
+                                                                }
+                                                            @endphp
+
+                                                            <span class="text-right fw-bold text-danger subTotal "
+                                                                style="float: right;">
+                                                                {{ number_format($finalPrice, 0, ',', '.') }}đ</span>
+                                                        @else
+                                                            <span style="float: right;"
+                                                                class="text-right fw-bold text-danger subTotal ">{{ number_format($order_detail->totalPrice, 0, ',', '.') }}đ</span>
+                                                        @endif
                                                     </li>
-                                                    <li class="text-dark" style="color: #333;">Total
-                                                        <span class="d-inline-block float-right"
-                                                            style="float: right;">{{ number_format($order_detail->totalPrice) }}
-                                                            đ</span>
-                                                    </li>
+
                                                 </ul>
                                             </td>
+
                                         </tr>
                                     </table>
                                 </div>

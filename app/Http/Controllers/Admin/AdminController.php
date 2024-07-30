@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('Admin.index');
+        return view('Admin.master');
     }
 
     public function register()

@@ -96,7 +96,8 @@
                                             }
                                         @endphp
 
-                                        <span class="text-right">{{ number_format($finalTotal, 0, ',', '.') }}đ</span>
+                                        <span
+                                            class="text-right text-danger fw-bold">{{ number_format($finalTotal, 0, ',', '.') }}đ</span>
                                     </div>
 
 
@@ -125,7 +126,7 @@
                                                             class="new-price">{{ number_format($value->variants->sale_price) }}đ</span>
                                                         <span class="fw-bold ">x {{ $value->quantity }}</span>
                                                         <span
-                                                            class="float-end fw-bold text-danger me-2">{{ number_format($value->variants->sale_price * $value->quantity) }}đ</span>
+                                                            class="float-end   me-2">{{ number_format($value->variants->sale_price * $value->quantity) }}đ</span>
                                                     </p>
                                                 </div>
                                             </div>
@@ -382,8 +383,7 @@
                                                     <label>Note*</label>
                                                     <textarea name="note" id="" class="form-control" cols="30" rows="4"></textarea>
                                                 </span>
-                                                <input type="hidden" name="totalPrice"
-                                                    value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
+                                                <input type="hidden" name="totalPrice" value="{{ $totalPrice }}">
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>City *</label>
                                                     <span class="cr-bl-select-inner">
