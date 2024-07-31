@@ -70,9 +70,10 @@
                                                     @if ($order_detail->shipment_detail->payment_id == 1)
                                                         <br><span>Payment :</span> Payment on delivery
                                                     @elseif($order_detail->shipment_detail->payment_id == 4)
-                                                        <br><span>Payment :</span> Payment on delivery
+                                                        <br><span>Payment :</span> Paid
                                                     @endif
-                                                    <br><span>Payment :</span> VnPay
+                                                    <br><span>Payment :</span>
+                                                    {{ $order_detail->shipment_detail->payment_id == 4 ? 'VnPay' : 'COD' }}
                                                 </address>
                                             </td>
                                         </tr>
@@ -186,10 +187,14 @@
                                                             @endif
                                                         @endforeach
                                                     @else
-                                                        <span class="d-inline-block float-right text-default"
-                                                            style="float: right;">
-                                                            0 đ
-                                                        </span>
+                                                        <li class="mid pb-3 text-dark"
+                                                            style="padding-bottom: 10px; color: #333;">
+                                                            Sale
+                                                            <span class="d-inline-block float-right text-default"
+                                                                style="float: right;">
+                                                                -0 đ
+                                                            </span>
+                                                        </li>
                                                     @endif
 
 

@@ -5,10 +5,10 @@
             <!-- Page title & breadcrumb -->
             <div class="cr-page-title cr-page-title-2">
                 <div class="cr-breadcrumb">
-                    <h5>Danh sách mã giảm giá</h5>
+                    <h5>Danh sách bình luận </h5>
                     <ul>
                         <li><a href="{{ route('admin.index') }}">Carrot</a></li>
-                        <li>Danh sách mã giảm giá</li>
+                        <li>Danh sách bình luận</li>
                     </ul>
                 </div>
             </div>
@@ -17,43 +17,31 @@
                     <div class="cr-card card-default product-list">
                         <div class="cr-card-content ">
                             <div class="table-responsive">
-                                <a class="btn btn-light " href="{{ route('coupon.create') }}">+ Add new coupon</a>
+                                {{-- <a class="btn btn-light " href="{{ route('coupon.create') }}">+ Add new coupon</a> --}}
                                 <table id="product_list" class="table" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Tên mã giảm giá</th>
-                                            <th>Mã giảm giá</th>
-                                            <th>Phương thức giảm</th>
-                                            <th>Giá giảm</th>
-                                            <th>Số lượng</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Action</th>
+                                            <th>Tên người đặt</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Số điện thoại</th>
+                                            <th>Tổng tiền </th>
+                                            <th>Trạng thái </th>
+                                            <th>Ngày đặt </th>
+                                            <th>Chi tiết</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($coupon as $value)
+                                        @foreach ($order_details as $value)
                                             <tr>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $value->coupon_name }}</td>
-                                                <td>{{ $value->coupon_code }}</td>
-                                                <td>
-                                                    @if ($value->coupon_condition == 1)
-                                                        <p>Mã giảm giá %</p>
-                                                    @elseif($value->coupon_condition == 2)
-                                                        <p>Mã giảm giá tiền </p>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($value->coupon_condition == 1)
-                                                        {{ $value->coupon_number }}%
-                                                    @elseif($value->coupon_condition == 2)
-                                                        {{ number_format($value->coupon_number) }}đ
-                                                    @endif
-                                                </td>
-                                                <td>{{ $value->coupon_quantity }}</td>
-                                                <td>{{ $value->created_at->format('d/m/y') }}</td>
+                                                <td>{{ $value->name }}</td>
+                                                <td>{{ $value->address }}</td>
+                                                <td>{{ $value->phone }}</td>
+                                                <td>{{ number_format($value->totalPrice) }}đ</td>
+                                                <td> {{ $status[$value->status] ?? 'Không xác định' }}</td>
+                                                <td>{{ $value->created_at->format('d-m-y') }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <button type="button"
@@ -64,13 +52,13 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item"
-                                                                href="{{ route('coupon.edit', $value) }}">Edit</a>
-                                                            <form action="{{ route('coupon.destroy', $value->id) }}"
+                                                            href="{{ route('admin.order.show', $value->id) }}">Chi tiết </a>
+                                                            {{-- <form action="{{ route('coupon.destroy', $value->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="dropdown-item">Delete</button>
-                                                            </form>
+                                                            </form> --}}
                                                         </div>
                                                     </div>
                                                 </td>

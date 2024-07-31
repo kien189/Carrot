@@ -11,7 +11,7 @@ class ShipmentOrder extends Model
     protected $table ='shipment_detail';
     protected $fillable =['code_orders','order_id','payment_id','delivery_id'];
 
-    public function orders(){
-        return $this->hasOne(Oder_detail::class,'order_id','id');
+    public function order_details(){
+        return $this->hasOne(Oder_detail::class,'id','order_id');
     }
 }

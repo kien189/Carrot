@@ -289,12 +289,12 @@
                             </ul>
                         </li>
                         <li class="cr-sb-item">
-                            <a href="" class="cr-page-link">
+                            <a href="{{ route('comments.index') }}" class="cr-page-link">
                                 <i class="fa-solid fa-comment-dots"></i><span class="condense"><span
                                         class="hover-title">Bình luận</span></span></a>
                         </li>
                         <li class="cr-sb-item">
-                            <a href="remix-icons.html" class="cr-page-link">
+                            <a href="{{ route('admin.order') }}" class="cr-page-link">
                                 <i class="fa-solid fa-cart-flatbed-suitcase"></i><span class="condense"><span
                                         class="hover-title">Đơn hàng</span></span></a>
                         </li>

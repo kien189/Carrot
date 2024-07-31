@@ -23,22 +23,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('*',function($view){
-            $carts = Cart::where('customer_id',auth('customers')->id())->get();
-            $favorite = Favorite::where('customer_id',auth('customers')->id())->get();
-            $view->with(compact('carts','favorite'));
+        view()->composer('*', function ($view) {
+            $carts = Cart::where('customer_id', auth('customers')->id())->get();
+            $favorite = Favorite::where('customer_id', auth('customers')->id())->get();
+            $view->with(compact('carts', 'favorite'));
         });
 
-        view()->composer('Fe.layout.master', function($view) {
+        view()->composer('Fe.layout.master', function ($view) {
             // Lấy tất cả các danh mục cha và con
             $categories = Category::whereNull('parent_id')->with('children')->get();
             $view->with(compact('categories'));
         });
-        view()->composer('*', function($view) {
+        view()->composer('*', function ($view) {
             // Lấy tất cả các danh mục cha và con
             $products = Product::inRandomOrder()->get();
             $pro = Product::inRandomOrder()->first();
-            $view->with(compact('products','pro'));
+            $view->with(compact('products', 'pro'));
+        });
+        View()->composer('*', function ($view) {
+            $view->with('status', [
+                0 => 'Chờ xác nhận',
+                1 => 'Đã xác nhận',
+                2 => 'Đang vận chuyển',
+                3 => 'Đã nhận hàng'
+            ]);
         });
     }
 }

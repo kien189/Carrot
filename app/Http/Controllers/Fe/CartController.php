@@ -12,7 +12,7 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        // $request->session()->forget('coupons');
+        // Session::forget('coupons');
         // $session = Session::get('coupons');
         // dd($session);
         $cart = Cart::all();

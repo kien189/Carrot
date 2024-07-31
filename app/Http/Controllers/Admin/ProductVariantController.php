@@ -23,7 +23,6 @@ class ProductVariantController extends Controller
      */
     public function create(Product $variant)
     {
-
     }
 
     /**
@@ -38,8 +37,7 @@ class ProductVariantController extends Controller
      */
     public function show(string $id)
     {
-        $variants = ProductVariants::where('product_id', $id)->get();
-        return view('Admin.Variants.show', compact('variants'));
+        
     }
 
     /**

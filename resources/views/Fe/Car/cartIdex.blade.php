@@ -124,7 +124,7 @@
                                                             <div>
                                                                 <span class="text-left">Giảm giá :</span>
                                                                 <span
-                                                                    class="text-right">-{{ number_format($value->totalPrice / $coupon->coupon_number) }}đ</span>
+                                                                    class="text-right">-{{ number_format($value->totalPrice * ($coupon->coupon_number / 100)) }}đ</span>
                                                             </div>
                                                         @elseif ($coupon->coupon_condition == 2)
                                                             <div>

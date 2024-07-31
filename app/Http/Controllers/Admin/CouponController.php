@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\coupon;
+use App\Models\CouponsOrder;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
@@ -50,9 +51,9 @@ class CouponController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(coupon $coupon)
     {
-        $coupon = coupon::findOrFail($id)->first();
+        $coupon = coupon::where('id', $coupon->id)->first();
         return view('Admin.Coupon.edit', compact('coupon'));
     }
 
@@ -73,10 +74,10 @@ class CouponController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(coupon $coupon)
     {
         try {
-            $coupon_delete = coupon::findOrFail($id)->delete();
+            $coupon_delete = coupon::where('id',$coupon->id)->delete();
             return redirect()->route('coupon.index')->with('success', 'Xóa mã giảm giá thành công !');
         } catch (\Throwable $th) {
             dd($th->getMessage());

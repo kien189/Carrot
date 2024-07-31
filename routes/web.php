@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Dashboard;
 use App\Http\Controllers\Fe\ApiController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Fe\ContactController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BlogControllers;
 use App\Http\Controllers\Fe\CheckoutController;
+use App\Http\Controllers\Fe\FavoriteController;
 use App\Http\Controllers\Fe\WishListController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
@@ -21,10 +23,10 @@ use App\Http\Controllers\Admin\VariantController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Fe\LoginGoogleController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderAdminController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\CommentAdminController;
 use App\Http\Controllers\Admin\ProductVariantController;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\Fe\FavoriteController;
 use App\Http\Controllers\Fe\Payment\vnPayPayMentController;
 
 /*
@@ -49,10 +51,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         'variants' => ProductVariantController::class,
         'blog' => BlogControllers::class,
         'coupon' => CouponController::class,
+        'comments'=> CommentAdminController::class,
         // 'shop' => ProfileController::class,
     ]);;
     Route::get('/creat/{product}', [ProductVariantController::class, 'add'])->name('variants.add');
+    Route::get('/comment/{product}', [CommentAdminController::class, 'show'])->name('showComments');
     Route::post('/creat/{product}', [ProductVariantController::class, 'postAdd']);
+    Route::get('/orders',[OrderAdminController::class,'index'])->name('admin.order');
+    Route::get('/orders/{id}',[OrderAdminController::class,'show'])->name('admin.order.show');
     // Route::get('/variant/show/{id}', [VariantController::class, 'show'])->name('variants.show');
     // Route::get('edit/{$id}',[VariantController::class,'edit'])->name('variants.edit');
 });
@@ -72,6 +78,8 @@ Route::prefix('/admin')->group(function () {
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
     Route::post('/register', [AdminController::class, 'postregister']);
+
+
 });
 Route::get('/products/{id}', [HomeController::class, 'modalProduct'])->name('modalProduct');
 
@@ -138,6 +146,7 @@ Route::prefix('/')->group(function () {
     Route::get('/profile', [AccountController::class, 'index'])->name('profile');
 
     Route::get('trackOrder', [CheckOutController::class, 'trackOrder'])->name('trackOrder');
+    Route::post('trackOrder', [CheckOutController::class, 'checkOrder']);
 });
 Route::prefix('checkout')->group(function () {
     Route::get('/', [CheckoutController::class, 'checkout'])->name('checkout');

@@ -27,7 +27,7 @@ class Product extends Model
 
     public function variants()
     {
-        return $this->hasMany(ProductVariants::class, 'product_id','id');
+        return $this->hasMany(ProductVariants::class,'product_id','id');
     }
 
     public function ratings()
@@ -52,5 +52,9 @@ class Product extends Model
     {
         return $this->hasMany(Cart::class, 'product_id');
     }
-    
+    public function orderDetails()
+    {
+        return $this->hasMany(Oder_detail::class, 'product_id');
+    }
+
 }

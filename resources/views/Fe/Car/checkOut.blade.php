@@ -56,7 +56,7 @@
                                                 <div>
                                                     <span class="text-left">Giảm giá</span>
                                                     <span name="coupon"
-                                                        class="text-right">-{{ number_format($totalPrice / $coupon->coupon_number) }}đ</span>
+                                                        class="text-right">-{{ number_format($totalPrice * ($coupon->coupon_number / 100)) }}đ</span>
                                                 </div>
                                             @elseif ($coupon->coupon_condition == 2)
                                                 <div>
@@ -88,7 +88,7 @@
                                             if (Session::has('coupons')) {
                                                 foreach (Session::get('coupons') as $coupon) {
                                                     if ($coupon->coupon_condition == 1) {
-                                                        $finalTotal -= $totalPrice / $coupon->coupon_number;
+                                                        $finalTotal -= $totalPrice * ( $coupon->coupon_number / 100 ) ;
                                                     } elseif ($coupon->coupon_condition == 2) {
                                                         $finalTotal -= $coupon->coupon_number;
                                                     }
@@ -262,7 +262,7 @@
                                             <input type="hidden" name="payment_id" class="payment_id">
                                             <input type="hidden" name="delivery_id" class="delivery_id">
                                             <input type="hidden" name="totalPrice"
-                                                value="{{ Session::get('coupons') ? $finalTotal : $totalPrice }}">
+                                                value=" {{ $totalPrice }} ">
                                             <button hidden type="submit" name="redirect" id="vnpays-form"
                                                 class="btn btn-success">Thanh
                                                 toán
@@ -438,7 +438,7 @@
                                 </div>
                             </div>
                             <span class="cr-check-order-btn">
-                                <button type="submit" class="cr-button mt-30" id="order-button">Place Order</button>
+                                <button type="button" class="cr-button mt-30" id="order-button">Place Order</button>
                             </span>
                             </form>
                         </div>
@@ -457,11 +457,12 @@
             var selectedPayment = document.querySelector('input[name="radio-groups"]:checked');
             var selectedDelivery = document.querySelector('input[name="radio-group-delivery"]:checked');
 
-            console.log(selectedDelivery);
+
             if (selectedPayment) {
                 document.querySelector('.payment_id').value = selectedPayment.value;
                 document.querySelector('.delivery_id').value = selectedDelivery.value;
                 if (selectedPayment.id === 'pay4') {
+                    console.log(selectedPayment.value);
                     document.getElementById('order-form').classList.add('hidden');
                     document.getElementById('vnpay-form').classList.remove('hidden');
                     document.getElementById('vnpay-form').click();

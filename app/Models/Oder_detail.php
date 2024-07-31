@@ -22,7 +22,7 @@ class Oder_detail extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'order_id', 'id');
+        return $this->belongsTo(Order::class,'id','order_id');
     }
 
     public function shipment_detail()

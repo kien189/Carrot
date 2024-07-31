@@ -54,10 +54,10 @@ class CheckoutController extends Controller
             }
             if (!$exists) {
                 $coupons[] = $coupon;
-                $coupon->coupon_quantity --;
+                $coupon->coupon_quantity--;
                 $coupon->save();
                 Session::put('coupons', $coupons);
-                return Redirect::back()->with('success','Áp mã giảm thành công ! ');
+                return Redirect::back()->with('success', 'Áp mã giảm thành công ! ');
             }
         } else {
             return Redirect::back()->withInput()->withErrors(['coupon' => 'Mã giảm giá không hợp lệ hoặc không tồn tại !']);
@@ -66,7 +66,15 @@ class CheckoutController extends Controller
         return Redirect::back()->withInput();
     }
 
-
+    public function checkOrder(Request $req)
+    {
+        $key = $req->input('trackOrder');
+        $checkOrder = ShipmentOrder::where('code_orders',$key)->first();
+        $productOrders = Order::where('order_id',$checkOrder->order_id)->first();
+        // dd($productOrders);
+        // dd($checkOrder);
+        return view('Fe.Order.TrackOder',compact('checkOrder','productOrders'));
+    }
 
 
     // public function checkCoupon(Request $req)
@@ -96,74 +104,74 @@ class CheckoutController extends Controller
     //     return Redirect::back()->with('success', 'Áp mã thành công !');
     // }
 
-    // public function cash(Request $req)
-    // {
-    //     // dd($req->all());
-    //     try {
-    //         if ($order_detail = Oder_detail::create($req->all())) {
-    //             $cart = Cart::where('customer_id', auth('customers')->id())->get();
-    //             foreach ($cart as $value) {
-    //                 $data1 = [
-    //                     'customer_id' => auth('customers')->id(),
-    //                     'product_id' => $value->product_id,
-    //                     'order_id' => $order_detail->id,
-    //                     'variant_id' => $value->variant_id,
-    //                     'quantity' => $value->quantity,
-    //                 ];
-    //                 $couponOrderData = $this->couponOrder($order_detail->id);
-    //                 foreach ($couponOrderData as $couponData) {
-    //                     CouponsOrder::create($couponData);
-    //                 }
-    //                 $shipmentOrder = $this->ShipmentOrder($order_detail->id,$req);
-    //                 ShipmentOrder::create($shipmentOrder);
-    //                 $order = Order::create($data1);
-    //                 Mail::to($req->email)->queue(new MailOrder($order_detail));
-    //             }
-    //             Cart::where('customer_id', auth('customers')->id())->delete();
-    //             $req->session()->forget('coupons');
-    //         }
-    //         return redirect()->route('home')->with('success', 'Đặt hàng thành công');
-    //     } catch (\Throwable $th) {
-    //         dd($th->getMessage());
-    //         return redirect()->back()->with('error', 'Đặt hàng không thành công');
-    //     }
-    // }
-    // public function couponOrder($order_id)
-    // {
-    //     $coupons = Session::get('coupons', []);
-    //     $couponData = [];
-    //     foreach ($coupons as $coupon) {
-    //         $couponData[] = [
-    //             'coupon_id' => $coupon->id,
-    //             'order_id' => $order_id,
-    //             // Thêm các trường khác nếu cần
-    //         ];
-    //     }
-    //     return $couponData;
-    // }
-
-    // public function ShipmentOrder($order_id, Request $req)
-    // {
-    //     $data = [
-    //         'code_orders' => Str::random(10),
-    //         'order_id' => $order_id,
-    //         'payment_id' => $req->payment_id,
-    //         'delivery_id' => $req->delivery_id
-    //     ];
-    //     return $data;
-    // }
-
-
     public function cash(Request $req)
     {
+        // dd($req->all());
         try {
-            $order=Oder_detail::createOrder($req);
+            if ($order_detail = Oder_detail::create($req->all())) {
+                $cart = Cart::where('customer_id', auth('customers')->id())->get();
+                foreach ($cart as $value) {
+                    $data1 = [
+                        'customer_id' => auth('customers')->id(),
+                        'product_id' => $value->product_id,
+                        'order_id' => $order_detail->id,
+                        'variant_id' => $value->variant_id,
+                        'quantity' => $value->quantity,
+                    ];
+                    $couponOrderData = $this->couponOrder($order_detail->id);
+                    foreach ($couponOrderData as $couponData) {
+                        CouponsOrder::create($couponData);
+                    }
+                    $shipmentOrder = $this->ShipmentOrder($order_detail->id, $req);
+                    ShipmentOrder::create($shipmentOrder);
+                    $order = Order::create($data1);
+                    Mail::to($req->email)->queue(new MailOrder($order_detail));
+                }
+                Cart::where('customer_id', auth('customers')->id())->delete();
+                $req->session()->forget('coupons');
+            }
             return redirect()->route('home')->with('success', 'Đặt hàng thành công');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             return redirect()->back()->with('error', 'Đặt hàng không thành công');
         }
     }
+    public function couponOrder($order_id)
+    {
+        $coupons = Session::get('coupons', []);
+        $couponData = [];
+        foreach ($coupons as $coupon) {
+            $couponData[] = [
+                'coupon_id' => $coupon->id,
+                'order_id' => $order_id,
+                // Thêm các trường khác nếu cần
+            ];
+        }
+        return $couponData;
+    }
+
+    public function ShipmentOrder($order_id, Request $req)
+    {
+        $data = [
+            'code_orders' => Str::random(10),
+            'order_id' => $order_id,
+            'payment_id' => $req->payment_id,
+            'delivery_id' => $req->delivery_id
+        ];
+        return $data;
+    }
+
+
+    // public function cash(Request $req)
+    // {
+    //     try {
+    //         $order=Oder_detail::createOrder($req);
+    //         return redirect()->route('home')->with('success', 'Đặt hàng thành công');
+    //     } catch (\Throwable $th) {
+    //         dd($th->getMessage());
+    //         return redirect()->back()->with('error', 'Đặt hàng không thành công');
+    //     }
+    // }
 
     public function trackOrder()
     {

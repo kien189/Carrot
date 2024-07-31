@@ -5,10 +5,10 @@
             <!-- Page title & breadcrumb -->
             <div class="cr-page-title cr-page-title-2">
                 <div class="cr-breadcrumb">
-                    <h5>Danh sách mã giảm giá</h5>
+                    <h5>Danh sách bình luận </h5>
                     <ul>
                         <li><a href="{{ route('admin.index') }}">Carrot</a></li>
-                        <li>Danh sách mã giảm giá</li>
+                        <li>Danh sách bình luận</li>
                     </ul>
                 </div>
             </div>
@@ -17,43 +17,41 @@
                     <div class="cr-card card-default product-list">
                         <div class="cr-card-content ">
                             <div class="table-responsive">
-                                <a class="btn btn-light " href="{{ route('coupon.create') }}">+ Add new coupon</a>
+                                {{-- <a class="btn btn-light " href="{{ route('coupon.create') }}">+ Add new coupon</a> --}}
                                 <table id="product_list" class="table" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Tên mã giảm giá</th>
-                                            <th>Mã giảm giá</th>
-                                            <th>Phương thức giảm</th>
-                                            <th>Giá giảm</th>
-                                            <th>Số lượng</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Action</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng comment</th>
+                                            <th>Trung bình </th>
+                                            <th>Chi tiết</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($coupon as $value)
+                                        @foreach ($productsWithcomment as $value)
                                             <tr>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $value->coupon_name }}</td>
-                                                <td>{{ $value->coupon_code }}</td>
+                                                <td>{{ $value->name }}</td>
+                                                <td>{{ $value->ratings->count() }}</td>
                                                 <td>
-                                                    @if ($value->coupon_condition == 1)
-                                                        <p>Mã giảm giá %</p>
-                                                    @elseif($value->coupon_condition == 2)
-                                                        <p>Mã giảm giá tiền </p>
+                                                    @php
+                                                        $rating = $value->averageRating();
+                                                        $fullStars = floor($rating);
+                                                        $halfStar = ceil($rating - $fullStars);
+                                                        $emptyStars = 5 - $fullStars - $halfStar;
+                                                    @endphp
+                                                    @for ($i = 0; $i < $fullStars; $i++)
+                                                        <i class="ri-star-fill" style="color:#f5885f"></i>
+                                                    @endfor
+                                                    @if ($halfStar)
+                                                        <i class="ri-star-half-line"></i>
                                                     @endif
+                                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                                        <i class="ri-star-line"></i>
+                                                    @endfor
                                                 </td>
-                                                <td>
-                                                    @if ($value->coupon_condition == 1)
-                                                        {{ $value->coupon_number }}%
-                                                    @elseif($value->coupon_condition == 2)
-                                                        {{ number_format($value->coupon_number) }}đ
-                                                    @endif
-                                                </td>
-                                                <td>{{ $value->coupon_quantity }}</td>
-                                                <td>{{ $value->created_at->format('d/m/y') }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <button type="button"
@@ -64,13 +62,13 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item"
-                                                                href="{{ route('coupon.edit', $value) }}">Edit</a>
-                                                            <form action="{{ route('coupon.destroy', $value->id) }}"
+                                                            href="{{ route('showComments', $value->id) }}">Chi tiết </a>
+                                                            {{-- <form action="{{ route('coupon.destroy', $value->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="dropdown-item">Delete</button>
-                                                            </form>
+                                                            </form> --}}
                                                         </div>
                                                     </div>
                                                 </td>
