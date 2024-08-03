@@ -1,5 +1,7 @@
 @extends('Admin.master')
 @section('main_admin')
+    <base href="/">
+    <!-- main content -->
     <div class="cr-main-content">
         <div class="container-fluid">
             <!-- Page title & breadcrumb -->
@@ -16,13 +18,14 @@
                 <div class="col-md-12">
                     <div class="cr-card card-default">
                         <div class="cr-card-content">
-                            <form class="row g-3" action="{{ route('blog.update',$blog->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('banners.update',$banner) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @method("PUT")
+                                @method('PUT')
                                 <div class="row cr-product-uploads">
                                     <div class="col-lg-4 mb-991">
                                         <div class="cr-vendor-img-upload">
                                             <div class="cr-vendor-main-img">
+
                                                 <div class="avatar-upload">
                                                     <div class="avatar-edit">
                                                         <input type='file' id="product_main" class="cr-image-upload"
@@ -32,7 +35,7 @@
                                                     <div class="avatar-preview cr-preview">
                                                         <div class="imagePreview cr-div-preview">
                                                             <img class="cr-image-preview"
-                                                                src="{{ asset('storage/blogs/'.$blog->image) }}"
+                                                                src="{{ asset('storage/banners/'.$banner->image) }}"
                                                                 alt="edit">
                                                         </div>
                                                     </div>
@@ -41,50 +44,33 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-8">
-                                        <div class="cr-vendor-upload-detail">
-
-                                            <div class="d-flex gap-2">
-
-
+                                        <div class="cr-vendor-upload-detail ">
+                                            <div class="row g-3">
                                                 <div class="col-md-6">
-                                                    <label for="inputEmail4" class="form-label">Tiêu đề</label>
-                                                    <input name="title"  value="{{ $blog->title }}" class="form-control here set-slug" type="text" onkeyup="ChangeToSlug()" id="NamePro">
+                                                    <label for="inputEmail4" class="form-label" >Title Banner</label>
+                                                    <input type="text" class="form-control slug-title" value="{{ $banner->title }}" name="title">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="form-label">Chọn danh mục</label>
-                                                    <select class="form-control form-select " name="category_id">
-                                                        @foreach ($cate as $item)
-                                                            <option value="{{ $item->id }}" {{ $blog->category_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <label class="form-label">Content Banner</label>
+                                                    <input type="text" class="form-control slug-title" value="{!! $banner->content !!}" name="content">
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <label for="slug" class="col-12 col-form-label">Slug</label>
-                                                <div class="col-12">
-                                                    <input id="slug" value="{{ $blog->slug }}" name="slug" class="form-control here set-slug"
-                                                        type="text">
-                                                </div>
+                                            <div class="col-md-12 pb-4">
+                                                <label class="form-label">Short Title Banner</label>
+                                                <textarea class="form-control" id="editor1" name="message" rows="4">{{ $banner->message }}</textarea>
                                             </div>
                                             <div class="col-md-12">
-                                                <label class="form-label">Mô tả ngắn</label>
-                                                <textarea class="form-control" id="editor2" name="sort_description" rows="2">{{ $blog->sort_description }}</textarea>
+                                                <button type="submit" class="btn cr-btn-primary">Submit</button>
                                             </div>
+
                                         </div>
                                     </div>
-                                    <div class="col-md-12 pb-4">
-                                        <label class="form-label">Mô tả</label>
-                                        <textarea class="form-control w-100" name="description" id="editor1" rows="5">{{ $blog->description }}</textarea>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn cr-btn-primary">Submit</button>
-                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection

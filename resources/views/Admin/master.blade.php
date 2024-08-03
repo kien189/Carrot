@@ -258,6 +258,16 @@
                         {{-- <li class="cr-sb-item-separator"></li> --}}
                         <li class="cr-sb-title condense text-black">Elements</li>
                         <li class="cr-sb-item sb-drop-item">
+                            <a href="{{ route('banners.index') }}" class="cr-drop-toggle">
+                                <i class="fa-solid fa-panorama"></i><span class="condense">Bannner</span></a>
+                            {{-- <ul class="cr-sb-drop condense">
+                                <li><a href="{{ route('category.index') }}" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Danh mục cha</a></li>
+                                <li><a href="{{ route('subCategory.index') }}" class="cr-page-link drop"><i
+                                            class="ri-checkbox-blank-circle-line"></i>Danh mục con</a></li>
+                            </ul> --}}
+                        </li>
+                        <li class="cr-sb-item sb-drop-item">
                             <a href="javascript:void(0)" class="cr-drop-toggle">
                                 <i class="fa-solid fa-list"></i><span class="condense">Danh mục<i
                                         class="drop-arrow ri-arrow-down-s-line"></i></span></a>
@@ -294,7 +304,7 @@
                                         class="hover-title">Bình luận</span></span></a>
                         </li>
                         <li class="cr-sb-item">
-                            <a href="{{ route('admin.order') }}" class="cr-page-link">
+                            <a href="{{ route('orderAdmin') }}" class="cr-page-link">
                                 <i class="fa-solid fa-cart-flatbed-suitcase"></i><span class="condense"><span
                                         class="hover-title">Đơn hàng</span></span></a>
                         </li>
@@ -661,6 +671,7 @@
         <!-- Main Custom -->
         <script src="{{ asset('assets_ad') }}/js/main.js"></script>
         <script src="{{ asset('assets_ad') }}/js/variants.js"></script>
+        <script src="{{ asset('assets_ad') }}/js/updateOrder.js"></script>
         <script src="{{ asset('assets_ad') }}/js/data/ecommerce-chart-data.js"></script>
         @yield('script')
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

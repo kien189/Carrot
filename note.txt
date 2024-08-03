@@ -27,3 +27,6 @@ FACEBOOK_REDIRECT_URI=http://your-callback-url/facebook/callback
 
 
 ['array_merge'] để gộp hai mảng lại thành một dòng duy nhất
+
+Để in được cái
+PDF thì cần phải cấu hình tệp php.ini ở trong xapp\php\php.ini sửa extension=gd bỏ dấu ; để dùng 

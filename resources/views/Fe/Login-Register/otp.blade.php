@@ -16,18 +16,7 @@
             </div>
         </div>
     </section>
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{ $message }}</strong>
-        </div>
-    @endif
-    @if ($message = Session::get('error'))
-        <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{ $message }}</strong>
-        </div>
-    @endif
+
     <!-- Forgot page -->
     <section class="section-login padding-tb-100">
         <div class="container">
@@ -59,6 +48,12 @@
                                 @error('otp')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
+                                @if ($message = Session::get('success'))
+                                    <p>{{ $message }}</p>
+                                @endif
+                                @if ($message = Session::get('error'))
+                                    <p>{{ $message }}</p>
+                                @endif
                             </div>
                             <div class="login-buttons">
                                 <button type="submit" class="cr-button text-center w-100">Gửi</button>

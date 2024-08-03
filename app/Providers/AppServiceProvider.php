@@ -44,8 +44,10 @@ class AppServiceProvider extends ServiceProvider
             $view->with('status', [
                 0 => 'Chờ xác nhận',
                 1 => 'Đã xác nhận',
-                2 => 'Đang vận chuyển',
-                3 => 'Đã nhận hàng'
+                2 => 'Xử lý đơn hàng',
+                3 => 'Kiểm tra chất lượng',
+                4 => 'Đang giao hàng',
+                5 => 'Đã nhận hàng'
             ]);
         });
     }

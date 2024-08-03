@@ -20,7 +20,7 @@ class LoginGoogleController extends Controller
         try {
 
             $user = Socialite::driver('google')->user();
-
+            // dd($user);
             $finduser = Customers::where('google_id', $user->id)->first();
 
             if ($finduser) {
@@ -31,6 +31,7 @@ class LoginGoogleController extends Controller
             } else {
                 $newUser = Customers::updateOrCreate(['email' => $user->email], [
                     'name' => $user->name,
+                    'image'=>$user->picture,
                     'google_id' => $user->id,
                     'password' => encrypt('123456dummy')
                 ]);
@@ -40,6 +41,7 @@ class LoginGoogleController extends Controller
                 return redirect()->route('home');
             }
         } catch (Exception $e) {
+            dd($e->getMessage());
             return redirect()->route('login');
         }
     }

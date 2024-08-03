@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Fe;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
+use App\Models\Banner;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Comment;
@@ -39,12 +40,15 @@ class HomeController extends Controller
     public function index(Category $category)
     {
         $blog = Blog::orderBy('created_at', 'asc')->inRandomOrder()->get();
+        $banner = Banner::all();
         return view('Fe.index', [
             'product' => $this->product,
             'cate' => $this->cate,
-            'blogs' =>  $blog
+            'blogs' =>  $blog,
+            'banner'=> $banner
         ]);
     }
+
 
     public function search(Category $category, Request $req, $search)
     {
@@ -86,7 +90,6 @@ class HomeController extends Controller
 
     public function postLogin(Request $req)
     {
-        // dd($req->all());
         $validate = $req->validate([
             'email'    => 'required|email|exists:customers',
             'password' => 'required|min:8'
@@ -135,7 +138,7 @@ class HomeController extends Controller
     public function logout()
     {
         auth('customers')->logout();
-        return redirect()->back()->with('success', 'Logout successfully !');
+        return redirect()->route('home')->with('success', 'Logout successfully !');
     }
 
     public function forgotPassword()
@@ -258,27 +261,20 @@ class HomeController extends Controller
             'password' => "required|string|min:8|regex:/[a-z,A-Z,0-9]/",
             'confirmPassword' => "required|string|min:8|regex:/[a-z,A-Z,0-9]/|same:password"
         ]);
-
-        // Truy vấn bản ghi cụ thể từ bảng customer_reset_token
         $tokenData = customer_reset_token::where('token', $token)->first();
-
+        // dd($tokenData->email);
         if (!$tokenData) {
             return redirect()->route('forgotPassword')->with('error', 'Token không hợp lệ hoặc đã được sử dụng.');
         }
-
-        // Tìm người dùng từ bảng Customers dựa trên email trong tokenData
         $customer = Customers::where('email', $tokenData->email)->first();
-
+        // dd($customer);
         if (!$customer) {
             return redirect()->route('forgotPassword')->with('error', 'Không tìm thấy người dùng với email tương ứng.');
         }
-
-        // Cập nhật mật khẩu mới cho người dùng
         $customer->password = bcrypt($req->password);
         $customer->save();
-
         // Xóa token sau khi sử dụng
-        // $tokenData->delete();
+        $tokenData->delete();
 
         return redirect()->route('login')->with('success', 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập bằng mật khẩu mới.');
     }

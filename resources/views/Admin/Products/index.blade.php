@@ -52,7 +52,6 @@
                                                         <span class=""><i class="ri-settings-3-line"></i></span>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="{{ route('product.create') }}" >Add</a>
                                                         <a class="dropdown-item" href="{{ route('product.edit',$value->id) }}">Edit</a>
                                                         <a class="dropdown-item" >Delete</a>
                                                     </div>

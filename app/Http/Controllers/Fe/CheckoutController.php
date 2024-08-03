@@ -69,7 +69,7 @@ class CheckoutController extends Controller
     public function checkOrder(Request $req)
     {
         $key = $req->input('trackOrder');
-        $checkOrder = ShipmentOrder::where('code_orders',$key)->first();
+        $checkOrder = Oder_detail::where('code_order',$key)->first();
         $productOrders = Order::where('order_id',$checkOrder->order_id)->first();
         // dd($productOrders);
         // dd($checkOrder);
@@ -106,7 +106,6 @@ class CheckoutController extends Controller
 
     public function cash(Request $req)
     {
-        // dd($req->all());
         try {
             if ($order_detail = Oder_detail::create($req->all())) {
                 $cart = Cart::where('customer_id', auth('customers')->id())->get();
@@ -172,11 +171,21 @@ class CheckoutController extends Controller
     //         return redirect()->back()->with('error', 'Đặt hàng không thành công');
     //     }
     // }
-
     public function trackOrder()
     {
         $trackOrder = Oder_detail::where('customer_id', auth('customers')->id())->get();
         // dd($trackOrder);
         return view('Fe.Order.TrackOder');
+    }
+
+    public function confirmOrder(Request $req , $id)
+    {
+        try {
+            $order_detail = Oder_detail::findOrFail($id);
+            $order_detail->update(['status' => 1]);
+            return redirect()->route('home')->with('success', 'Đơn hàng đã được xác nhận thành công');
+        } catch (\Throwable $e) {
+            return redirect()->route('home')->with('error', 'Có lỗi xảy ra khi xác nhận đơn hàng');
+        }
     }
 }

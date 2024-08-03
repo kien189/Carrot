@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
@@ -19,20 +19,7 @@
                     <div class="col-md-12">
                         <div class="cr-card cr-invoice max-width-1170"
                             style="border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
-                            <table class="cr-card-header" style="width: 100%">
-                                <tr>
-                                    <td style="width: 50%">
-                                        <h4 class="cr-card-title" style="font-size: 24px; margin: 0;">Invoice</h4>
-                                    </td>
-                                    <td style="width: 50% ; float: right" class="header-tools">
-                                        <a href="{{ route("confirmOrder",$order_detail->id) }}" class="cr-btn-primary m-r-5"
-                                            style="background-color: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; margin-right: 5px;">Xác
-                                            nhận đơn hàng</a>
-                                        <button class="cr-btn-secondary"
-                                            style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; cursor: pointer;">Print</button>
-                                    </td>
-                                </tr>
-                            </table>
+
                             <div class="cr-card-content card-default" style="padding: 20px;">
                                 <div class="invoice-wrapper" style="margin: 20px 0;">
                                     <table style="width: 100%; border-collapse: collapse;">
@@ -87,7 +74,7 @@
                                             </td>
                                             <td style="width: 33%" class="block">
                                                 <h6>Amount</h6>
-                                                <h5>{{ number_format($order_detail->totalPrice) }} đ</h5>
+                                                <h5>{{ number_format($order_detail->totalPrice) }} VND</h5>
                                             </td>
 
                                             <td style="width: 33%" class="block">
@@ -126,10 +113,10 @@
                                                         <td style="border: 1px solid #ddd; padding: 10px;">
                                                             {{ $value->quantity }}</td>
                                                         <td style="border: 1px solid #ddd; padding: 10px;">
-                                                            {{ number_format($value->variants->sale_price) }} đ</td>
+                                                            {{ number_format($value->variants->sale_price) }} VND</td>
                                                         <td style="border: 1px solid #ddd; padding: 10px;">
                                                             {{ number_format($value->quantity * $value->variants->sale_price) }}
-                                                            đ</td>
+                                                            VND</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -158,7 +145,7 @@
                                                         Subtotal
                                                         <span class="d-inline-block float-right text-default"
                                                             style="float: right;">
-                                                            {{ number_format($order_detail->totalPrice) }} đ
+                                                            {{ number_format($order_detail->totalPrice) }} VND
                                                         </span>
                                                     </li>
 
@@ -171,7 +158,7 @@
                                                                     <span
                                                                         class="d-inline-block float-right text-default"
                                                                         style="float: right;">
-                                                                        -{{ number_format($order_detail->totalPrice * ($coupon->coupons->coupon_number / 100)) }}đ
+                                                                        -{{ number_format($order_detail->totalPrice * ($coupon->coupons->coupon_number / 100)) }}VND
                                                                     </span>
                                                                 </li>
                                                             @elseif ($coupon->coupons->coupon_condition == 2)
@@ -181,7 +168,7 @@
                                                                     <span
                                                                         class="d-inline-block float-right text-default"
                                                                         style="float: right;">
-                                                                        -{{ number_format($coupon->coupons->coupon_number) }}đ
+                                                                        -{{ number_format($coupon->coupons->coupon_number) }}VND
                                                                     </span>
                                                                 </li>
                                                             @endif
@@ -192,7 +179,7 @@
                                                             Sale
                                                             <span class="d-inline-block float-right text-default"
                                                                 style="float: right;">
-                                                                -0 đ
+                                                                -0 VND
                                                             </span>
                                                         </li>
                                                     @endif
@@ -216,10 +203,10 @@
 
                                                             <span class="text-right fw-bold text-danger subTotal "
                                                                 style="float: right;">
-                                                                {{ number_format($finalPrice, 0, ',', '.') }}đ</span>
+                                                                {{ number_format($finalPrice, 0, ',', '.') }}VND</span>
                                                         @else
                                                             <span style="float: right;"
-                                                                class="text-right fw-bold text-danger subTotal ">{{ number_format($order_detail->totalPrice, 0, ',', '.') }}đ</span>
+                                                                class="text-right fw-bold text-danger subTotal ">{{ number_format($order_detail->totalPrice, 0, ',', '.') }}VND</span>
                                                         @endif
                                                     </li>
 

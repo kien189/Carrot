@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\InvoiceOrderController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Dashboard;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Fe\AccountController;
 use App\Http\Controllers\Fe\CommentController;
 use App\Http\Controllers\Fe\ContactController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BannerAdminController;
 use App\Http\Controllers\Admin\BlogControllers;
 use App\Http\Controllers\Fe\CheckoutController;
 use App\Http\Controllers\Fe\FavoriteController;
@@ -51,14 +53,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         'variants' => ProductVariantController::class,
         'blog' => BlogControllers::class,
         'coupon' => CouponController::class,
-        'comments'=> CommentAdminController::class,
+        'comments' => CommentAdminController::class,
+        'banners'  =>BannerAdminController::class,
         // 'shop' => ProfileController::class,
     ]);;
     Route::get('/creat/{product}', [ProductVariantController::class, 'add'])->name('variants.add');
     Route::get('/comment/{product}', [CommentAdminController::class, 'show'])->name('showComments');
     Route::post('/creat/{product}', [ProductVariantController::class, 'postAdd']);
-    Route::get('/orders',[OrderAdminController::class,'index'])->name('admin.order');
-    Route::get('/orders/{id}',[OrderAdminController::class,'show'])->name('admin.order.show');
+    Route::get('/orders', [OrderAdminController::class, 'index'])->name('orderAdmin');
+    Route::get('/orders/{id}', [OrderAdminController::class, 'show'])->name('admin.order.show');
+    Route::post('/updateOrder/{id}', [OrderAdminController::class, 'updateOrder'])->name('updateOrder');
+
     // Route::get('/variant/show/{id}', [VariantController::class, 'show'])->name('variants.show');
     // Route::get('edit/{$id}',[VariantController::class,'edit'])->name('variants.edit');
 });
@@ -78,8 +83,6 @@ Route::prefix('/admin')->group(function () {
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
     Route::post('/register', [AdminController::class, 'postregister']);
-
-
 });
 Route::get('/products/{id}', [HomeController::class, 'modalProduct'])->name('modalProduct');
 
@@ -154,6 +157,8 @@ Route::prefix('checkout')->group(function () {
     Route::post('/vnpay_payment', [vnPayPayMentController::class, 'vnpay_payment'])->name('vnPay_Payment');
     Route::post('/momo_payment', [vnPayPayMentController::class, 'momo_payment'])->name('momo_Payment');
     Route::post('/cash', [CheckoutController::class, 'cash'])->name('cash');
+    Route::get('confirm-order/{id}', [CheckoutController::class, 'confirmOrder'])->name('confirmOrder');
+    Route::get('invoice/{id}',[InvoiceOrderController::class,'invoice'])->name('invoicePDF');
 });
 
 Route::prefix('cart')->group(function () {
@@ -169,5 +174,3 @@ Route::prefix('wishList')->group(function () {
     Route::get('/addWishList/{product}', [FavoriteController::class, 'addFavorite'])->name('addFavorite');
     Route::delete('/deleteWishList/{id}', [FavoriteController::class, 'deleteWishList'])->name('deleteWishList');
 });
-
-

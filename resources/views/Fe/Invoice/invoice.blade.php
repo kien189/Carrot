@@ -1,43 +1,140 @@
-@extends('Admin.master')
-@section('main_admin')
-    <base href="/">
-    <div class="cr-main-content">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="admin, dashboard, ecommerce, panel" />
+    <meta name="description" content="Carrot - Admin.">
+    <meta name="author" content="ashishmaraviya">
+    <title>Carrot - Admin.</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .cr-main-content {
+            border: 1px solid gray;
+        }
+
+        .container-fluid {
+            padding: 3rem 3rem;
+        }
+
+        .cr-card-header {
+            display: flex;
+            /* justify-content: space-between; */
+        }
+
+
+        .cr-invoice .invoice-wrapper .invoice-item-img {
+            width: 35px;
+        }
+
+        .cr-invoice .invoice-wrapper address {
+            font-size: 14px;
+            color: #777;
+            line-height: 24px;
+        }
+
+        .cr-invoice .invoice-wrapper p {
+            font-size: 14px;
+            font-weight: 600;
+            color: #484d54;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice {
+            margin-top: 30px;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice>thead>tr {
+            background-color: #1b2237;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice>thead>tr th {
+            padding: 10px;
+            color: #fff;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice>tbody>tr:nth-of-type(even)>* {
+            background-color: #fcfcfc;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice>tbody>tr td {
+            padding: 12px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice>tbody>tr td:first-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .cr-invoice .invoice-wrapper .table-invoice>tbody>tr td:last-child {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .cr-invoice .invoice-wrapper .list-unstyled {
+            margin: 24px 0 0 0;
+        }
+
+        .cr-invoice .invoice-wrapper .list-unstyled li {
+            font-size: 15px;
+            color: #484d54;
+            font-weight: 500;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+        }
+
+        .cr-invoice .invoice-wrapper .list-unstyled li span {
+            color: #777;
+        }
+
+        .cr-invoice .invoice-wrapper .note {
+            margin-top: 24px;
+        }
+
+        .cr-invoice .invoice-wrapper .note label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #484d54;
+        }
+
+        .cr-invoice .invoice-wrapper .note p {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 26px;
+            color: #999;
+        }
+
+        .cr-chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+
+<body style="font-family: Arial, sans-serif;">
+    <!-- main content -->
+    <div class="cr-main-content container">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="cr-card cr-invoice max-width-1170">
                         <div class="cr-card-header">
-                            <h4 class="cr-card-title">Invoice</h4>
-                            <div class="header-tools d-flex align-items-center">
-                                {{-- <form action="{{ route('updateOrder', $detailOrder->id) }}" class="d-flex align-items-center"
-                                    method="post">
-                                    @csrf --}}
-                                <select id="statusSelect" data-id={{ $detailOrder->id }} name='status'
-                                    class="form-select me-3">
-                                    <option value="0" {{ $detailOrder->status == 0 ? 'selected' : '' }}>Chờ xác
-                                        nhận
-                                    </option>
-                                    <option value="1" {{ $detailOrder->status == 1 ? 'selected' : '' }}>Đã xác nhận
-                                    </option>
-                                    <option value="2" {{ $detailOrder->status == 2 ? 'selected' : '' }}>Xử lý đơn
-                                        hàng
-                                    </option>
-                                    <option value="3" {{ $detailOrder->status == 3 ? 'selected' : '' }}>Kiểm tra
-                                        chất
-                                        lượng
-                                    </option>
-                                    <option value="4" {{ $detailOrder->status == 4 ? 'selected' : '' }}>Đang giao
-                                        hàng
-                                    </option>
-                                    <option value="5" {{ $detailOrder->status == 5 ? 'selected' : '' }}>Đã nhận
-                                        hàng
-                                    </option>
-                                    </option>
-                                </select>
-                                <button class="cr-btn-primary m-r-5 me-4">Save</button>
-
-                                <a href="{{ route('invoicePDF',$detailOrder->id) }}"><button  class="cr-btn-secondary">Print</button></a>
-                            </div>
+                            <h4 class="cr-card-title pb-3">Invoice</h4>
+                            {{-- <div class="header-tools">
+                                <button class="cr-btn-primary m-r-5">Save</button>
+                                <button class="cr-btn-secondary">Print</button>
+                            </div> --}}
                         </div>
                         <div class="cr-card-content card-default">
 
@@ -65,10 +162,10 @@
                                         <p class="text-dark mb-2">To</p>
 
                                         <address>
-                                            <span>{{ $detailOrder->name }}</span>
-                                            <br> {{ $detailOrder->address }}
-                                            <br> <span>Email</span>: {{ $detailOrder->email }}
-                                            <br> <span>Phone:</span> {{ $detailOrder->phone }}
+                                            <span>{{ $detailOrder->customers->name }}</span>
+                                            <br> {{ $detailOrder->customers->address }}
+                                            <br> <span>Email</span>: {{ $detailOrder->customers->email }}
+                                            <br> <span>Phone:</span>{{ $detailOrder->customers->phone }}
                                         </address>
                                     </div>
                                     <div class="col-md-6 col-lg-3 col-sm-6">
@@ -76,14 +173,14 @@
 
                                         <address>
                                             <span>Invoice ID:</span>
-                                            <span class="text-dark">#{{ $detailOrder->code_order }}</span>
+                                            <span>#{{ $detailOrder->shipment_detail->code_orders }}</span>
+                                            @if ($detailOrder->shipment_detail->payment_id == 1)
+                                                <br><span>Payment :</span> Payment on delivery
+                                            @elseif($detailOrder->shipment_detail->payment_id == 4)
+                                                <br><span>Payment :</span> Paid
+                                            @endif
                                             <br><span>Payment :</span>
                                             {{ $detailOrder->shipment_detail->payment_id == 4 ? 'VnPay' : 'COD' }}
-                                            <br><span>Bank :</span>
-                                            {{ $detailOrder->shipment_detail->payment_id == 4 ? 'NCB' : '' }}
-                                            <br><span>Ship
-                                                :</span>{{ $detailOrder->shipment_detail->delivery_id == 1 ? 'Free ship' : 'Economical delivery' }}
-                                            {{-- <br> <span>VAT:</span> PL6541215450 --}}
                                         </address>
                                     </div>
                                 </div>
@@ -118,8 +215,7 @@
                                     </div>
                                     <div class="block">
                                         <h6>Quantity</h6>
-                                        <h5>{{ $detailOrder->orders->sum('quantity') }}
-                                        </h5>
+                                        <h5 class="text-center">{{ $detailOrder->orders->sum('quantity') }}</h5>
                                     </div>
                                     <div class="block">
                                         <h6>Date</h6>
@@ -135,7 +231,7 @@
                                                     <th>#</th>
                                                     <th>Image</th>
                                                     <th>Item</th>
-                                                    <th>Size</th>
+                                                    <th>Description</th>
                                                     <th>Quantity</th>
                                                     <th>Unit_Cost</th>
                                                     <th>Total</th>
@@ -143,18 +239,24 @@
                                             </thead>
 
                                             <tbody>
-                                                @foreach ($orders as $value)
+                                                @foreach ($detailOrder->orders as $value)
                                                     <tr>
-                                                        <td>{{ $loop->index + 1 }}</td>
-                                                        <td><img class="invoice-item-img"
+                                                        <td >
+                                                            {{ $loop->index + 1 }}</td>
+                                                        <td><img
+                                                                class="invoice-item-img"
                                                                 src="{{ asset('storage/images/' . $value->products->image) }}"
-                                                                alt="product-image"></td>
-                                                        <td>{{ $value->products->name }}</td>
-                                                        <td>{{ $value->variants->size }}</td>
-                                                        <td>{{ $value->quantity }}</td>
-                                                        <td>{{ number_format($value->variants->sale_price) }} đ
-                                                        </td>
-                                                        <td>{{ number_format($value->variants->sale_price * $value->quantity) }}
+                                                                alt="product-image" style="max-width: 100%;"></td>
+                                                        <td >
+                                                            {{ $value->products->name }}</td>
+                                                        <td >Half Sleeve
+                                                            men T-shirt with cap in Dark Blue Color.</td>
+                                                        <td class="">
+                                                            {{ $value->quantity }}</td>
+                                                        <td >
+                                                            {{ number_format($value->variants->sale_price) }} đ</td>
+                                                        <td >
+                                                            {{ number_format($value->quantity * $value->variants->sale_price) }}
                                                             đ</td>
                                                     </tr>
                                                 @endforeach
@@ -165,26 +267,36 @@
 
                                 <div class="row justify-content-end inc-total">
                                     <div class="col-lg-9 order-lg-1 order-md-2 order-sm-2">
-                                        <div class="note">
+                                        <div class="note" >
                                             <label>Note</label>
-                                            <p>Your country territory tax has been apply.</p>
-                                            <p>Your voucher cannot be applied, because you enter wrong code.</p>
+                                            @if ($detailOrder->note)
+                                                <p>{{ $detailOrder->note }}</p>
+                                            @else
+                                                {{-- <p>Your country territory tax has been apply.</p>
+                                                <p>Your voucher cannot be applied, because you enter wrong code.
+                                                </p> --}}
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-3 order-lg-2 order-md-1 order-sm-1">
-                                        <ul class="list-unstyled">
-                                            <li class="mid pb-3 text-dark"> Subtotal
-                                                <span
-                                                    class="d-inline-block float-right text-default">{{ number_format($detailOrder->totalPrice) }}
-                                                    đ</span>
+                                        <ul class="list-unstyled" style="list-style: none; padding: 0;">
+                                            <li class="mid pb-3 text-dark"
+                                                style="padding-bottom: 10px; color: #333;">
+                                                Subtotal
+                                                <span class="d-inline-block float-right text-default"
+                                                    style="float: right;">
+                                                    {{ number_format($detailOrder->totalPrice) }} đ
+                                                </span>
                                             </li>
+
                                             @if ($detailOrder->coupon_order)
                                                 @foreach ($detailOrder->coupon_order as $coupon)
                                                     @if ($coupon->coupons->coupon_condition == 1)
                                                         <li class="mid pb-3 text-dark"
                                                             style="padding-bottom: 10px; color: #333;">
                                                             Sale
-                                                            <span class="d-inline-block float-right text-default"
+                                                            <span
+                                                                class="d-inline-block float-right text-default"
                                                                 style="float: right;">
                                                                 -{{ number_format($detailOrder->totalPrice * ($coupon->coupons->coupon_number / 100)) }}đ
                                                             </span>
@@ -193,7 +305,8 @@
                                                         <li class="mid pb-3 text-dark"
                                                             style="padding-bottom: 10px; color: #333;">
                                                             Sale
-                                                            <span class="d-inline-block float-right text-default"
+                                                            <span
+                                                                class="d-inline-block float-right text-default"
                                                                 style="float: right;">
                                                                 -{{ number_format($coupon->coupons->coupon_number) }}đ
                                                             </span>
@@ -201,7 +314,8 @@
                                                     @endif
                                                 @endforeach
                                             @else
-                                                <li class="mid pb-3 text-dark" style="padding-bottom: 10px; color: #333;">
+                                                <li class="mid pb-3 text-dark"
+                                                    style="padding-bottom: 10px; color: #333;">
                                                     Sale
                                                     <span class="d-inline-block float-right text-default"
                                                         style="float: right;">
@@ -209,9 +323,7 @@
                                                     </span>
                                                 </li>
                                             @endif
-                                            {{-- <li class="mid pb-3 text-dark">Sale
-                                                <span class="d-inline-block float-right text-default">$100.00</span>
-                                            </li> --}}
+
 
                                             <li class="text-dark" style="color: #333;">
                                                 Total
@@ -237,6 +349,7 @@
                                                         class="text-right fw-bold text-danger subTotal ">{{ number_format($detailOrder->totalPrice, 0, ',', '.') }}đ</span>
                                                 @endif
                                             </li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -247,28 +360,9 @@
             </div>
         </div>
     </div>
-@endsection
-{{-- @section('script')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const statusSelect = document.getElementById('statusSelect');
-            statusSelect.addEventListener('change', function() {
-                const status = statusSelect.value;
-                const id = statusSelect.getAttribute('data-id');
-                // console.log(id);
-                axios.post(`admin/updateOrder/${id}`, {
-                        status: status,
-                    })
-                    .then(response => {
-                        console.log(response.data);
-                        alert('Trạng thái đơn hàng đã được cập nhật!');
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        alert('Có lỗi xảy ra, vui lòng thử lại!');
-                    });
-            })
-
-        });
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
-@endsection --}}
+</body>
+
+</html>

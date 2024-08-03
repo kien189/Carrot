@@ -803,7 +803,7 @@
                                                 More</a>
                                         </div>
                                         <div class="cr-blog-image">
-                                            <img src="{{ asset('storage/images/' . $value->image) }}" alt="blog-2">
+                                            <img src="{{ asset('storage/blogs/' . $value->image) }}" alt="blog-2">
                                             <div class="cr-blog-date">
                                                 <span>
                                                     {{ $value->created_at->format('d') }}

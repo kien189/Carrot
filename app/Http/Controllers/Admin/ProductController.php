@@ -35,7 +35,6 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        dd($req->all());
         $fileName = $req->photo->getClientOriginalName();
         $req->photo->storeAs('public/images', $fileName);
         $req->merge(['image' => $fileName]);
@@ -51,7 +50,6 @@ class ProductController extends Controller
                     ]);
                 }
             }
-
             foreach ($req->variants as $variantData) {
                 $variants = [
                     "size" => $variantData['size'],

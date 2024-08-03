@@ -357,6 +357,7 @@
                                                 @csrf
                                                 <input type="hidden" name="customer_id"
                                                     value="{{ auth('customers')->user()->id }}">
+                                                    
                                                 <span class="cr-bill-wrap cr-bill-half">
                                                     <label>First Name*</label>
                                                     <input type="text" name="name"

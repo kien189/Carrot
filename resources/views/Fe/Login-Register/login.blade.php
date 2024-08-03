@@ -56,6 +56,12 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+                            @if ($message = Session::get('success'))
+                                <p class="text-success">{{ $message }}</p>
+                            @endif
+                            @if ($message = Session::get('error'))
+                                <p class="text-danger">{{ $message }}</p>
+                            @endif
                             <div class="remember">
                                 <span class="form-group custom">
                                     <input type="checkbox" name="remember" id="html">
@@ -100,4 +106,3 @@
         </div>
     </section>
 @endsection
-

@@ -49,7 +49,7 @@
                                                 <tr>
                                                     <td class="token">{{ $loop->index + 1 }}</td>
                                                     <td><img class=""
-                                                            src="{{ asset('storage/images/' . $value->image) }}"
+                                                            src="{{ asset('storage/blogs/' . $value->image) }}"
                                                             width="120px" alt="clients Image">
                                                     </td>
                                                     <td>{{ $value->title }}</td>

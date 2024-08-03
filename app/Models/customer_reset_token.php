@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class customer_reset_token extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'email';
     protected $table = 'customer_reset_tokens';
     protected $fillable = ['email', 'token','expires_at','is_used'];
 

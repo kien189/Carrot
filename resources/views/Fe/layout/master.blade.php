@@ -820,12 +820,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-left">VAT (20%) :</td>
-                                    <td class="text-right">$60.00</td>
+                                    <td class="text-left">Sale :</td>
+                                    <td class="text-right">0 đ</td>
                                 </tr>
                                 <tr>
                                     <td class="text-left">Total :</td>
-                                    <td class="text-right primary-color">$360.00</td>
+                                    <td class="text-right primary-color"> {{ number_format($value->TotalPrice, 0, ',', '.') }}đ</td>
                                 </tr>
                             </tbody>
                         @endisset

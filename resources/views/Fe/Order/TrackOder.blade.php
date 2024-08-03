@@ -39,28 +39,28 @@
                             <div class="row">
                                 <div class="col-md-4 m-b-767">
                                     <div class="cr-track-card"><span
-                                            class="cr-track-title">order</span><span>#{{ $checkOrder->code_orders }} </span>
+                                            class="cr-track-title">order</span><span>#{{ $checkOrder->code_order }} </span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 m-b-767">
                                     <div class="cr-track-card"><span
-                                            class="cr-track-title">SubTotal</span><span>{{ number_format($checkOrder->order_details->totalPrice) }}
+                                            class="cr-track-title">SubTotal</span><span>{{ number_format($checkOrder->totalPrice) }}
                                             đ</span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4 m-b-767">
                                     <div class="cr-track-card"><span class="cr-track-title">Expected
-                                            date</span><span>{{ \Carbon\Carbon::parse($checkOrder->order_details->created_at)->addDays(3)->format('d-m-Y') }}
+                                            date</span><span>{{ \Carbon\Carbon::parse($checkOrder->created_at)->addDays(3)->format('d-m-Y') }}
                                         </span></div>
                                 </div>
                             </div>
                             <div class="cr-steps">
                                 <div class="cr-steps-body">
                                     <div
-                                        class="cr-step {{ $checkOrder->order_details->status >= 1 ? 'cr-step-completed' : '' }}">
+                                        class="cr-step {{ $checkOrder->status >= 1 ? 'cr-step-completed' : '' }}">
                                         <span class="cr-step-indicator">
-                                            @if ($checkOrder->order_details->status >= 1)
+                                            @if ($checkOrder->status >= 1)
                                                 <i class="ri-check-line"></i>
                                             @endif
                                         </span>
@@ -71,9 +71,9 @@
                                     </div>
 
                                     <div
-                                        class="cr-step {{ $checkOrder->order_details->status >= 2 ? 'cr-step-completed' : '' }}">
+                                        class="cr-step {{ $checkOrder->status >= 2 ? 'cr-step-completed' : '' }}">
                                         <span class="cr-step-indicator">
-                                            @if ($checkOrder->order_details->status >= 2)
+                                            @if ($checkOrder->status >= 2)
                                                 <i class="ri-check-line"></i>
                                             @endif
                                         </span>
@@ -83,9 +83,9 @@
                                         Processing<br> order
                                     </div>
                                     <div
-                                        class="cr-step {{ $checkOrder->order_details->status >= 3 ? 'cr-step-completed' : '' }} ">
+                                        class="cr-step {{ $checkOrder->status >= 3 ? 'cr-step-completed' : '' }} ">
                                         <span class="cr-step-indicator">
-                                            @if ($checkOrder->order_details->status >= 3)
+                                            @if ($checkOrder->status >= 3)
                                                 <i class="ri-check-line"></i>
                                             @endif
                                         </span>
@@ -95,9 +95,9 @@
                                         Quality<br> check
                                     </div>
                                     <div
-                                        class="cr-step {{ $checkOrder->order_details->status >= 4 ? 'cr-step-completed' : '' }}">
+                                        class="cr-step {{ $checkOrder->status >= 4 ? 'cr-step-completed' : '' }}">
                                         <span class="cr-step-indicator">
-                                            @if ($checkOrder->order_details->status >= 4)
+                                            @if ($checkOrder->status >= 4)
                                                 <i class="ri-check-line"></i>
                                             @endif
                                         </span>
@@ -107,9 +107,9 @@
                                         Product<br> dispatched
                                     </div>
                                     <div
-                                        class="cr-step {{ $checkOrder->order_details->status >= 5 ? 'cr-step-completed' : '' }} ">
+                                        class="cr-step {{ $checkOrder->status >= 5 ? 'cr-step-completed' : '' }} ">
                                         <span class="cr-step-indicator">
-                                            @if ($checkOrder->order_details->status >= 5)
+                                            @if ($checkOrder->status >= 5)
                                                 <i class="ri-check-line"></i>
                                             @endif
                                         </span>
@@ -138,9 +138,9 @@
                                                 <td>{{ $productOrders->index+1 }}</td>
                                                 <td>{{ $productOrders->products->name}}</td>
                                                 <td><img src="{{ asset('storage/images/'.$productOrders->products->image) }}" alt="" width="100px"></td>
-                                                <td>{{ $checkOrder->order_details->quantity}}</td>
+                                                <td>{{ $checkOrder->quantity}}</td>
                                                 {{-- <td>{{ $productOrders->o }}</td> --}}
-                                            {{-- </tr>
+                            {{-- </tr>
                                     </tbody>
                                 </table>
                             </div> --}}

@@ -13,7 +13,7 @@ class Oder_detail extends Model
 {
     use HasFactory;
     protected $table = 'order_detail';
-    protected $fillable = ['name', 'email', 'phone', 'address', 'customer_id', 'status', 'note', 'totalPrice', 'token'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'customer_id', 'status', 'note', 'totalPrice', 'code_order'];
 
     public function customers()
     {
@@ -22,7 +22,7 @@ class Oder_detail extends Model
 
     public function orders()
     {
-        return $this->belongsTo(Order::class,'id','order_id');
+        return $this->hasMany(Order::class, 'order_id', 'id');
     }
 
     public function shipment_detail()
@@ -33,6 +33,15 @@ class Oder_detail extends Model
     public function coupon_order()
     {
         return $this->hasMany(CouponsOrder::class, 'order_id', 'id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot(); // Gọi phương thức boot của lớp cha để đảm bảo các sự kiện cơ bản hoạt động
+
+        static::creating(function ($model) {
+            $model->code_order = Str::random(10); // Tạo và gán giá trị ngẫu nhiên cho thuộc tính code_order trước khi lưu mô hình
+        });
     }
 
     // Các thuộc tính và phương thức của model
@@ -94,7 +103,6 @@ class Oder_detail extends Model
     protected static function createShipmentOrder($orderId, $req)
     {
         $data = [
-            'code_orders' => Str::random(10),
             'order_id' => $orderId,
             'payment_id' => $req->payment_id,
             'delivery_id' => $req->delivery_id,
