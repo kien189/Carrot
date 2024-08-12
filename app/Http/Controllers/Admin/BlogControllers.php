@@ -41,7 +41,7 @@ class BlogControllers extends Controller
     public function store(Request $req)
     {
         $user_id = auth('users')->id();
-        $fileName = $this->imageUploadService->handleImageUploadAndMerge($req,'public/blogs');
+        $fileName = $this->imageUploadService->handleImageUploadAndMerge($req,'public/blogs','photo');
         try {
             $data = $req->all();
             $data['user_id'] = $user_id;
@@ -77,7 +77,7 @@ class BlogControllers extends Controller
      */
     public function update(Request $req, Blog $blog)
     {   try {
-        $this->imageUploadService->updateImage($req,$blog,'public/blogs');
+        $this->imageUploadService->updateImage($req,$blog,'public/blogs','photo');
         $blog->update($req->all());
         return redirect()->route('blog.index');
     } catch (\Throwable $th) {

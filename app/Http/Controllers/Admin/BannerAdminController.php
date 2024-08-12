@@ -13,12 +13,7 @@ class BannerAdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $imageUploadService;
 
-    public function __construct(ImageUploadService $imageUploadService)
-    {
-        $this->imageUploadService = $imageUploadService;
-    }
     public function index()
     {
         $banner = Banner::all();
@@ -39,7 +34,7 @@ class BannerAdminController extends Controller
     public function store(Request $request, ImageUploadService $imageUploadService)
     {
         try {
-            $fileName = $imageUploadService->handleImageUploadAndMerge($request, 'public/banners');
+            $fileName = $imageUploadService->handleImageUploadAndMerge($request, 'public/banners','photo');
             $banner = Banner::create($request->all());
             return redirect()->route('banners.index')->with('success', 'Tạo mới banner thành công');
         } catch (\Throwable $th) {
@@ -70,8 +65,9 @@ class BannerAdminController extends Controller
      */
     public function update(Request $request, Banner $banner, ImageUploadService $imageUploadService)
     {
+        // dd($request->all());
         try {
-            $this->imageUploadService->updateImage($request, $banner, 'public/banners');
+            $this->imageUploadService->updateImage($request, $banner, 'public/banners','photo');
             $banner = Banner::find($banner->id)->update($request->all());
             return redirect()->route('banners.index')->with('success', 'Cập nhật banner thành công');
         } catch (\Throwable $th) {
