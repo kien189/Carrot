@@ -36,7 +36,7 @@
                                     <tbody>
                                         @foreach ($banner as $value)
                                             <tr>
-                                                <td><img src="{{ asset('storage/banners/' . $value->image) }}"
+                                                <td><img src="{{ asset('storage/banners/'.$value->image) }}"
                                                         alt="Product Image"></td>
                                                 <td>{{ $value->title }}</td>
                                                 <td>{{ $value->content }}</td>
