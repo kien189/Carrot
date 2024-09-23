@@ -66,7 +66,7 @@ class AdminController extends Controller
         return view('Admin.Login.login');
     }
 
-    public function postLogin(Request $req)
+    public function postLogin(Request $req): \Illuminate\Http\RedirectResponse
     {
         $validate = $req->validate([
             'login'    => 'required|string',
@@ -98,5 +98,5 @@ class AdminController extends Controller
     }
 
 
-   
+
 }
