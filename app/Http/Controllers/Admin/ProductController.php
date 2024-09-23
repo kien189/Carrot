@@ -33,6 +33,37 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $req)
+    // {
+    //     // dd($req->all());
+    //     $fileName = $this->imageUploadService->handleImageUploadAndMerge($req, 'public/products', 'photo');
+    //     try {
+    //         $products = Product::create($req->all());
+    //         if ($products && $req->hasFile("photos")) {
+    //             $galleryImages = $this->imageUploadService->handleMultipleImageUpload($req, 'public/product_gallerys', 'photos');
+    //             foreach ( $galleryImages as $value) {
+    //                 ProductImages::create([
+    //                     "product_id" => $products->id,
+    //                     "image" => $value
+    //                 ]);
+    //             }
+    //         }
+    //         foreach ($req->variants as $variantData) {
+    //             $variants = [
+    //                 "size" => $variantData['size'],
+    //                 "price" => $variantData['price'],
+    //                 "sale_price" => $variantData['sale_price'],
+    //                 "quantity" => $variantData['quantity']
+    //             ];
+    //             $products->variants()->create($variants);
+    //         }
+
+    //         return Redirect::route('product.index')->with('success', 'Thêm mới sản phẩm thành công');
+    //     } catch (\Throwable $th) {
+    //         dd($th->getMessage());
+    //         return Redirect::back()->with('error', 'Thêm mới sản phẩm thất bại !!');
+    //     }
+    // }
     public function store(Request $req)
     {
         $fileName = $req->photo->getClientOriginalName();
@@ -112,12 +143,11 @@ class ProductController extends Controller
                 if ($imageId->id) {
                     Storage::delete('public/images/' . $imageId->image);
                 }
-                    $fileNames = $photo->getClientOriginalName();
-                    $photo->storeAs('public/images', $fileNames);
-                    $imageId->update([
-                        "image" => $fileNames
-                    ]);
-
+                $fileNames = $photo->getClientOriginalName();
+                $photo->storeAs('public/images', $fileNames);
+                $imageId->update([
+                    "image" => $fileNames
+                ]);
             }
         }
         return redirect()->route('product.index')->with('sucess', 'Cập nhật sản phẩm thành công');
